@@ -102,6 +102,7 @@ void Error_Handler(void);
 #define TRX_SDN_GPIO_Port GPIOB
 #define TRX_NIRQ_Pin GPIO_PIN_1
 #define TRX_NIRQ_GPIO_Port GPIOB
+#define TRX_NIRQ_EXTI_IRQn EXTI1_IRQn
 #define TP1_Pin GPIO_PIN_9
 #define TP1_GPIO_Port GPIOE
 #define TP2_Pin GPIO_PIN_10
@@ -120,6 +121,7 @@ void Error_Handler(void);
 #define LED_RED_GPIO_Port GPIOD
 #define PTT_INT_Pin GPIO_PIN_0
 #define PTT_INT_GPIO_Port GPIOE
+#define PTT_INT_EXTI_IRQn EXTI0_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -881,7 +881,7 @@ void TFT_Init(void)
 void TFT_SetBrght(uint8_t brght)
 {
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-	htim4.Instance->CCR1=brght<<8;
+	htim4.Instance->CCR1=(uint16_t)(brght*3.5);
 }
 
 uint16_t TFT_RGBtoCol(uint8_t r, uint8_t g, uint8_t b)
@@ -1432,7 +1432,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin==GPIO_PIN_1 && r_initd)
+	if(0)//GPIO_Pin==GPIO_PIN_1 && r_initd)
 	{
 		//Si nIRQ interrupt request
 		Si_Interrupts(ints);	//check pending interrupt flags
@@ -1516,6 +1516,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	}
 }
 
+//-----------------------------SPEAKER-----------------------------
+void SPK_Enabled(uint8_t ena)
+{
+	if(ena)
+		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 1);
+	else
+		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 0);
+}
+
 //------------------------------DEBUG------------------------------
 //
 //
@@ -1575,8 +1584,8 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
   TFT_SetBrght(0);
-  //HAL_TIM_Base_Start(&htim6);
-  HAL_Delay(100);
+  HAL_TIM_Base_Start(&htim6);
+  HAL_Delay(1000);
   Si_Reset();
   Si_StartupConfig();
   Si_Interrupts(NULL);
@@ -1585,31 +1594,24 @@ int main(void)
 
   cod = codec2_create(CODEC2_MODE_3200);
   init_crc16_tab();
+  HAL_Delay(1000);
 
-  HAL_Delay(200);
-
-  if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0) == FR_OK)
-  {
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
-	HAL_Delay(200);
-  	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
-  	HAL_Delay(100);
-  }
-
+  f_mount(&SDFatFS, (TCHAR const*)SDPath, 0);
   //if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this
 	//while(1);
-  //if(LoadCodeplug("CODEPLUG", &codeplug))
-	;//while(1);
+  if(LoadCodeplug("CODEPLUG", &codeplug))
+	while(1);
 
   TFT_Init();
 
   SetActiveChannel(&codeplug, 0, 0, &active_channel);
   Si_FreqSet(active_channel.channel.freq+3200);
+
   self.sender_id=2600653;
   self.recipient_id=2600500;
   RF_SetRX();
 
-  //TFT_DisplaySplash("splash.raw");
+  TFT_DisplaySplash("splash.raw");
   TFT_SetBrght(255);
   HAL_Delay(1000);
   TFT_SetBrght(0);
@@ -1619,7 +1621,10 @@ int main(void)
   Si_StartRx(0, PLOAD_LEN);
   r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up
 
-  //playTone("tones/ready.raw");
+  SPK_Enabled(1);
+  HAL_Delay(200);
+  playTone("tones/ready.raw");
+  SPK_Enabled(0);
 
   //displayEIN(EIN);
 
@@ -2022,12 +2027,13 @@ static void MX_SDMMC1_SD_Init(void)
   hsd1.Instance = SDMMC1;
   hsd1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
   hsd1.Init.ClockBypass = SDMMC_CLOCK_BYPASS_DISABLE;
-  hsd1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
+  hsd1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_ENABLE;
   hsd1.Init.BusWide = SDMMC_BUS_WIDE_1B;
   hsd1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
-  hsd1.Init.ClockDiv = 0;
+  hsd1.Init.ClockDiv = 240;
   /* USER CODE BEGIN SDMMC1_Init 2 */
-
+  hsd1.Init.BusWide = SDMMC_BUS_WIDE_1B;
+  hsd1.Init.ClockDiv = 10;
   /* USER CODE END SDMMC1_Init 2 */
 
 }
@@ -2095,7 +2101,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -2351,20 +2357,22 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, SPK_SDN_Pin|TRX_TX_SW_Pin|TRX_RX_SW_Pin|TP1_Pin 
-                          |TP2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, SPK_SDN_Pin|TRX_RX_SW_Pin|TP1_Pin|TP2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, SPI1_CS_Pin|TFT_A0_Pin|TFT_RST_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, SPI1_CS_Pin|TFT_RST_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, LED_GRN_Pin|LED_RED_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOD, SPI2_CS_Pin|LED_GRN_Pin|LED_RED_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TFT_A0_GPIO_Port, TFT_A0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : SPK_SDN_Pin TRX_TX_SW_Pin TRX_RX_SW_Pin TP1_Pin 
                            TP2_Pin */
@@ -2375,28 +2383,49 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI1_CS_Pin TFT_A0_Pin TFT_RST_Pin */
-  GPIO_InitStruct.Pin = SPI1_CS_Pin|TFT_A0_Pin|TFT_RST_Pin;
+  /*Configure GPIO pin : SPI1_CS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TRX_SDN_Pin */
   GPIO_InitStruct.Pin = TRX_SDN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(TRX_SDN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TRX_NIRQ_Pin */
   GPIO_InitStruct.Pin = TRX_NIRQ_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(TRX_NIRQ_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPI2_CS_Pin LED_GRN_Pin LED_RED_Pin */
-  GPIO_InitStruct.Pin = SPI2_CS_Pin|LED_GRN_Pin|LED_RED_Pin;
+  /*Configure GPIO pin : SPI2_CS_Pin */
+  GPIO_InitStruct.Pin = SPI2_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(SPI2_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : TFT_A0_Pin */
+  GPIO_InitStruct.Pin = TFT_A0_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(TFT_A0_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : TFT_RST_Pin */
+  GPIO_InitStruct.Pin = TFT_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(TFT_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_GRN_Pin LED_RED_Pin */
+  GPIO_InitStruct.Pin = LED_GRN_Pin|LED_RED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -2404,9 +2433,16 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PTT_INT_Pin */
   GPIO_InitStruct.Pin = PTT_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PTT_INT_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 }
 
