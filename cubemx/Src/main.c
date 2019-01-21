@@ -241,8 +241,8 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=2.0;				//speaker volume (linear) value >=0.0
-volatile float tones_volume=0.8;			//alert tones volume
+volatile float spk_volume=0.5;				//speaker volume (linear) value >=0.0
+volatile float tones_volume=0.4;			//alert tones volume
 
 //ALERT TONES PLAYBACK
 volatile int16_t tone[TONE_SIZE];			//buffer for loading data from .RAW file
@@ -1503,13 +1503,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	else if(GPIO_Pin==GPIO_PIN_0 && !HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 	{
 		//PTT push
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 		TFT_PutStrCentered(60-18*3, "PTT", 1, CL_RED);
 	}
 	else if(GPIO_Pin==GPIO_PIN_0 && HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 	{
 		//PTT release
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 		for(uint8_t x=40; x<80; x++)
 			for(uint8_t y=60-18*3; y<60-18*3+16;y++)
 				TFT_PutPixel(x, y, CL_WHITE);
@@ -1622,8 +1622,9 @@ int main(void)
   r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up
 
   SPK_Enabled(1);
-  HAL_Delay(200);
+  HAL_Delay(500);
   playTone("tones/ready.raw");
+  HAL_Delay(500);
   SPK_Enabled(0);
 
   //displayEIN(EIN);
@@ -1639,6 +1640,27 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin) && !dac_busy)
+	  {
+	  	playTone("tones/ready.raw");
+	  	HAL_Delay(70);
+	  	buff_num=0;
+	  	HAL_ADC_Start_DMA(&hadc1, buffer_1, FRAMESIZE);
+	  	RF_SetTX();
+
+	  	while(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin));
+	  }
+
+	  if(r_tx)
+	  {
+	  	HAL_Delay(100);
+	  	RF_SetRX();
+	  	Si_StartRx(0, PLOAD_LEN);
+	  }
+
+	  if(self.frame)
+	  	self.frame=0;
+
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
 	  HAL_Delay(200);
     /* USER CODE END WHILE */
@@ -2032,7 +2054,6 @@ static void MX_SDMMC1_SD_Init(void)
   hsd1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
   hsd1.Init.ClockDiv = 240;
   /* USER CODE BEGIN SDMMC1_Init 2 */
-  hsd1.Init.BusWide = SDMMC_BUS_WIDE_1B;
   hsd1.Init.ClockDiv = 10;
   /* USER CODE END SDMMC1_Init 2 */
 
@@ -2433,7 +2454,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PTT_INT_Pin */
   GPIO_InitStruct.Pin = PTT_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PTT_INT_GPIO_Port, &GPIO_InitStruct);
 
