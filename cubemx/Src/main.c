@@ -880,8 +880,13 @@ void TFT_Init(void)
 
 void TFT_SetBrght(uint8_t brght)
 {
+	HAL_TIM_Base_Start(&htim4);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-	htim4.Instance->CCR1=(uint16_t)(brght*3.5);
+
+	if(brght<255)
+		htim4.Instance->CCR1=(uint16_t)(brght*999.0/255.0);
+	else
+		htim4.Instance->CCR1=(uint16_t)999;
 }
 
 uint16_t TFT_RGBtoCol(uint8_t r, uint8_t g, uint8_t b)
@@ -896,18 +901,18 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 	if((x>=128) || (y>=160))
 		return;
 
-	GPIOE->BSRR=(uint32_t)(1<<(15+16)); //TFT_CS LOW
+	GPIOD->BSRR=(uint32_t)(1<<(8+16)); //TFT_CS LOW
 
 	if(addr_col != x)
 	{
-		GPIOB->BSRR=(uint32_t)(1<<(11+16)); //TFT_A0 LOW
+		GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
 		//while(!(SPI2->SR & SPI_SR_TXE));
 		*(uint8_t *)&SPI2->DR=0x2A;
 		while(SPI2->SR & SPI_SR_BSY);
 
 		addr_col = x;
-		GPIOB->BSRR=(uint32_t)(1<<11); //TFT_A0 HIGH
+		GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
 		//while(!(SPI2->SR & SPI_SR_TXE));
 		*(uint8_t *)&SPI2->DR=0x00;
@@ -919,14 +924,14 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 
 	if(addr_row != y)
 	{
-		GPIOB->BSRR=(uint32_t)(1<<(11+16)); //TFT_A0 LOW
+		GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
 		//while(!(SPI2->SR & SPI_SR_TXE));
 		*(uint8_t *)&SPI2->DR=0x2B;
 		while(SPI2->SR & SPI_SR_BSY);
 
 		addr_row = y;
-		GPIOB->BSRR=(uint32_t)(1<<11); //TFT_A0 HIGH
+		GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
 		//while(!(SPI2->SR & SPI_SR_TXE));
 		*(uint8_t *)&SPI2->DR=0x00;
@@ -936,13 +941,13 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 		while(SPI2->SR & SPI_SR_BSY);
 	}
 
-	GPIOB->BSRR=(uint32_t)(1<<(11+16)); //TFT_A0 LOW
+	GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
 	//while(!(SPI2->SR & SPI_SR_TXE));
 	*(uint8_t *)&SPI2->DR=0x2C;
 	while(SPI2->SR & SPI_SR_BSY);
 
-	GPIOB->BSRR=(uint32_t)(1<<11); //TFT_A0 HIGH
+	GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
 	//while(!(SPI2->SR & SPI_SR_TXE));
 	*(uint8_t *)&SPI2->DR=color>>8;
@@ -951,7 +956,7 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 	*(uint8_t *)&SPI2->DR=color;
 	while(SPI2->SR & SPI_SR_BSY);
 
-	GPIOE->BSRR=(uint32_t)(1<<15);	//TFT_CS HIGH
+	GPIOD->BSRR=(uint32_t)(1<<8);	//TFT_CS HIGH
 }
 
 void TFT_Clear(uint16_t color)
@@ -2052,7 +2057,7 @@ static void MX_SDMMC1_SD_Init(void)
   hsd1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_ENABLE;
   hsd1.Init.BusWide = SDMMC_BUS_WIDE_1B;
   hsd1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
-  hsd1.Init.ClockDiv = 240;
+  hsd1.Init.ClockDiv = 0;
   /* USER CODE BEGIN SDMMC1_Init 2 */
   hsd1.Init.ClockDiv = 10;
   /* USER CODE END SDMMC1_Init 2 */
@@ -2122,7 +2127,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -2454,7 +2459,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PTT_INT_Pin */
   GPIO_InitStruct.Pin = PTT_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PTT_INT_GPIO_Port, &GPIO_InitStruct);
 
