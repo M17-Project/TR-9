@@ -3562,7 +3562,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="R2" library="resistor" package="R0805" value="10k" x="5.715" y="59.69" rot="R270"/>
 <element name="R3" library="rcl" package="R0805" value="9k1" x="20.955" y="105.41" rot="R180"/>
 <element name="R4" library="rcl" package="R0805" value="1k" x="26.035" y="105.41" rot="R180"/>
-<element name="R5" library="rcl" package="R0805" value="47k" x="39.37" y="109.855"/>
+<element name="R5" library="rcl" package="R0805" value="1k" x="39.37" y="109.855"/>
 <element name="R6" library="rcl" package="R1206" value="22R" x="42.545" y="113.665" rot="R180"/>
 <element name="R7" library="resistor" package="R0805" value="680R" x="9.525" y="11.43"/>
 <element name="R8" library="resistor" package="R0805" value="22R" x="9.525" y="8.89" rot="R180"/>

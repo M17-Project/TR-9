@@ -22575,7 +22575,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="+3V313" library="supply1" deviceset="+3V3" device=""/>
 <part name="JP3" library="pinhead" deviceset="PINHD-1X16" device="" value="TFT_CONN"/>
 <part name="Q1" library="bss138_10" deviceset="BSS138" device=""/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="R0805" value="47k"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="R0805" value="1k"/>
 <part name="R6" library="rcl" deviceset="R-EU_" device="R1206" value="22R"/>
 <part name="GND23" library="supply1" deviceset="GND" device=""/>
 <part name="P+3" library="supply1" deviceset="+5V" device=""/>
