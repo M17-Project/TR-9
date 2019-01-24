@@ -54,6 +54,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <math.h>
 #include "TFT_ST7735.h"
 #include "radio_config.h"	//PKT_5_0 - dwa ostatnie bajty, PKT_5_1 - 5ty bajt
 #include "codec2.h"
@@ -243,7 +244,7 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=0.5;				//speaker volume (linear) value >=0.0
+volatile float spk_volume=0.7;				//speaker volume (linear) value >=0.0
 volatile float tones_volume=0.4;			//alert tones volume
 
 //ALERT TONES PLAYBACK
@@ -1095,16 +1096,17 @@ void displayEIN(uint8_t* src)
 
 void TFT_DisplayActiveChannelData(struct CODEPLUG_DATA *cd, struct ACTIVE_CHANNEL_DATA *acd)
 {
-	uint8_t lin[13];
+	uint8_t lin[20];
+	uint8_t base=42;
 
-	TFT_PutStrCentered(60-18, cd->bank[acd->bank_num].name, 1, 0);
-	TFT_PutStrCentered(60, acd->channel.name, 1, 0);
+	TFT_PutStrCentered(base, cd->bank[acd->bank_num].name, 1, 0);
+	TFT_PutStrCentered(base+18, acd->channel.name, 1, 0);
 	gcvt(acd->channel.freq/1000000.0, 7, lin);
-	TFT_PutStrCentered(60+18, lin, 1, 0);
+	TFT_PutStrCentered(base+18*2, lin, 1, 0);
 	if(acd->channel.enc_type)
-		TFT_PutStrCentered(60+18*2, "SZYFR", 1, CL_DARKGREEN);
+		TFT_PutStrCentered(base+18*3, "SZYFR", 1, CL_DARKGREEN);
 	else
-		TFT_PutStrCentered(60+18*2, "JAWNY", 1, CL_RED);
+		TFT_PutStrCentered(base+18*3, "JAWNY", 1, CL_RED);
 }
 
 //-----------------------------------CODEPLUG------------------------------------
@@ -1391,10 +1393,12 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	}
 	else
 	{
-		v_batt=(u_batt/4096.0)*3.3*10.1;
+		v_batt=(u_batt/4096.0)*3.3*10.058;
 		gcvt(v_batt, 3, test_line);
-		TFT_RectangleFilled(5, 5, 30, 16, CL_WHITE);
-		TFT_PutStr(5, 5, test_line, 1, CL_BLACK);
+		if(strlen(test_line)==3)
+			test_line[3]='0';
+		TFT_RectangleFilled(127-30, 3, 127, 16, CL_WHITE);
+		TFT_PutStr(127-30, 3, test_line, 1, CL_BLACK);
 		HAL_ADC_Start_DMA(&hadc2, &u_batt, 1);
 	}
 }
@@ -1455,7 +1459,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(0)//GPIO_Pin==GPIO_PIN_1 && r_initd)
+	if(GPIO_Pin==GPIO_PIN_1 && r_initd)
 	{
 		//Si nIRQ interrupt request
 		Si_Interrupts(ints);	//check pending interrupt flags
@@ -1533,9 +1537,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		//PTT release
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
-		for(uint8_t x=40; x<80; x++)
-			for(uint8_t y=60-18*3; y<60-18*3+16;y++)
-				TFT_PutPixel(x, y, CL_WHITE);
+		TFT_RectangleFilled(40, 60-18*3, 80, 60-18*3+15, CL_WHITE);
 	}
 }
 
@@ -1612,7 +1614,7 @@ int main(void)
   HAL_ADC_Start_DMA(&hadc2, &u_batt, 1);
   HAL_TIM_Base_Start(&htim8);	//0.1Hz measure u_batt
 
-  HAL_Delay(1000);
+  HAL_Delay(500);
   Si_Reset();
   Si_StartupConfig();
   Si_Interrupts(NULL);
@@ -1638,6 +1640,7 @@ int main(void)
   self.recipient_id=2600500;
   RF_SetRX();
 
+  TFT_Clear(CL_WHITE);
   TFT_DisplaySplash("splash.raw");
   TFT_SetBrght(255);
   HAL_Delay(1000);
@@ -1649,7 +1652,7 @@ int main(void)
   r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up
 
   SPK_Enabled(1);
-  HAL_Delay(500);
+  HAL_Delay(100);
   playTone("tones/ready.raw");
   //HAL_Delay(500);
   //SPK_Enabled(0);
@@ -1657,19 +1660,33 @@ int main(void)
   //displayEIN(EIN);
 
   TFT_DisplayActiveChannelData(&codeplug, &active_channel);
-  sprintf(test_line, "B: %d CH: %d", GetActiveBank(&active_channel), GetActiveChannel(&active_channel));
-  TFT_PutStrCentered(18, test_line, 1, CL_BLACK);
 
   TFT_RectangleFilled(0, 160-25, 127, 159, CL_LIGHTGREY);
   TFT_PutStr(10, 160-20, "Menu", 1, CL_BLACK);
   TFT_PutStr(128-48, 160-20, "Opcje", 1, CL_BLACK);
 
   HAL_Delay(70);
+
+  //TEST
+  /*
+  uint16_t test_sine[FRAMESIZE];
+
+  for(uint16_t i=0; i<FRAMESIZE; i++)
+	  test_sine[i]=(0xFFF>>1)+0x0F*(sin((float)i/FRAMESIZE * 2*M_PI * 10.0)+1.0)/2.0;
+
+  while(1)
+  {
+	  dac_busy=1;
+	  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, test_sine, FRAMESIZE, DAC_ALIGN_12B_R);
+	  //while(dac_busy);
+  }
+  */
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
+  while(1)
   {
 	  if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin) && !dac_busy)
 	  {
@@ -2113,7 +2130,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -2436,7 +2453,7 @@ static void MX_DMA_Init(void)
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
   /* DMA2_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 2, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
 
 }
@@ -2535,7 +2552,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PTT_INT_Pin */
   GPIO_InitStruct.Pin = PTT_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PTT_INT_GPIO_Port, &GPIO_InitStruct);
 
@@ -2543,7 +2560,7 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 }
@@ -2559,7 +2576,8 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+
+  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 
   /* USER CODE END Error_Handler_Debug */
 }
