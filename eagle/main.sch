@@ -23760,7 +23760,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <instance part="IC3" gate="G$1" x="45.72" y="139.7" rot="MR0"/>
 <instance part="JP5" gate="G$1" x="162.56" y="154.94" rot="R90"/>
 <instance part="GND37" gate="1" x="162.56" y="144.78"/>
-<instance part="R7" gate="G$1" x="55.88" y="132.08" rot="R90"/>
+<instance part="R7" gate="G$1" x="43.18" y="121.92" rot="R180"/>
 <instance part="R8" gate="G$1" x="55.88" y="114.3" rot="R90"/>
 <instance part="GND26" gate="1" x="48.26" y="129.54"/>
 <instance part="R9" gate="G$1" x="66.04" y="157.48"/>
@@ -23947,22 +23947,11 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <pinref part="IC3" gate="G$1" pin="OUT"/>
 <wire x1="38.1" y1="139.7" x2="30.48" y2="139.7" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="139.7" x2="30.48" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="1"/>
-<wire x1="30.48" y1="121.92" x2="55.88" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="R8" gate="G$1" pin="2"/>
-<wire x1="55.88" y1="127" x2="55.88" y2="121.92" width="0.1524" layer="91"/>
-<junction x="55.88" y="121.92"/>
-<wire x1="55.88" y1="121.92" x2="55.88" y2="119.38" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="139.7" x2="27.94" y2="139.7" width="0.1524" layer="91"/>
 <label x="27.94" y="139.7" size="1.27" layer="95" rot="R180" xref="yes"/>
 <junction x="30.48" y="139.7"/>
-</segment>
-</net>
-<net name="N$4" class="0">
-<segment>
 <pinref part="R7" gate="G$1" pin="2"/>
-<pinref part="IC3" gate="G$1" pin="-IN"/>
-<wire x1="55.88" y1="137.16" x2="53.34" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="121.92" x2="38.1" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -24182,6 +24171,18 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <pinref part="IC3" gate="G$1" pin="+IN"/>
 <wire x1="53.34" y1="142.24" x2="66.04" y2="142.24" width="0.1524" layer="91"/>
 <junction x="66.04" y="142.24"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="R8" gate="G$1" pin="2"/>
+<wire x1="55.88" y1="121.92" x2="55.88" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="1"/>
+<wire x1="48.26" y1="121.92" x2="55.88" y2="121.92" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="121.92" x2="55.88" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="IC3" gate="G$1" pin="-IN"/>
+<wire x1="55.88" y1="137.16" x2="53.34" y2="137.16" width="0.1524" layer="91"/>
+<junction x="55.88" y="121.92"/>
 </segment>
 </net>
 </nets>
