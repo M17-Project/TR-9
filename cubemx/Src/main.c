@@ -671,6 +671,7 @@ void Si_FreqSet(uint32_t freq)	//freq in Hz
 	uint8_t inte=0x3C;	//default values
 	uint64_t frac=0x00080000;
 
+	freq=freq*(30.0/32.0);
 	inte=freq/7500000-1;
 	frac=(freq-(uint32_t)(inte+1)*7500000)/75;
 	frac=(uint64_t)frac*(1<<19)/100000+(uint32_t)(1<<19);
@@ -1634,7 +1635,7 @@ int main(void)
   TFT_Init();
 
   SetActiveChannel(&codeplug, 0, 0, &active_channel);
-  Si_FreqSet(active_channel.channel.freq+3200);
+  Si_FreqSet(active_channel.channel.freq);
 
   self.sender_id=2600653;
   self.recipient_id=2600500;
