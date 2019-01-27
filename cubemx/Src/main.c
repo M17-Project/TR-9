@@ -139,6 +139,7 @@ uint8_t test_line[50];						//test buffer
 volatile uint8_t kbd_rcv_val=0;				//keyboard input - key ID
 
 //TX SOUND BUFFERS
+volatile uint8_t adc_busy=0;				//are we currently reading samples from the mic?
 volatile uint8_t buff_num=0;				//actual sound input buffer number
 volatile uint16_t buffer_1[FRAMESIZE];
 volatile uint16_t buffer_2[FRAMESIZE];
@@ -244,7 +245,7 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=0.7;				//speaker volume (linear) value >=0.0
+volatile float spk_volume=20.0;				//speaker volume (linear) value >=0.0
 volatile float tones_volume=0.4;			//alert tones volume
 
 //ALERT TONES PLAYBACK
@@ -318,8 +319,6 @@ void generateNonce(uint8_t* dest)
 
 void retrieveEIN(uint8_t* dest)
 {
-	//for(uint8_t i=0; i<12; i++)
-		//dest[i]=(uint8_t*)(0x1FF0F420+i);
 	memcpy(dest, (uint8_t*)(0x1FF0F420), 12);
 }
 
@@ -1363,6 +1362,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 			//PTT still pressed? load data to the other buffer
 			if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 				HAL_ADC_Start_DMA(&hadc1, buffer_2, FRAMESIZE);
+			else
+				adc_busy=0;
 
 			//remember which buffer to use next
 			buff_num=1;
@@ -1391,6 +1392,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 
 		//increment FRAME_NUMBER field value
 		self.frame++;
+
+		//ADC not busy?
+		if(HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
+			adc_busy=0;
 	}
 	else
 	{
@@ -1532,13 +1537,31 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		//PTT push
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
-		TFT_PutStrCentered(60-18*3, "PTT", 1, CL_RED);
+		if(!dac_busy)
+		{
+			playTone("tones/ready.raw");
+			//HAL_Delay(70);
+			buff_num=0;
+			adc_busy=1;
+			HAL_ADC_Start_DMA(&hadc1, buffer_1, FRAMESIZE);
+			RF_SetTX();
+		}
 	}
 	else if(GPIO_Pin==GPIO_PIN_0 && HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 	{
 		//PTT release
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
-		TFT_RectangleFilled(40, 60-18*3, 80, 60-18*3+15, CL_WHITE);
+		while(adc_busy);
+
+		if(r_tx)
+		{
+			//HAL_Delay(100);
+			RF_SetRX();
+			Si_StartRx(0, PLOAD_LEN);
+		}
+
+		if(self.frame)
+			self.frame=0;
 	}
 }
 
@@ -1566,7 +1589,7 @@ void SPK_Enabled(uint8_t ena)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  retrieveEIN(EIN);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -1624,7 +1647,7 @@ int main(void)
 
   cod = codec2_create(CODEC2_MODE_3200);
   init_crc16_tab();
-  HAL_Delay(1000);
+  HAL_Delay(500);
 
   f_mount(&SDFatFS, (TCHAR const*)SDPath, 0);
   //if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this
@@ -1653,12 +1676,12 @@ int main(void)
   r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up
 
   SPK_Enabled(1);
-  HAL_Delay(100);
+  HAL_Delay(250);
   playTone("tones/ready.raw");
-  //HAL_Delay(500);
-  //SPK_Enabled(0);
 
   //displayEIN(EIN);
+  //HAL_Delay(5000);
+  //TFT_Clear(CL_WHITE);
 
   TFT_DisplayActiveChannelData(&codeplug, &active_channel);
 
@@ -1689,7 +1712,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1)
   {
-	  if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin) && !dac_busy)
+	  /*if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin) && !dac_busy)
 	  {
 	  	playTone("tones/ready.raw");
 	  	HAL_Delay(70);
@@ -1698,9 +1721,9 @@ int main(void)
 	  	RF_SetTX();
 
 	  	while(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin));
-	  }
+	  }*/
 
-	  if(r_tx)
+	  /*if(r_tx)
 	  {
 	  	HAL_Delay(100);
 	  	RF_SetRX();
@@ -1708,7 +1731,7 @@ int main(void)
 	  }
 
 	  if(self.frame)
-	  	self.frame=0;
+	  	self.frame=0;*/
 
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
 	  HAL_Delay(200);
@@ -2448,13 +2471,13 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Stream5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 10, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
   /* DMA2_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 9, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
   /* DMA2_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 15, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
 
 }
@@ -2558,10 +2581,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(PTT_INT_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 12, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 1, 0);
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 11, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 }
