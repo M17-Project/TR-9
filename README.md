@@ -4,13 +4,14 @@ Open-source digital mobile radio, compatible with M17 standard. Uses Codec2 voco
 This is a complete SW4STM32 project for the TR-9 board.
 
 # TODO:
-- Adjust the antenna PCB trace to match 50ohm impedance
+- Replace the RFM26W module with a genuine Si4463-C2 chip and adjust the antenna PCB trace to match 50ohm impedance  
+- Re-design audio amplifier stage  
 - Swap SPI1 and SPI2  
 - Replace SD slot with a different type  
 - Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable  
-- Design a PCB for the keyboard and encoder
+- Design a PCB for the keyboard and encoder  
   
-- Fix NVIC interrupts priorities (causing occasional freezes)
+- Fix NVIC interrupts priorities (causing freezes)  
 - Implement hardware AES  
 - Add a GPS module  
 - Add an I2C accelerometer module  
