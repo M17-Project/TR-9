@@ -63,6 +63,9 @@
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -100,11 +103,41 @@
 <layer number="124" name="bTestmark" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="125" name="BIFRNTTEK" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="126" name="BIFRNTMAT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="127" name="_tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="128" name="_bValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="129" name="Mask" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="130" name="SMDSTROOK" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="131" name="tAdjust" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="132" name="bAdjust" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="133" name="mtFinish" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="134" name="mbFinish" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="135" name="mtGlue" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="136" name="mbGlue" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="137" name="mtTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="138" name="mbTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="139" name="mtKeepout" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="140" name="mbKeepout" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="141" name="mtRestrict" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="142" name="mbRestrict" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="143" name="mvRestrict" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="145" name="mHoles" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="146" name="mMilling" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="147" name="mMeasures" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="148" name="mDocument" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="149" name="mReference" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="150" name="Notes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="152" name="_bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="153" name="FabDoc1" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="154" name="FabDoc2" color="2" fill="1" visible="yes" active="yes"/>
+<layer number="155" name="FabDoc3" color="7" fill="15" visible="yes" active="yes"/>
+<layer number="191" name="mNets" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="192" name="mBusses" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="193" name="mPins" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="194" name="mSymbols" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="195" name="mNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="196" name="mValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="199" name="Contour" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="200" name="200bmp" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="201" name="201bmp" color="7" fill="1" visible="yes" active="yes"/>
@@ -117,7 +150,31 @@
 <layer number="208" name="208bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="209" name="209bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="210" name="210bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="211" name="211bmp" color="7" fill="1" visible="no" active="yes"/>
+<layer number="212" name="212bmp" color="7" fill="1" visible="no" active="yes"/>
+<layer number="213" name="213bmp" color="7" fill="1" visible="no" active="yes"/>
+<layer number="214" name="214bmp" color="7" fill="1" visible="no" active="yes"/>
+<layer number="215" name="215bmp" color="7" fill="1" visible="no" active="yes"/>
 <layer number="216" name="BottomExtra" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="217" name="217bmp" color="18" fill="1" visible="no" active="no"/>
+<layer number="218" name="218bmp" color="19" fill="1" visible="no" active="no"/>
+<layer number="219" name="219bmp" color="20" fill="1" visible="no" active="no"/>
+<layer number="220" name="220bmp" color="21" fill="1" visible="no" active="no"/>
+<layer number="221" name="221bmp" color="22" fill="1" visible="no" active="no"/>
+<layer number="222" name="222bmp" color="23" fill="1" visible="no" active="no"/>
+<layer number="223" name="223bmp" color="24" fill="1" visible="no" active="no"/>
+<layer number="224" name="224bmp" color="25" fill="1" visible="no" active="no"/>
+<layer number="225" name="225bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="226" name="226bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="227" name="227bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="228" name="228bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="229" name="229bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="230" name="230bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="248" name="Housing" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="249" name="Edge" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="250" name="Descript" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="251" name="SMDround" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="254" name="OrgLBR" color="7" fill="1" visible="yes" active="yes"/>
@@ -8013,37 +8070,27 @@ Source: http://www.st.com/stonline/products/literature/ds/7194/ld1117axx.pdf</de
 <description>T-Flash Push-Out Micro SD Card Reader
 9 pin SD mode and 7 pin SPI mode compatible
 14.75mm x 14.5mm</description>
-<wire x1="13.97" y1="0" x2="-0.78" y2="0" width="0.127" layer="21"/>
-<wire x1="13.97" y1="0" x2="13.97" y2="14.5" width="0.127" layer="21"/>
-<wire x1="-0.78" y1="0" x2="-0.78" y2="14.5" width="0.127" layer="21"/>
-<wire x1="13.97" y1="14.5" x2="-0.78" y2="14.5" width="0.127" layer="21"/>
-<smd name="8" x="10.08" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="7" x="8.98" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="6" x="7.88" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="5" x="6.78" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="4" x="5.68" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="3" x="4.58" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="2" x="3.48" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<smd name="1" x="2.38" y="2.6" dx="1.5" dy="0.8" layer="1" rot="R270"/>
-<text x="13.97" y="-3.79" size="1.27" layer="25" rot="R180">&gt;NAME</text>
-<text x="13.97" y="-1.78" size="1.27" layer="27" rot="R180">&gt;VALUE</text>
-<wire x1="6.595" y1="1" x2="6.595" y2="13.5" width="0.127" layer="48" style="shortdash"/>
-<circle x="11.545" y="10.5" radius="1" width="0.127" layer="48"/>
-<circle x="3.545" y="10.5" radius="1" width="0.127" layer="48"/>
-<wire x1="13.045" y1="16.8" x2="2.045" y2="16.8" width="0.127" layer="48" style="shortdash"/>
-<wire x1="13.045" y1="20.1" x2="13.045" y2="14.5" width="0.127" layer="48" style="shortdash"/>
-<wire x1="2.045" y1="20.1" x2="2.045" y2="14.5" width="0.127" layer="48" style="shortdash"/>
-<wire x1="13.045" y1="20.1" x2="2.045" y2="20.1" width="0.127" layer="48" style="shortdash"/>
-<wire x1="13.97" y1="12.75" x2="8.92621875" y2="12.75" width="0.127" layer="48"/>
-<wire x1="8.92621875" y1="12.75" x2="7.031109375" y2="12.9312125" width="0.127" layer="48"/>
-<wire x1="7.031109375" y1="12.9312125" x2="6.655403125" y2="13.003728125" width="0.127" layer="48"/>
-<wire x1="6.655403125" y1="13.003728125" x2="4.7005375" y2="13.56936875" width="0.127" layer="48"/>
-<wire x1="4.7005375" y1="13.56936875" x2="3.007890625" y2="14.23105625" width="0.127" layer="48"/>
-<wire x1="3.007890625" y1="14.23105625" x2="2.47" y2="14.5" width="0.127" layer="48"/>
-<smd name="G1" x="13.75" y="0" dx="1.45" dy="2" layer="1" rot="R180"/>
-<smd name="G2" x="13.75" y="8.3" dx="1.45" dy="2" layer="1" rot="R180"/>
-<smd name="G3" x="0" y="0" dx="1.45" dy="2" layer="1" rot="R180"/>
-<smd name="G4" x="0" y="8.3" dx="1.45" dy="2" layer="1" rot="R180"/>
+<smd name="8" x="-5.45" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="7" x="-4.35" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="6" x="-3.25" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="5" x="-2.15" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="4" x="-1.05" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="3" x="0.05" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="2" x="1.15" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<smd name="1" x="2.25" y="11" dx="1.6" dy="0.7" layer="1" rot="R90"/>
+<text x="-7.62" y="14.14" size="1.27" layer="25">&gt;NAME</text>
+<text x="-7.62" y="12.13" size="1.27" layer="27">&gt;VALUE</text>
+<wire x1="0" y1="12.35" x2="0" y2="-5.15" width="0.127" layer="48" style="shortdash"/>
+<smd name="G1" x="-7.75" y="9.7" dx="1.2" dy="1.8" layer="1"/>
+<smd name="G2" x="-7.75" y="0.4" dx="1.2" dy="2.2" layer="1"/>
+<smd name="G3" x="6.85" y="9.95" dx="1.6" dy="1.5" layer="1"/>
+<smd name="G4" x="7.75" y="0.4" dx="1.2" dy="2.2" layer="1"/>
+<hole x="-4.95" y="0" drill="1"/>
+<hole x="3.05" y="0" drill="1"/>
+<wire x1="-7" y1="11" x2="-7" y2="-4" width="0.127" layer="21"/>
+<wire x1="-7" y1="-4" x2="7" y2="-4" width="0.127" layer="21"/>
+<wire x1="7" y1="-4" x2="7" y2="11" width="0.127" layer="21"/>
+<wire x1="7" y1="11" x2="-7" y2="11" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -22453,10 +22500,10 @@ Source: www.abracon.com</description>
 <wire x1="-1.6" y1="-0.95" x2="-1.3" y2="-1.25" width="0.2032" layer="51" curve="-90"/>
 <wire x1="1.3" y1="-1.25" x2="1.6" y2="-0.95" width="0.2032" layer="51" curve="-90"/>
 <circle x="-2" y="-1.2" radius="0.1802" width="0" layer="51"/>
-<smd name="1" x="-1.2" y="-1" dx="0.9" dy="0.65" layer="1"/>
-<smd name="2" x="1.2" y="-1" dx="0.9" dy="0.65" layer="1"/>
-<smd name="3" x="1.2" y="1" dx="0.9" dy="0.65" layer="1" rot="R180"/>
-<smd name="4" x="-1.2" y="1" dx="0.9" dy="0.65" layer="1" rot="R180"/>
+<smd name="1" x="-1.2" y="-0.75" dx="0.9" dy="1.1" layer="1"/>
+<smd name="2" x="1.2" y="-0.75" dx="0.9" dy="1.1" layer="1"/>
+<smd name="3" x="1.2" y="0.75" dx="0.9" dy="1.1" layer="1" rot="R180"/>
+<smd name="4" x="-1.2" y="0.75" dx="0.9" dy="1.1" layer="1" rot="R180"/>
 <text x="-2.25" y="1.5" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2.25" y="-2.75" size="1.27" layer="27">&gt;VALUE</text>
 </package>
@@ -22568,7 +22615,8 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="10.16" y1="10.16" x2="10.16" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-10.16" x2="-10.16" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="-10.16" y1="-10.16" x2="-10.16" y2="10.16" width="0.254" layer="94"/>
-<text x="-10.16" y="11.43" size="2.54" layer="94">&gt;NAME</text>
+<text x="-10.16" y="10.668" size="1.778" layer="95">&gt;NAME</text>
+<text x="-10.16" y="-12.7" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -22773,6 +22821,132 @@ ILSI I547-2P3-32.0000MHz</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="chiptron_cz">
+<description>Library for eagle - created by http://petus.cz</description>
+<packages>
+<package name="1206">
+<description>1206 package</description>
+<wire x1="-0.965" y1="0.787" x2="0.965" y2="0.787" width="0.1016" layer="51"/>
+<wire x1="-0.965" y1="-0.787" x2="0.965" y2="-0.787" width="0.1016" layer="51"/>
+<smd name="1" x="-1.4" y="0" dx="1.6" dy="1.8" layer="1"/>
+<smd name="2" x="1.4" y="0" dx="1.6" dy="1.8" layer="1"/>
+<text x="-1.27" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-2.54" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.7018" y1="-0.8509" x2="-0.9517" y2="0.8491" layer="51"/>
+<rectangle x1="0.9517" y1="-0.8491" x2="1.7018" y2="0.8509" layer="51"/>
+<wire x1="-0.4316" y1="0.787" x2="0.4316" y2="0.787" width="0.1016" layer="21"/>
+<wire x1="-0.4316" y1="-0.7878" x2="0.4316" y2="-0.7878" width="0.1016" layer="21"/>
+</package>
+</packages>
+<symbols>
+<symbol name="SMD-FUSE">
+<wire x1="-2.54" y1="0.635" x2="3.175" y2="0.635" width="0.254" layer="94"/>
+<wire x1="3.175" y1="0.635" x2="3.175" y2="0" width="0.254" layer="94"/>
+<wire x1="3.175" y1="0" x2="3.175" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="3.175" y1="-0.635" x2="-2.54" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-0.635" x2="-2.54" y2="0" width="0.254" layer="94"/>
+<pin name="P$1" x="-5.08" y="0" visible="off" length="short"/>
+<pin name="P$2" x="5.715" y="0" visible="off" length="short" rot="R180"/>
+<text x="-3.175" y="1.27" size="1.27" layer="95">&gt;NAME</text>
+<text x="-3.175" y="-2.54" size="1.27" layer="96">&gt;VALUE</text>
+<wire x1="-2.54" y1="0" x2="-2.54" y2="0.635" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="0" x2="3.175" y2="0" width="0.254" layer="94"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="SMD-FUSE">
+<gates>
+<gate name="G$1" symbol="SMD-FUSE" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="1206">
+<connects>
+<connect gate="G$1" pin="P$1" pad="1"/>
+<connect gate="G$1" pin="P$2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+<library name="diode">
+<description>&lt;b&gt;Diodes&lt;/b&gt;&lt;p&gt;
+Based on the following sources:
+&lt;ul&gt;
+&lt;li&gt;Motorola : www.onsemi.com
+&lt;li&gt;Fairchild : www.fairchildsemi.com
+&lt;li&gt;Philips : www.semiconductors.com
+&lt;li&gt;Vishay : www.vishay.de
+&lt;/ul&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="SOD-123_MINI-SMA">
+<description>&lt;b&gt;Molded plasitc,JEDEC SOD-123/Mini SMA&lt;/b&gt;&lt;p&gt;
+Source: Comchip CGRM4001-G.pdf</description>
+<wire x1="-1.8725" y1="0.835" x2="1.8725" y2="0.835" width="0.127" layer="51"/>
+<wire x1="-1.8725" y1="-0.835" x2="1.8725" y2="-0.835" width="0.127" layer="51"/>
+<wire x1="-0.3175" y1="0" x2="0.3175" y2="-0.4763" width="0.127" layer="21"/>
+<wire x1="0.3175" y1="-0.4763" x2="0.3175" y2="0" width="0.127" layer="21"/>
+<wire x1="0.3175" y1="0" x2="0.3175" y2="0.4763" width="0.127" layer="21"/>
+<wire x1="0.3175" y1="0.4763" x2="-0.3175" y2="0" width="0.127" layer="21"/>
+<wire x1="-0.3175" y1="0" x2="-0.3175" y2="-0.4763" width="0.127" layer="21"/>
+<wire x1="-0.3175" y1="0" x2="-0.3175" y2="0.4763" width="0.127" layer="21"/>
+<wire x1="0.3175" y1="0" x2="0.5613" y2="0" width="0.127" layer="21"/>
+<wire x1="-0.3175" y1="0" x2="-0.5613" y2="0" width="0.127" layer="21"/>
+<smd name="A" x="1.8" y="0" dx="1.5" dy="2.1" layer="1" rot="R180"/>
+<smd name="C" x="-1.8" y="0" dx="1.5" dy="2.1" layer="1" rot="R180"/>
+<text x="-3.048" y="1.143" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.048" y="-2.413" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.95" y1="-0.9" x2="-1.5875" y2="0.9" layer="51"/>
+<rectangle x1="1.5875" y1="-0.9" x2="1.95" y2="0.9" layer="51"/>
+<rectangle x1="-1.0249" y1="-0.9" x2="-0.6625" y2="0.9" layer="51"/>
+</package>
+</packages>
+<symbols>
+<symbol name="D">
+<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<text x="2.54" y="0.4826" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-2.3114" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="A" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
+<pin name="C" x="2.54" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+<text x="-2.54" y="0" size="0.4064" layer="99" align="center">SpiceOrder 1</text>
+<text x="2.54" y="0" size="0.4064" layer="99" align="center">SpiceOrder 2</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="CGRM400*-G" prefix="D">
+<description>&lt;b&gt;Molded plasitc,JEDEC SOD-123/Mini SMA&lt;/b&gt;&lt;p&gt;
+Source: Comchip CGRM4001-G.pdf</description>
+<gates>
+<gate name="G$1" symbol="D" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOD-123_MINI-SMA">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name="1"/>
+<technology name="2"/>
+<technology name="3"/>
+<technology name="4"/>
+<technology name="5"/>
+<technology name="6"/>
+<technology name="7"/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -22821,7 +22995,7 @@ ILSI I547-2P3-32.0000MHz</description>
 <part name="S1" library="switch-omron" deviceset="31-XX" device="" value="INT_PTT_SW"/>
 <part name="GND38" library="supply1" deviceset="GND" device=""/>
 <part name="C33" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="U4" library="microsd" deviceset="MICROSD-PUSH-OUT" device=""/>
+<part name="U4" library="microsd" deviceset="MICROSD-PUSH-OUT" device="" value="ADAM TECH MCSP-Q1-08-A-SG"/>
 <part name="GND40" library="supply1" deviceset="GND" device=""/>
 <part name="+3V319" library="supply1" deviceset="+3V3" device=""/>
 <part name="FRAME1" library="frames" deviceset="A4L-LOC" device=""/>
@@ -22884,14 +23058,14 @@ ILSI I547-2P3-32.0000MHz</description>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="C7" library="resistor" deviceset="C-EU" device="C0805" value="10n"/>
 <part name="GND17" library="supply1" deviceset="GND" device=""/>
-<part name="C12" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C14" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C16" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C18" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C10" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C13" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C15" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
-<part name="C17" library="resistor" deviceset="CPOL-EU" device="SMCC" value="22u/TA"/>
+<part name="C12" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C14" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C16" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C18" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C10" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C13" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C15" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
+<part name="C17" library="resistor" deviceset="C-EU" device="C1206" value="22u/TA"/>
 <part name="+3V311" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
@@ -22914,7 +23088,7 @@ ILSI I547-2P3-32.0000MHz</description>
 <part name="R13" library="resistor" deviceset="R-EU_" device="R0805" value="4k7"/>
 <part name="R14" library="resistor" deviceset="R-EU_" device="R0805" value="4k7"/>
 <part name="C30" library="rcl" deviceset="C-EU" device="C1206" value="100n"/>
-<part name="JP2" library="pinhead" deviceset="PINHD-1X2" device="" value="BATT"/>
+<part name="JP2" library="pinhead" deviceset="PINHD-1X3" device="/90" value="BATT"/>
 <part name="SUPPLY1" library="supply2" deviceset="+UB" device="" value="+BATT"/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="R0805" value="10k"/>
@@ -22980,6 +23154,9 @@ ILSI I547-2P3-32.0000MHz</description>
 <part name="U$1" library="adxl345" deviceset="ADXL345" device=""/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND36" library="supply1" deviceset="GND" device=""/>
+<part name="U$2" library="chiptron_cz" deviceset="SMD-FUSE" device="" value="2A"/>
+<part name="GND43" library="supply1" deviceset="GND" device=""/>
+<part name="D1" library="diode" deviceset="CGRM400*-G" device="" technology="7"/>
 </parts>
 <sheets>
 <sheet>
@@ -23588,10 +23765,16 @@ ILSI I547-2P3-32.0000MHz</description>
 <instance part="C8" gate="G$1" x="66.04" y="101.6" rot="R270"/>
 <instance part="GND16" gate="1" x="58.42" y="96.52"/>
 <instance part="C9" gate="G$1" x="91.44" y="96.52"/>
-<instance part="JP2" gate="G$1" x="45.72" y="137.16" rot="R180"/>
-<instance part="SUPPLY1" gate="G$1" x="53.34" y="142.24"/>
+<instance part="JP2" gate="A" x="45.72" y="137.16" rot="R180"/>
+<instance part="SUPPLY1" gate="G$1" x="66.04" y="144.78"/>
 <instance part="GND15" gate="1" x="53.34" y="127"/>
 <instance part="C19" gate="G$1" x="193.04" y="91.44"/>
+<instance part="U$2" gate="G$1" x="58.42" y="139.7"/>
+<instance part="GND43" gate="1" x="66.04" y="127"/>
+<instance part="D1" gate="G$1" x="66.04" y="134.62" smashed="yes" rot="R90">
+<attribute name="NAME" x="68.58" y="135.1026" size="1.778" layer="95"/>
+<attribute name="VALUE" x="68.58" y="132.3086" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -23620,17 +23803,17 @@ ILSI I547-2P3-32.0000MHz</description>
 <pinref part="GND17" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="C18" gate="G$1" pin="-"/>
+<pinref part="C18" gate="G$1" pin="2"/>
 <wire x1="152.4" y1="114.3" x2="162.56" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="114.3" x2="172.72" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="114.3" x2="182.88" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="182.88" y1="114.3" x2="193.04" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="193.04" y1="114.3" x2="193.04" y2="116.84" width="0.1524" layer="91"/>
-<pinref part="C16" gate="G$1" pin="-"/>
+<pinref part="C16" gate="G$1" pin="2"/>
 <wire x1="182.88" y1="116.84" x2="182.88" y2="114.3" width="0.1524" layer="91"/>
-<pinref part="C14" gate="G$1" pin="-"/>
+<pinref part="C14" gate="G$1" pin="2"/>
 <wire x1="172.72" y1="116.84" x2="172.72" y2="114.3" width="0.1524" layer="91"/>
-<pinref part="C12" gate="G$1" pin="-"/>
+<pinref part="C12" gate="G$1" pin="2"/>
 <wire x1="162.56" y1="116.84" x2="162.56" y2="114.3" width="0.1524" layer="91"/>
 <junction x="162.56" y="114.3"/>
 <junction x="172.72" y="114.3"/>
@@ -23639,16 +23822,16 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="152.4" y1="114.3" x2="152.4" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C10" gate="G$1" pin="-"/>
+<pinref part="C10" gate="G$1" pin="2"/>
 <pinref part="GND21" gate="1" pin="GND"/>
 <wire x1="152.4" y1="81.28" x2="152.4" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="C17" gate="G$1" pin="-"/>
+<pinref part="C17" gate="G$1" pin="2"/>
 <wire x1="152.4" y1="83.82" x2="152.4" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="182.88" y1="86.36" x2="182.88" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="C15" gate="G$1" pin="-"/>
+<pinref part="C15" gate="G$1" pin="2"/>
 <wire x1="182.88" y1="83.82" x2="172.72" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="86.36" x2="172.72" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="C13" gate="G$1" pin="-"/>
+<pinref part="C13" gate="G$1" pin="2"/>
 <wire x1="172.72" y1="83.82" x2="162.56" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="86.36" x2="162.56" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="83.82" x2="152.4" y2="83.82" width="0.1524" layer="91"/>
@@ -23672,10 +23855,15 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="58.42" y1="101.6" x2="58.42" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP2" gate="G$1" pin="1"/>
+<pinref part="JP2" gate="A" pin="1"/>
 <pinref part="GND15" gate="1" pin="GND"/>
 <wire x1="48.26" y1="134.62" x2="53.34" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="53.34" y1="134.62" x2="53.34" y2="129.54" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND43" gate="1" pin="GND"/>
+<pinref part="D1" gate="G$1" pin="A"/>
+<wire x1="66.04" y1="129.54" x2="66.04" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+3V3" class="1">
@@ -23686,17 +23874,17 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="111.76" y1="101.6" x2="111.76" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C18" gate="G$1" pin="+"/>
+<pinref part="C18" gate="G$1" pin="1"/>
 <wire x1="152.4" y1="127" x2="162.56" y2="127" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="127" x2="172.72" y2="127" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="127" x2="182.88" y2="127" width="0.1524" layer="91"/>
 <wire x1="182.88" y1="127" x2="193.04" y2="127" width="0.1524" layer="91"/>
 <wire x1="193.04" y1="127" x2="193.04" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="C16" gate="G$1" pin="+"/>
+<pinref part="C16" gate="G$1" pin="1"/>
 <wire x1="182.88" y1="124.46" x2="182.88" y2="127" width="0.1524" layer="91"/>
-<pinref part="C14" gate="G$1" pin="+"/>
+<pinref part="C14" gate="G$1" pin="1"/>
 <wire x1="172.72" y1="124.46" x2="172.72" y2="127" width="0.1524" layer="91"/>
-<pinref part="C12" gate="G$1" pin="+"/>
+<pinref part="C12" gate="G$1" pin="1"/>
 <wire x1="162.56" y1="124.46" x2="162.56" y2="127" width="0.1524" layer="91"/>
 <junction x="182.88" y="127"/>
 <junction x="172.72" y="127"/>
@@ -23705,17 +23893,17 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="152.4" y1="127" x2="152.4" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C10" gate="G$1" pin="+"/>
+<pinref part="C10" gate="G$1" pin="1"/>
 <pinref part="+3V312" gate="G$1" pin="+3V3"/>
 <wire x1="152.4" y1="93.98" x2="152.4" y2="96.52" width="0.1524" layer="91"/>
-<pinref part="C13" gate="G$1" pin="+"/>
+<pinref part="C13" gate="G$1" pin="1"/>
 <wire x1="152.4" y1="96.52" x2="152.4" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="152.4" y1="96.52" x2="162.56" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="93.98" x2="162.56" y2="96.52" width="0.1524" layer="91"/>
-<pinref part="C15" gate="G$1" pin="+"/>
+<pinref part="C15" gate="G$1" pin="1"/>
 <wire x1="162.56" y1="96.52" x2="172.72" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="93.98" x2="172.72" y2="96.52" width="0.1524" layer="91"/>
-<pinref part="C17" gate="G$1" pin="+"/>
+<pinref part="C17" gate="G$1" pin="1"/>
 <wire x1="172.72" y1="96.52" x2="182.88" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="182.88" y1="96.52" x2="182.88" y2="93.98" width="0.1524" layer="91"/>
 <junction x="152.4" y="96.52"/>
@@ -23758,10 +23946,12 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="68.58" y1="101.6" x2="71.12" y2="101.6" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP2" gate="G$1" pin="2"/>
 <pinref part="SUPPLY1" gate="G$1" pin="+UB"/>
-<wire x1="48.26" y1="137.16" x2="53.34" y2="137.16" width="0.1524" layer="91"/>
-<wire x1="53.34" y1="137.16" x2="53.34" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="139.7" x2="66.04" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="139.7" x2="66.04" y2="142.24" width="0.1524" layer="91"/>
+<pinref part="D1" gate="G$1" pin="C"/>
+<wire x1="66.04" y1="137.16" x2="66.04" y2="139.7" width="0.1524" layer="91"/>
+<junction x="66.04" y="139.7"/>
 </segment>
 </net>
 <net name="ADC2_3" class="0">
@@ -23777,6 +23967,13 @@ ILSI I547-2P3-32.0000MHz</description>
 <wire x1="60.96" y1="86.36" x2="58.42" y2="86.36" width="0.1524" layer="91"/>
 <junction x="60.96" y="86.36"/>
 <label x="58.42" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="N$8" class="0">
+<segment>
+<pinref part="U$2" gate="G$1" pin="P$1"/>
+<pinref part="JP2" gate="A" pin="3"/>
+<wire x1="53.34" y1="139.7" x2="48.26" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
@@ -23848,27 +24045,6 @@ ILSI I547-2P3-32.0000MHz</description>
 <label x="152.4" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
-<net name="SPI2_MOSI" class="0">
-<segment>
-<pinref part="JP3" gate="A" pin="8"/>
-<wire x1="154.94" y1="106.68" x2="154.94" y2="99.06" width="0.1524" layer="91"/>
-<label x="154.94" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
-</segment>
-</net>
-<net name="SPI2_SCK" class="0">
-<segment>
-<pinref part="JP3" gate="A" pin="9"/>
-<wire x1="157.48" y1="106.68" x2="157.48" y2="99.06" width="0.1524" layer="91"/>
-<label x="157.48" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
-</segment>
-</net>
-<net name="SPI2_CS" class="0">
-<segment>
-<pinref part="JP3" gate="A" pin="10"/>
-<wire x1="160.02" y1="106.68" x2="160.02" y2="99.06" width="0.1524" layer="91"/>
-<label x="160.02" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
-</segment>
-</net>
 <net name="+5V" class="1">
 <segment>
 <pinref part="R5" gate="G$1" pin="2"/>
@@ -23904,6 +24080,27 @@ ILSI I547-2P3-32.0000MHz</description>
 <pinref part="R6" gate="G$1" pin="2"/>
 <wire x1="109.22" y1="91.44" x2="109.22" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="T1" gate="G$1" pin="D"/>
+</segment>
+</net>
+<net name="SPI1_MOSI" class="0">
+<segment>
+<pinref part="JP3" gate="A" pin="8"/>
+<wire x1="154.94" y1="106.68" x2="154.94" y2="99.06" width="0.1524" layer="91"/>
+<label x="154.94" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
+</segment>
+</net>
+<net name="SPI1_SCK" class="0">
+<segment>
+<pinref part="JP3" gate="A" pin="9"/>
+<wire x1="157.48" y1="106.68" x2="157.48" y2="99.06" width="0.1524" layer="91"/>
+<label x="157.48" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
+</segment>
+</net>
+<net name="SPI1_CS" class="0">
+<segment>
+<pinref part="JP3" gate="A" pin="10"/>
+<wire x1="160.02" y1="106.68" x2="160.02" y2="99.06" width="0.1524" layer="91"/>
+<label x="160.02" y="99.06" size="1.27" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -24037,34 +24234,6 @@ ILSI I547-2P3-32.0000MHz</description>
 <segment>
 <wire x1="203.2" y1="96.52" x2="203.2" y2="91.44" width="0.1524" layer="91"/>
 <label x="203.2" y="91.44" size="1.27" layer="95" rot="R270" xref="yes"/>
-</segment>
-</net>
-<net name="SPI1_SCK" class="0">
-<segment>
-<wire x1="55.88" y1="78.74" x2="53.34" y2="78.74" width="0.1524" layer="91"/>
-<label x="53.34" y="78.74" size="1.27" layer="95" rot="R180" xref="yes"/>
-<pinref part="U5" gate="G$1" pin="SCLK"/>
-</segment>
-</net>
-<net name="SPI1_MOSI" class="0">
-<segment>
-<wire x1="55.88" y1="73.66" x2="53.34" y2="73.66" width="0.1524" layer="91"/>
-<label x="53.34" y="73.66" size="1.27" layer="95" rot="R180" xref="yes"/>
-<pinref part="U5" gate="G$1" pin="SDI"/>
-</segment>
-</net>
-<net name="SPI1_MISO" class="0">
-<segment>
-<wire x1="81.28" y1="78.74" x2="83.82" y2="78.74" width="0.1524" layer="91"/>
-<label x="83.82" y="78.74" size="1.27" layer="95" xref="yes"/>
-<pinref part="U5" gate="G$1" pin="SDO"/>
-</segment>
-</net>
-<net name="SPI1_CS" class="0">
-<segment>
-<wire x1="55.88" y1="76.2" x2="53.34" y2="76.2" width="0.1524" layer="91"/>
-<label x="53.34" y="76.2" size="1.27" layer="95" rot="R180" xref="yes"/>
-<pinref part="U5" gate="G$1" pin="NSEL"/>
 </segment>
 </net>
 <net name="TRX_NIRQ" class="0">
@@ -24234,6 +24403,34 @@ ILSI I547-2P3-32.0000MHz</description>
 <pinref part="CC2" gate="G$1" pin="1"/>
 <pinref part="U2" gate="G$1" pin="RFC"/>
 <wire x1="203.2" y1="101.6" x2="208.28" y2="101.6" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="SPI2_SCK" class="0">
+<segment>
+<wire x1="55.88" y1="78.74" x2="53.34" y2="78.74" width="0.1524" layer="91"/>
+<label x="53.34" y="78.74" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="U5" gate="G$1" pin="SCLK"/>
+</segment>
+</net>
+<net name="SPI2_CS" class="0">
+<segment>
+<wire x1="55.88" y1="76.2" x2="53.34" y2="76.2" width="0.1524" layer="91"/>
+<label x="53.34" y="76.2" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="U5" gate="G$1" pin="NSEL"/>
+</segment>
+</net>
+<net name="SPI2_MOSI" class="0">
+<segment>
+<wire x1="55.88" y1="73.66" x2="53.34" y2="73.66" width="0.1524" layer="91"/>
+<label x="53.34" y="73.66" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="U5" gate="G$1" pin="SDI"/>
+</segment>
+</net>
+<net name="SPI2_MISO" class="0">
+<segment>
+<wire x1="81.28" y1="78.74" x2="83.82" y2="78.74" width="0.1524" layer="91"/>
+<label x="83.82" y="78.74" size="1.27" layer="95" xref="yes"/>
+<pinref part="U5" gate="G$1" pin="SDO"/>
 </segment>
 </net>
 </nets>
