@@ -8,34 +8,34 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
-<layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
-<layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
-<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
-<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
-<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
-<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
-<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
-<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
-<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
-<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
-<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
-<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
-<layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
-<layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="yes" active="no"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="yes" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="yes" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="yes" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="yes" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="yes" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="yes" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="yes" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="yes" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="yes" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="yes" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="yes" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="yes" active="no"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="yes" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -44,8 +44,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -53,19 +53,19 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -22959,7 +22959,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <class number="1" name="pwr" width="0.5" drill="0.2">
 <clearance class="1" value="0.127"/>
 </class>
-<class number="2" name="rf" width="1" drill="0.2">
+<class number="2" name="rf" width="0.5" drill="0.2">
 <clearance class="2" value="0.127"/>
 </class>
 </classes>
@@ -23043,7 +23043,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="L5" library="inductor-neosid" deviceset="SM-B" device="5"/>
 <part name="C29" library="rcl" deviceset="C-EU" device="C1206" value="100n"/>
-<part name="C32" library="rcl" deviceset="C-EU" device="C1206" value="10n"/>
+<part name="C32" library="rcl" deviceset="C-EU" device="C0805" value="10n"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="C31" library="rcl" deviceset="C-EU" device="C1206" value="1u"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
@@ -23052,7 +23052,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <part name="+3V317" library="supply1" deviceset="+3V3" device=""/>
 <part name="R17" library="resistor" deviceset="R-EU_" device="R0805" value="470R"/>
 <part name="R18" library="resistor" deviceset="R-EU_" device="R0805" value="470R"/>
-<part name="C26" library="rcl" deviceset="C-EU" device="C1206" value="470n"/>
+<part name="C26" library="rcl" deviceset="C-EU" device="C0805" value="470n"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="R0805" value="9k1"/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0805" value="1k"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
@@ -23161,6 +23161,8 @@ Source: Comchip CGRM4001-G.pdf</description>
 <part name="R22" library="rcl" deviceset="R-EU_" device="R0805" value="4k7"/>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V7" library="supply1" deviceset="+3V3" device=""/>
+<part name="C24" library="resistor" deviceset="C-EU" device="C0805" value="10n"/>
+<part name="C25" library="resistor" deviceset="C-EU" device="C0805" value="10n"/>
 </parts>
 <sheets>
 <sheet>
@@ -23446,7 +23448,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="33.02" y="154.94"/>
 </segment>
 </net>
-<net name="N$1" class="1">
+<net name="N$1" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="P$73"/>
 <pinref part="C6" gate="G$1" pin="2"/>
@@ -23454,7 +23456,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="177.8" y1="124.46" x2="177.8" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$6" class="1">
+<net name="N$6" class="0">
 <segment>
 <pinref part="C5" gate="G$1" pin="1"/>
 <pinref part="U1" gate="G$1" pin="P$48"/>
@@ -23732,7 +23734,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <sheet>
 <plain>
 <text x="160.02" y="129.54" size="2.54" layer="97">STM32</text>
-<text x="160.02" y="99.06" size="2.54" layer="97">SD, RFM, GPS, TFT, OPA</text>
+<text x="160.02" y="99.06" size="2.54" layer="97">SD, RFM, GPS, TFT, OPA, ACCEL</text>
 <text x="160.02" y="71.12" size="2.54" layer="97">BACKLIGHT</text>
 </plain>
 <instances>
@@ -23779,6 +23781,8 @@ Source: Comchip CGRM4001-G.pdf</description>
 <attribute name="NAME" x="68.58" y="135.1026" size="1.778" layer="95"/>
 <attribute name="VALUE" x="68.58" y="132.3086" size="1.778" layer="96"/>
 </instance>
+<instance part="C24" gate="G$1" x="203.2" y="91.44"/>
+<instance part="C25" gate="G$1" x="213.36" y="91.44"/>
 </instances>
 <busses>
 </busses>
@@ -23846,6 +23850,14 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="182.88" y1="83.82" x2="193.04" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="193.04" y1="83.82" x2="193.04" y2="86.36" width="0.1524" layer="91"/>
 <junction x="182.88" y="83.82"/>
+<pinref part="C24" gate="G$1" pin="2"/>
+<wire x1="203.2" y1="86.36" x2="203.2" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="83.82" x2="193.04" y2="83.82" width="0.1524" layer="91"/>
+<junction x="193.04" y="83.82"/>
+<pinref part="C25" gate="G$1" pin="2"/>
+<wire x1="203.2" y1="83.82" x2="213.36" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="213.36" y1="83.82" x2="213.36" y2="86.36" width="0.1524" layer="91"/>
+<junction x="203.2" y="83.82"/>
 </segment>
 <segment>
 <pinref part="C11" gate="G$1" pin="2"/>
@@ -23917,6 +23929,14 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="193.04" y1="93.98" x2="193.04" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="193.04" y1="96.52" x2="182.88" y2="96.52" width="0.1524" layer="91"/>
 <junction x="182.88" y="96.52"/>
+<pinref part="C24" gate="G$1" pin="1"/>
+<wire x1="193.04" y1="96.52" x2="203.2" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="96.52" x2="203.2" y2="93.98" width="0.1524" layer="91"/>
+<junction x="193.04" y="96.52"/>
+<pinref part="C25" gate="G$1" pin="1"/>
+<wire x1="213.36" y1="93.98" x2="213.36" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="213.36" y1="96.52" x2="203.2" y2="96.52" width="0.1524" layer="91"/>
+<junction x="203.2" y="96.52"/>
 </segment>
 </net>
 <net name="+5V" class="1">
@@ -23974,7 +23994,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <label x="58.42" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="N$8" class="0">
+<net name="N$8" class="1">
 <segment>
 <pinref part="U$2" gate="G$1" pin="P$1"/>
 <pinref part="JP2" gate="A" pin="1"/>
@@ -24231,14 +24251,18 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="TRX_TX_SW" class="0">
 <segment>
-<wire x1="203.2" y1="106.68" x2="203.2" y2="111.76" width="0.1524" layer="91"/>
-<label x="203.2" y="111.76" size="1.27" layer="95" rot="R90" xref="yes"/>
+<wire x1="205.74" y1="106.68" x2="205.74" y2="111.76" width="0.1524" layer="91"/>
+<label x="205.74" y="111.76" size="1.27" layer="95" rot="R90" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="VC1"/>
+<wire x1="205.74" y1="106.68" x2="203.2" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRX_RX_SW" class="0">
 <segment>
-<wire x1="203.2" y1="96.52" x2="203.2" y2="91.44" width="0.1524" layer="91"/>
-<label x="203.2" y="91.44" size="1.27" layer="95" rot="R270" xref="yes"/>
+<wire x1="205.74" y1="96.52" x2="205.74" y2="91.44" width="0.1524" layer="91"/>
+<label x="205.74" y="91.44" size="1.27" layer="95" rot="R270" xref="yes"/>
+<pinref part="U2" gate="G$1" pin="VC2"/>
+<wire x1="205.74" y1="96.52" x2="203.2" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRX_NIRQ" class="0">
@@ -24278,7 +24302,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="233.68" y="101.6"/>
 </segment>
 </net>
-<net name="N$22" class="0">
+<net name="N$22" class="2">
 <segment>
 <pinref part="CM2" gate="G$1" pin="1"/>
 <wire x1="218.44" y1="96.52" x2="218.44" y2="101.6" width="0.1524" layer="91"/>
@@ -24323,7 +24347,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="144.78" y="68.58"/>
 </segment>
 </net>
-<net name="TX" class="0">
+<net name="TX" class="2">
 <segment>
 <pinref part="U5" gate="G$1" pin="TX"/>
 <wire x1="81.28" y1="68.58" x2="83.82" y2="68.58" width="0.1524" layer="91"/>
@@ -24339,14 +24363,14 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="104.14" y="116.84"/>
 </segment>
 </net>
-<net name="N$23" class="0">
+<net name="N$23" class="2">
 <segment>
 <pinref part="C0" gate="G$1" pin="2"/>
 <pinref part="L0" gate="G$1" pin="1"/>
 <wire x1="116.84" y1="116.84" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$24" class="0">
+<net name="N$24" class="2">
 <segment>
 <pinref part="L0" gate="G$1" pin="2"/>
 <pinref part="LM1" gate="G$1" pin="1"/>
@@ -24357,7 +24381,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="132.08" y="116.84"/>
 </segment>
 </net>
-<net name="N$25" class="0">
+<net name="N$25" class="2">
 <segment>
 <pinref part="LM1" gate="G$1" pin="2"/>
 <pinref part="LM2" gate="G$1" pin="1"/>
@@ -24368,7 +24392,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="147.32" y="116.84"/>
 </segment>
 </net>
-<net name="N$26" class="0">
+<net name="N$26" class="2">
 <segment>
 <pinref part="LM2" gate="G$1" pin="2"/>
 <pinref part="CC3" gate="G$1" pin="1"/>
@@ -24387,7 +24411,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="160.02" y="83.82"/>
 </segment>
 </net>
-<net name="N$30" class="0">
+<net name="N$30" class="2">
 <segment>
 <pinref part="CC3" gate="G$1" pin="2"/>
 <wire x1="170.18" y1="116.84" x2="172.72" y2="116.84" width="0.1524" layer="91"/>
@@ -24403,7 +24427,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="172.72" y1="96.52" x2="172.72" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$32" class="0">
+<net name="N$32" class="2">
 <segment>
 <pinref part="CC2" gate="G$1" pin="1"/>
 <pinref part="U2" gate="G$1" pin="RFC"/>
@@ -24825,7 +24849,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="132.08" y="71.12"/>
 </segment>
 </net>
-<net name="SPK_N" class="0">
+<net name="SPK_N" class="1">
 <segment>
 <wire x1="167.64" y1="78.74" x2="167.64" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="U3" gate="G$1" pin="OUT1"/>
@@ -24846,7 +24870,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <label x="210.82" y="58.42" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
-<net name="SPK_P" class="0">
+<net name="SPK_P" class="1">
 <segment>
 <pinref part="U3" gate="G$1" pin="OUT2"/>
 <wire x1="165.1" y1="60.96" x2="167.64" y2="60.96" width="0.1524" layer="91"/>
