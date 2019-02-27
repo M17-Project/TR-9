@@ -25110,6 +25110,10 @@ Source: Comchip CGRM4001-G.pdf</description>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
 <wire x1="96.52" y1="111.76" x2="91.44" y2="111.76" width="0.1524" layer="91"/>
 <wire x1="91.44" y1="111.76" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="VS"/>
+<wire x1="96.52" y1="106.68" x2="91.44" y2="106.68" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="106.68" x2="91.44" y2="111.76" width="0.1524" layer="91"/>
+<junction x="91.44" y="111.76"/>
 </segment>
 <segment>
 <pinref part="+3V5" gate="G$1" pin="+3V3"/>
@@ -25129,10 +25133,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="GND" class="1">
 <segment>
-<pinref part="U$1" gate="G$1" pin="VS"/>
 <pinref part="GND33" gate="1" pin="GND"/>
-<wire x1="96.52" y1="106.68" x2="91.44" y2="106.68" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="106.68" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
 <wire x1="91.44" y1="88.9" x2="91.44" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="GND$3"/>
 <wire x1="96.52" y1="91.44" x2="91.44" y2="91.44" width="0.1524" layer="91"/>
@@ -25142,7 +25143,6 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="91.44" y1="96.52" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="GND$1"/>
 <wire x1="91.44" y1="101.6" x2="96.52" y2="101.6" width="0.1524" layer="91"/>
-<junction x="91.44" y="101.6"/>
 <junction x="91.44" y="96.52"/>
 <junction x="91.44" y="91.44"/>
 </segment>
