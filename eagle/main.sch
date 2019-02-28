@@ -8123,14 +8123,14 @@ Source: http://www.st.com/stonline/products/literature/ds/7194/ld1117axx.pdf</de
 <devices>
 <device name="" package="MICROSD-PUSH-OUT">
 <connects>
-<connect gate="G$1" pin="CD_DAT3_CS" pad="7"/>
-<connect gate="G$1" pin="CLK" pad="4"/>
-<connect gate="G$1" pin="CMD_DIN" pad="6"/>
-<connect gate="G$1" pin="DAT0_DO" pad="2"/>
-<connect gate="G$1" pin="DAT1" pad="1"/>
-<connect gate="G$1" pin="DAT2" pad="8"/>
-<connect gate="G$1" pin="VDD" pad="5"/>
-<connect gate="G$1" pin="VSS" pad="3 G1 G2 G3 G4" route="any"/>
+<connect gate="G$1" pin="CD_DAT3_CS" pad="2"/>
+<connect gate="G$1" pin="CLK" pad="5"/>
+<connect gate="G$1" pin="CMD_DIN" pad="3"/>
+<connect gate="G$1" pin="DAT0_DO" pad="7"/>
+<connect gate="G$1" pin="DAT1" pad="8"/>
+<connect gate="G$1" pin="DAT2" pad="1"/>
+<connect gate="G$1" pin="VDD" pad="4"/>
+<connect gate="G$1" pin="VSS" pad="6 G1 G2 G3 G4"/>
 </connects>
 <technologies>
 <technology name=""/>
