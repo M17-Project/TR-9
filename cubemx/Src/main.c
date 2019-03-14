@@ -96,14 +96,10 @@ DMA_HandleTypeDef hdma_adc2;
 CRC_HandleTypeDef hcrc;
 
 CRYP_HandleTypeDef hcryp;
-__ALIGN_BEGIN static const uint8_t pKeyCRYP[32] __ALIGN_END = {
-                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                            0x00,0x00};
-__ALIGN_BEGIN static const uint8_t pInitVectCRYP[16] __ALIGN_END = {
-                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                            0x00,0x00,0x00,0x00,0x00,0x00};
+__ALIGN_BEGIN static const uint32_t pKeyCRYP[4] __ALIGN_END = {
+                            0x00000000,0x00000000,0x00000000,0x00000000};
+__ALIGN_BEGIN static const uint32_t pInitVectCRYP[2] __ALIGN_END = {
+                            0x00000000,0x00000000};
 
 DAC_HandleTypeDef hdac;
 DMA_HandleTypeDef hdma_dac1;
@@ -120,7 +116,9 @@ SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim8;
 
 UART_HandleTypeDef huart1;
@@ -245,8 +243,8 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=20.0;				//speaker volume (linear) value >=0.0
-volatile float tones_volume=0.4;			//alert tones volume
+volatile float spk_volume=1.0;				//speaker volume (linear) value >=0.0
+volatile float tones_volume=1.0;			//alert tones volume
 
 //ALERT TONES PLAYBACK
 volatile int16_t tone[TONE_SIZE];			//buffer for loading data from .RAW file
@@ -295,6 +293,9 @@ static void MX_ADC2_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_TIM8_Init(void);
+static void MX_TIM7_Init(void);
+static void MX_TIM5_Init(void);
+static void MX_GFXSIMULATOR_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -333,8 +334,6 @@ uint8_t authenticateCodeplug(uint8_t* auth_file_path)
 	}
 
 	//TODO: put AES here
-
-	retrieveEIN(EIN);
 
 	//EIN match check
 	for(uint8_t i=0; i<12; i++)
@@ -454,15 +453,15 @@ void processBuff(uint8_t num)
 	}
 }
 
-//------------------------------SPI------------------------------
+//------------------------------SPI - Si4463------------------------------
 /*void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }*/
 
 /*void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-	//HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	//HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }*/
 
 void SPI_WaitForCTS(void)
@@ -472,20 +471,20 @@ void SPI_WaitForCTS(void)
 
 	do
 	{
-		HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-		HAL_SPI_Transmit(&hspi1, dta, 1, 100);
-		HAL_SPI_Receive(&hspi1, cts, 1, 100);
+		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+		HAL_SPI_Transmit(&hspi2, dta, 1, 100);
+		HAL_SPI_Receive(&hspi2, cts, 1, 100);
 		//if(cts[0]!=0xFF)
-			HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+			HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 	}while(cts[0]!=0xFF);
 }
 
 void SPI_Send(uint8_t *data, uint8_t len)
 {
 	SPI_WaitForCTS();
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-	HAL_SPI_Transmit(&hspi1, data, len, 100);
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_SPI_Transmit(&hspi2, data, len, 100);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }
 
 void SPI_GetResponse(uint8_t len, uint8_t *data)
@@ -495,36 +494,36 @@ void SPI_GetResponse(uint8_t len, uint8_t *data)
 
 	while(cts[0]!=0xFF)
 	{
-		HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-		HAL_SPI_Transmit(&hspi1, dta, 1, 100);
-		HAL_SPI_Receive(&hspi1, cts, 1, 1);
+		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+		HAL_SPI_Transmit(&hspi2, dta, 1, 100);
+		HAL_SPI_Receive(&hspi2, cts, 1, 1);
 
 		if(cts[0]!=0xFF)
-			HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+			HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 	}
 
-	HAL_SPI_Receive(&hspi1, data, len, 100);
+	HAL_SPI_Receive(&hspi2, data, len, 100);
 
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }
 
 void SPI_ReadRxDataBuff(uint8_t len, uint8_t *data)
 {
 	uint8_t cmd[1]={0x77};
 
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-	HAL_SPI_Transmit(&hspi1, cmd, 1, 100);
-	HAL_SPI_Receive(&hspi1, data, len, 100);
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_SPI_Transmit(&hspi2, cmd, 1, 100);
+	HAL_SPI_Receive(&hspi2, data, len, 100);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }
 
 //------------------------------Si446x FUNCS------------------------------
 void Si_Reset(void)
 {
 	HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 1);
-	HAL_Delay(50);
+	HAL_Delay(1);
 	HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 0);
-	HAL_Delay(50);
+	HAL_Delay(5);
 }
 
 static void Si_SetProp(uint8_t* vals, uint8_t group, uint8_t number, uint8_t len)
@@ -563,10 +562,10 @@ static void Si_Interrupts(void* buff)
 {
 	uint8_t v = 0x20;
 
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-	HAL_SPI_Transmit(&hspi1, &v, 1, 100);
-	HAL_SPI_Receive(&hspi1, buff, 8, 100);
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_SPI_Transmit(&hspi2, &v, 1, 100);
+	HAL_SPI_Receive(&hspi2, buff, 8, 100);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }*/
 
 static void Si_Interrupts2(void* buff, uint8_t clearPH, uint8_t clearMODEM, uint8_t clearCHIP)
@@ -631,10 +630,10 @@ void Si_WriteTxDataBuff(uint8_t *data, uint8_t len)
 {
 	uint8_t cmd = 0x66;
 
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-	HAL_SPI_Transmit(&hspi1, &cmd, 1, 100);
-	HAL_SPI_Transmit(&hspi1, data, len, 100);
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_SPI_Transmit(&hspi2, &cmd, 1, 100);
+	HAL_SPI_Transmit(&hspi2, data, len, 100);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 }
 
 void Si_StartTx(uint8_t ch, uint8_t end_state, uint8_t tx_len)
@@ -685,12 +684,21 @@ uint8_t Si_GetRSSI(void)
 	uint8_t v=0x50;
 	uint8_t r[4];
 
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
-	HAL_SPI_Transmit(&hspi1, &v, 1, 100);
-	HAL_SPI_Receive(&hspi1, r, 4, 100);
-	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_SPI_Transmit(&hspi2, &v, 1, 100);
+	HAL_SPI_Receive(&hspi2, r, 4, 100);
+	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
 
 	return r[0];
+}
+
+void Si_GetInfo(uint8_t *resp)
+{
+	uint8_t cmd=0x01;
+
+	SPI_Send(&cmd, 1);
+	SPI_WaitForCTS();
+	SPI_GetResponse(8, resp);
 }
 
 //------------------------------RF SWITCH FUNCS------------------------------
@@ -771,13 +779,13 @@ void TFT_WriteCommand(uint8_t cmd)
 	HAL_GPIO_WritePin(TFT_A0_GPIO_Port, TFT_A0_Pin, 0);
 
 	//CS low
-	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
 
 	//send byte
-	HAL_SPI_Transmit(&hspi2, &cmd, 1, 100);
+	HAL_SPI_Transmit(&hspi1, &cmd, 1, 100);
 
 	//CS high
-	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
 }
 
 void TFT_WriteData(uint8_t cmd)
@@ -786,13 +794,13 @@ void TFT_WriteData(uint8_t cmd)
 	HAL_GPIO_WritePin(TFT_A0_GPIO_Port, TFT_A0_Pin, 1);
 
 	//CS low
-	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
 
 	//send byte
-	HAL_SPI_Transmit(&hspi2, &cmd, 1, 100);
+	HAL_SPI_Transmit(&hspi1, &cmd, 1, 100);
 
 	//CS high
-	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
 }
 
 void TFT_CommandList(const uint8_t* list)
@@ -909,62 +917,62 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 	if((x>=128) || (y>=160))
 		return;
 
-	GPIOD->BSRR=(uint32_t)(1<<(8+16)); //TFT_CS LOW
+	GPIOC->BSRR=(uint32_t)(1<<(4+16)); //TFT_CS LOW
 
 	if(addr_col != x)
 	{
 		GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=0x2A;
-		while(SPI2->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=0x2A;
+		while(SPI1->SR & SPI_SR_BSY);
 
 		addr_col = x;
 		GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=0x00;
-		while(SPI2->SR & SPI_SR_BSY);
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=x;
-		while(SPI2->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=0x00;
+		while(SPI1->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=x;
+		while(SPI1->SR & SPI_SR_BSY);
 	}
 
 	if(addr_row != y)
 	{
 		GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=0x2B;
-		while(SPI2->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=0x2B;
+		while(SPI1->SR & SPI_SR_BSY);
 
 		addr_row = y;
 		GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=0x00;
-		while(SPI2->SR & SPI_SR_BSY);
-		//while(!(SPI2->SR & SPI_SR_TXE));
-		*(uint8_t *)&SPI2->DR=y;
-		while(SPI2->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=0x00;
+		while(SPI1->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		*(uint8_t *)&SPI1->DR=y;
+		while(SPI1->SR & SPI_SR_BSY);
 	}
 
 	GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
 
-	//while(!(SPI2->SR & SPI_SR_TXE));
-	*(uint8_t *)&SPI2->DR=0x2C;
-	while(SPI2->SR & SPI_SR_BSY);
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	*(uint8_t *)&SPI1->DR=0x2C;
+	while(SPI1->SR & SPI_SR_BSY);
 
 	GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
-	//while(!(SPI2->SR & SPI_SR_TXE));
-	*(uint8_t *)&SPI2->DR=color>>8;
-	while(SPI2->SR & SPI_SR_BSY);
-	//while(!(SPI2->SR & SPI_SR_TXE));
-	*(uint8_t *)&SPI2->DR=color;
-	while(SPI2->SR & SPI_SR_BSY);
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	*(uint8_t *)&SPI1->DR=color>>8;
+	while(SPI1->SR & SPI_SR_BSY);
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	*(uint8_t *)&SPI1->DR=color;
+	while(SPI1->SR & SPI_SR_BSY);
 
-	GPIOD->BSRR=(uint32_t)(1<<8);	//TFT_CS HIGH
+	GPIOC->BSRR=(uint32_t)(1<<4);	//TFT_CS HIGH
 }
 
 void TFT_Clear(uint16_t color)
@@ -1092,6 +1100,30 @@ void displayEIN(uint8_t* src)
 		sprintf(text_line, "%02X%02X%02X%02X", EIN[i*4], EIN[i*4+1], EIN[i*4+2], EIN[i*4+3]);
 		TFT_PutStrCentered(30+22+i*16, text_line, 1, 0);
 	}
+}
+
+void displayTRXInfo(void)
+{
+	uint8_t info[8];
+
+	Si_GetInfo(info);
+
+	TFT_Clear(CL_WHITE);
+
+	TFT_PutStrCentered(10, "TRX", 1, 0);
+
+	sprintf(text_line, "PART  %02X%02X", info[1], info[2]);
+	TFT_PutStrCentered(10+22+16, text_line, 1, 0);
+	sprintf(text_line, "REV  %02X", info[0]);
+	TFT_PutStrCentered(10+22+16*2, text_line, 1, 0);
+	sprintf(text_line, "PBUILD  %02X", info[3]);
+	TFT_PutStrCentered(10+22+16*3, text_line, 1, 0);
+	sprintf(text_line, "ID  %02X%02X", info[5], info[6]);
+	TFT_PutStrCentered(10+22+16*4, text_line, 1, 0);
+	sprintf(text_line, "CUST  %02X", info[6]);
+	TFT_PutStrCentered(10+22+16*5, text_line, 1, 0);
+	sprintf(text_line, "ROMID  %02X", info[7]);
+	TFT_PutStrCentered(10+22+16*6, text_line, 1, 0);
 }
 
 void TFT_DisplayActiveChannelData(struct CODEPLUG_DATA *cd, struct ACTIVE_CHANNEL_DATA *acd)
@@ -1362,8 +1394,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 			//PTT still pressed? load data to the other buffer
 			if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 				HAL_ADC_Start_DMA(&hadc1, buffer_2, FRAMESIZE);
-			else
-				adc_busy=0;
 
 			//remember which buffer to use next
 			buff_num=1;
@@ -1419,12 +1449,45 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 	//HAL_GPIO_TogglePin(TST_GPIO_Port, TST_Pin);
 }*/
 
-/*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	//HAL_TIM_Base_Start_IT(&htim6);
+	//100ms after PTT release
 	if(htim->Instance==TIM7)
-		HAL_GPIO_TogglePin(TST_GPIO_Port, TST_Pin);
-}*/
+	{
+		HAL_TIM_Base_Stop_IT(&htim7);
+		TIM7->CNT=0;
+
+		if(r_tx)
+		{
+			RF_SetRX();
+			Si_StartRx(0, PLOAD_LEN);
+		}
+
+		if(self.frame)
+			self.frame=0;
+	}
+
+	//45ms after last nIRQ from the TRX - "anti-freeze"
+	//else if(htim->Instance==TIM5 && rcv.frame>1 && r_initd)
+	{
+		//HAL_TIM_Base_Stop_IT(&htim5);
+		//HAL_GPIO_TogglePin(TP1_GPIO_Port, TP1_Pin);
+		/*r_initd=0;
+		//Si4463 reset
+		//Si_Reset();
+		HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 1);
+		for(uint16_t i=0; i<100; i++);
+		HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 0);
+		Si_StartupConfig();
+		Si_Interrupts(NULL);
+		Si_SetTxPower(1);
+		Si_Sleep();
+		Si_FreqSet(active_channel.channel.freq);
+		RF_SetRX();
+		Si_StartRx(0, PLOAD_LEN);
+		r_initd=1;*/
+	}
+}
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -1434,29 +1497,39 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		if(kbd_rcv_val=='0')
 		{
 			SetActiveChannel(&codeplug, 0, 0, &active_channel);
-			Si_FreqSet(active_channel.channel.freq+3200);
+			Si_FreqSet(active_channel.channel.freq);
 
-			//TFT_Clear(CL_WHITE);
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
 		}
 		else if(kbd_rcv_val=='1')
 		{
 			SetActiveChannel(&codeplug, 0, 1, &active_channel);
-			Si_FreqSet(active_channel.channel.freq+3200);
+			Si_FreqSet(active_channel.channel.freq);
 
-			//TFT_Clear(CL_WHITE);
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
 		}
 		else if(kbd_rcv_val=='2')
 		{
 			SetActiveChannel(&codeplug, 0, 2, &active_channel);
-			Si_FreqSet(active_channel.channel.freq+3200);
+			Si_FreqSet(active_channel.channel.freq);
 
-			//TFT_Clear(CL_WHITE);
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
+		}
+		else if(kbd_rcv_val=='a')	//TODO: automate this
+		{
+			r_initd=0;
+			Si_Reset();
+			Si_StartupConfig();
+			Si_Interrupts(NULL);
+			Si_SetTxPower(1);
+			Si_Sleep();
+			Si_FreqSet(active_channel.channel.freq);
+			RF_SetRX();
+			Si_StartRx(0, PLOAD_LEN);
+			r_initd=1;
 		}
 
 		HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
@@ -1465,19 +1538,26 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+	//Si4463 TRX module interrupt
 	if(GPIO_Pin==GPIO_PIN_1 && r_initd)
 	{
+		//debug
+		//HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 1);
+
+		//anti-freeze
+		//HAL_TIM_Base_Stop_IT(&htim5);
+		//TIM5->CNT=0;
+		//HAL_TIM_Base_Start_IT(&htim5);
+
 		//Si nIRQ interrupt request
 		Si_Interrupts(ints);	//check pending interrupt flags
 
 		//PACKET_RX_PEND flag set?
 		if(ints[2]&(1<<4))
 		{
-			//HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 1);
-
 			//retrieve RX buff contents
 			SPI_ReadRxDataBuff(PLOAD_LEN, rcv_buff);
-			//Si_ClearFIFO(3);
+			Si_ClearFIFO(3);
 
 			//extract data
 			extractFields(rcv_buff);
@@ -1524,44 +1604,41 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 					dac_busy=1;
 					HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, pb1, FRAMESIZE, DAC_ALIGN_12B_R);
 				}
-
-				//HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, 0);
 			}
 		}
 
+		//debug
+		//HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 0);
+
 		//clear pending flags
 		Si_Interrupts(NULL);
-
 	}
+
+	//PTT push
 	else if(GPIO_Pin==GPIO_PIN_0 && !HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 	{
-		//PTT push
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+
 		if(!dac_busy)
 		{
 			playTone("tones/ready.raw");
-			//HAL_Delay(70);
 			buff_num=0;
 			adc_busy=1;
 			HAL_ADC_Start_DMA(&hadc1, buffer_1, FRAMESIZE);
 			RF_SetTX();
 		}
 	}
+
+	//PTT release
 	else if(GPIO_Pin==GPIO_PIN_0 && HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin))
 	{
-		//PTT release
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
-		while(adc_busy);
 
-		if(r_tx)
-		{
-			//HAL_Delay(100);
-			RF_SetRX();
-			Si_StartRx(0, PLOAD_LEN);
-		}
+		//start 100ms timer
+		TIM7->CNT=0;
+		HAL_TIM_Base_Start_IT(&htim7);
 
-		if(self.frame)
-			self.frame=0;
+		//while(adc_busy);
 	}
 }
 
@@ -1569,9 +1646,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void SPK_Enabled(uint8_t ena)
 {
 	if(ena)
-		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 1);
-	else
 		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 0);
+	else
+		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 1);
 }
 
 //------------------------------DEBUG------------------------------
@@ -1629,6 +1706,9 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM6_Init();
   MX_TIM8_Init();
+  MX_TIM7_Init();
+  MX_TIM5_Init();
+  MX_GFXSIMULATOR_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 
@@ -1642,7 +1722,7 @@ int main(void)
   Si_Reset();
   Si_StartupConfig();
   Si_Interrupts(NULL);
-  Si_SetTxPower(10);
+  Si_SetTxPower(22);
   Si_Sleep();
 
   cod = codec2_create(CODEC2_MODE_3200);
@@ -1660,8 +1740,16 @@ int main(void)
   SetActiveChannel(&codeplug, 0, 0, &active_channel);
   Si_FreqSet(active_channel.channel.freq);
 
-  self.sender_id=2600653;
-  self.recipient_id=2600500;
+  if(EIN[2]==0x31)
+  {
+	  self.sender_id=2600653;
+	  self.recipient_id=2600500;
+  }
+  else
+  {
+	  self.sender_id=2600500;
+	  self.recipient_id=2600653;
+  }
   RF_SetRX();
 
   TFT_Clear(CL_WHITE);
@@ -1680,6 +1768,7 @@ int main(void)
   playTone("tones/ready.raw");
 
   //displayEIN(EIN);
+  //displayTRXInfo();
   //HAL_Delay(5000);
   //TFT_Clear(CL_WHITE);
 
@@ -1690,19 +1779,20 @@ int main(void)
   TFT_PutStr(128-48, 160-20, "Opcje", 1, CL_BLACK);
 
   HAL_Delay(70);
+  HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 0);
 
   //TEST
   /*
   uint16_t test_sine[FRAMESIZE];
 
   for(uint16_t i=0; i<FRAMESIZE; i++)
-	  test_sine[i]=(0xFFF>>1)+0x0F*(sin((float)i/FRAMESIZE * 2*M_PI * 10.0)+1.0)/2.0;
+	  test_sine[i]=0x0FFF*(sin((float)i/FRAMESIZE * 2*M_PI * 10.0)+1.0)/2.0;
 
   while(1)
   {
 	  dac_busy=1;
 	  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, test_sine, FRAMESIZE, DAC_ALIGN_12B_R);
-	  //while(dac_busy);
+	  while(dac_busy);
   }
   */
 
@@ -1734,7 +1824,7 @@ int main(void)
 	  	self.frame=0;*/
 
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
-	  HAL_Delay(200);
+	  HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -1752,11 +1842,11 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
-  /**Configure the main internal regulator output voltage 
+  /** Configure the main internal regulator output voltage 
   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -1772,13 +1862,13 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Activate the Over-Drive mode 
+  /** Activate the Over-Drive mode 
   */
   if (HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -1823,12 +1913,12 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 1 */
 
   /* USER CODE END ADC1_Init 1 */
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
@@ -1841,7 +1931,7 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -1873,12 +1963,12 @@ static void MX_ADC2_Init(void)
   /* USER CODE BEGIN ADC2_Init 1 */
 
   /* USER CODE END ADC2_Init 1 */
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
   */
   hadc2.Instance = ADC2;
   hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.ScanConvMode = DISABLE;
   hadc2.Init.ContinuousConvMode = DISABLE;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
@@ -1891,7 +1981,7 @@ static void MX_ADC2_Init(void)
   {
     Error_Handler();
   }
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -1954,9 +2044,11 @@ static void MX_CRYP_Init(void)
   /* USER CODE END CRYP_Init 1 */
   hcryp.Instance = CRYP;
   hcryp.Init.DataType = CRYP_DATATYPE_8B;
-  hcryp.Init.KeySize = CRYP_KEYSIZE_256B;
-  hcryp.Init.pKey = (uint8_t *)pKeyCRYP;
-  hcryp.Init.pInitVect = (uint8_t *)pInitVectCRYP;
+  hcryp.Init.KeySize = CRYP_KEYSIZE_128B;
+  //hcryp.Init.pKey = (uint32_t *)pKeyCRYP;
+  //hcryp.Init.pInitVect = (uint32_t *)pInitVectCRYP;
+  //hcryp.Init.Algorithm = CRYP_AES_CTR;
+  //hcryp.Init.DataWidthUnit = CRYP_DATAWIDTHUNIT_WORD;
   if (HAL_CRYP_Init(&hcryp) != HAL_OK)
   {
     Error_Handler();
@@ -1984,14 +2076,14 @@ static void MX_DAC_Init(void)
   /* USER CODE BEGIN DAC_Init 1 */
 
   /* USER CODE END DAC_Init 1 */
-  /**DAC Initialization 
+  /** DAC Initialization 
   */
   hdac.Instance = DAC;
   if (HAL_DAC_Init(&hdac) != HAL_OK)
   {
     Error_Handler();
   }
-  /**DAC channel OUT1 config 
+  /** DAC channel OUT1 config 
   */
   sConfig.DAC_Trigger = DAC_TRIGGER_T6_TRGO;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
@@ -2002,6 +2094,27 @@ static void MX_DAC_Init(void)
   /* USER CODE BEGIN DAC_Init 2 */
 
   /* USER CODE END DAC_Init 2 */
+
+}
+
+/**
+  * @brief GFXSIMULATOR Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GFXSIMULATOR_Init(void)
+{
+
+  /* USER CODE BEGIN GFXSIMULATOR_Init 0 */
+
+  /* USER CODE END GFXSIMULATOR_Init 0 */
+
+  /* USER CODE BEGIN GFXSIMULATOR_Init 1 */
+
+  /* USER CODE END GFXSIMULATOR_Init 1 */
+  /* USER CODE BEGIN GFXSIMULATOR_Init 2 */
+
+  /* USER CODE END GFXSIMULATOR_Init 2 */
 
 }
 
@@ -2059,13 +2172,13 @@ static void MX_I2C1_Init(void)
   {
     Error_Handler();
   }
-  /**Configure Analogue filter 
+  /** Configure Analogue filter 
   */
   if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
-  /**Configure Digital filter 
+  /** Configure Digital filter 
   */
   if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
   {
@@ -2154,7 +2267,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -2271,6 +2384,51 @@ static void MX_TIM4_Init(void)
 }
 
 /**
+  * @brief TIM5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM5_Init(void)
+{
+
+  /* USER CODE BEGIN TIM5_Init 0 */
+
+  /* USER CODE END TIM5_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM5_Init 1 */
+
+  /* USER CODE END TIM5_Init 1 */
+  htim5.Instance = TIM5;
+  htim5.Init.Prescaler = 21599;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 449;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM5_Init 2 */
+
+  /* USER CODE END TIM5_Init 2 */
+
+}
+
+/**
   * @brief TIM6 Initialization Function
   * @param None
   * @retval None
@@ -2305,6 +2463,44 @@ static void MX_TIM6_Init(void)
   /* USER CODE BEGIN TIM6_Init 2 */
 
   /* USER CODE END TIM6_Init 2 */
+
+}
+
+/**
+  * @brief TIM7 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM7_Init(void)
+{
+
+  /* USER CODE BEGIN TIM7_Init 0 */
+
+  /* USER CODE END TIM7_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM7_Init 1 */
+
+  /* USER CODE END TIM7_Init 1 */
+  htim7.Instance = TIM7;
+  htim7.Init.Prescaler = 21599;
+  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim7.Init.Period = 999;
+  htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM7_Init 2 */
+
+  /* USER CODE END TIM7_Init 2 */
 
 }
 
