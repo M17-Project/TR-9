@@ -69,6 +69,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define	ADXL_ADDR		0x53
+
 #define	FRAMESIZE		160*2					//20+20=40ms frame
 #define	RAW_BYTES		8*2
 #define	CRC_LEN			2
@@ -243,7 +245,7 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=1.0;				//speaker volume (linear) value >=0.0
+volatile float spk_volume=3.0;				//speaker volume (linear) value >=0.0
 volatile float tones_volume=1.0;			//alert tones volume
 
 //ALERT TONES PLAYBACK
@@ -1641,6 +1643,30 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		//while(adc_busy);
 	}
 }
+//-----------------------------ADXL345-----------------------------
+uint8_t ADXL_CheckID(uint8_t dev_addr)
+{
+	uint8_t resp=0;
+	HAL_I2C_Mem_Read(&hi2c1, dev_addr<<1, 0x0, 1, &resp, 1, 100);
+
+	if(resp==0xE5)
+		return 0;	//OK
+	return 1;	//Fuck You
+}
+
+void ADXL_WriteReg(uint8_t dev_addr, uint8_t reg, uint8_t val)
+{
+	HAL_I2C_Mem_Write(&hi2c1, dev_addr<<1, reg, 1, &val, 1, 100);
+}
+
+uint8_t ADXL_ReadReg(uint8_t dev_addr, uint8_t reg)
+{
+	uint8_t val=0;
+
+	HAL_I2C_Mem_Read(&hi2c1, dev_addr<<1, reg, 1, &val, 1, 100);
+
+	return val;
+}
 
 //-----------------------------SPEAKER-----------------------------
 void SPK_Enabled(uint8_t ena)
@@ -1780,6 +1806,26 @@ int main(void)
 
   HAL_Delay(70);
   HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 0);
+
+  //ADXL345 TEST
+  if(ADXL_CheckID(ADXL_ADDR))
+	while(1);
+
+  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
+  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
+  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
+
+  uint8_t dta[6];
+  while(1)
+  {
+	  HAL_I2C_Mem_Read(&hi2c1, ADXL_ADDR<<1, 0x32, 1, (uint8_t*)&dta, 6, 100);
+
+	  uint8_t line[16];
+	  TFT_PutStrCentered(22, line, 1, CL_WHITE);
+	  sprintf(line, "Z=%d", (dta[1]<<8)+dta[0]);
+	  TFT_PutStrCentered(22, line, 1, CL_BLACK);
+	  HAL_Delay(1000);
+  }
 
   //TEST
   /*
