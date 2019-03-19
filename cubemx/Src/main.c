@@ -245,7 +245,7 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
 volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=3.0;				//speaker volume (linear) value >=0.0
+volatile float spk_volume=2.0;				//speaker volume (linear) value >=0.0
 volatile float tones_volume=1.0;			//alert tones volume
 
 //ALERT TONES PLAYBACK
@@ -1807,7 +1807,7 @@ int main(void)
   HAL_Delay(70);
   HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 0);
 
-  //ADXL345 TEST
+  //ADXL345 INIT
   if(ADXL_CheckID(ADXL_ADDR))
 	while(1);
 
@@ -1815,17 +1815,18 @@ int main(void)
   ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
   ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
 
-  uint8_t dta[6];
+  //ADXL345 TEST
+  /*uint8_t dta[6];
   while(1)
   {
 	  HAL_I2C_Mem_Read(&hi2c1, ADXL_ADDR<<1, 0x32, 1, (uint8_t*)&dta, 6, 100);
 
 	  uint8_t line[16];
 	  TFT_PutStrCentered(22, line, 1, CL_WHITE);
-	  sprintf(line, "Z=%d", (dta[1]<<8)+dta[0]);
+	  sprintf(line, "Z=%d", (int16_t)((dta[1]<<8)+dta[0]));
 	  TFT_PutStrCentered(22, line, 1, CL_BLACK);
 	  HAL_Delay(1000);
-  }
+  }*/
 
   //TEST
   /*
