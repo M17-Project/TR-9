@@ -98,10 +98,10 @@ DMA_HandleTypeDef hdma_adc2;
 CRC_HandleTypeDef hcrc;
 
 CRYP_HandleTypeDef hcryp;
-__ALIGN_BEGIN static const uint32_t pKeyCRYP[4] __ALIGN_END = {
-                            0x00000000,0x00000000,0x00000000,0x00000000};
-__ALIGN_BEGIN static const uint32_t pInitVectCRYP[2] __ALIGN_END = {
-                            0x00000000,0x00000000};
+//__ALIGN_BEGIN static const uint32_t pKeyCRYP[4] __ALIGN_END = {
+                            //0x00000000,0x00000000,0x00000000,0x00000000};
+//__ALIGN_BEGIN static const uint32_t pInitVectCRYP[2] __ALIGN_END = {
+                            //0x00000000,0x00000000};
 
 DAC_HandleTypeDef hdac;
 DMA_HandleTypeDef hdma_dac1;
@@ -244,9 +244,10 @@ struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NON
 //RADIO STATE
 volatile uint8_t r_initd=0;					//initialized?
 volatile uint8_t r_tx=0;					//TX state?
-volatile uint8_t mic_gain=20;				//microphone gain (linear) 0 -> mute
-volatile float spk_volume=2.0;				//speaker volume (linear) value >=0.0
-volatile float tones_volume=1.0;			//alert tones volume
+volatile uint8_t rx_reload_pend=0;			//go back to RX state after PTT release?
+volatile uint8_t mic_gain=10;				//microphone gain (linear) 0 -> mute
+volatile float spk_volume=1.0;				//speaker volume (linear) value >=0.0
+volatile float tones_volume=0.5;			//alert tones volume
 
 //ALERT TONES PLAYBACK
 volatile int16_t tone[TONE_SIZE];			//buffer for loading data from .RAW file
@@ -1446,49 +1447,9 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 	dac_busy=0;
 }
 
-/*void HAL_DACEx_ConvCpltCallbackCh2(DAC_HandleTypeDef* hdac)
-{
-	//HAL_GPIO_TogglePin(TST_GPIO_Port, TST_Pin);
-}*/
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	//100ms after PTT release
-	if(htim->Instance==TIM7)
-	{
-		HAL_TIM_Base_Stop_IT(&htim7);
-		TIM7->CNT=0;
-
-		if(r_tx)
-		{
-			RF_SetRX();
-			Si_StartRx(0, PLOAD_LEN);
-		}
-
-		if(self.frame)
-			self.frame=0;
-	}
-
-	//45ms after last nIRQ from the TRX - "anti-freeze"
-	//else if(htim->Instance==TIM5 && rcv.frame>1 && r_initd)
-	{
-		//HAL_TIM_Base_Stop_IT(&htim5);
-		//HAL_GPIO_TogglePin(TP1_GPIO_Port, TP1_Pin);
-		/*r_initd=0;
-		//Si4463 reset
-		//Si_Reset();
-		HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 1);
-		for(uint16_t i=0; i<100; i++);
-		HAL_GPIO_WritePin(TRX_SDN_GPIO_Port, TRX_SDN_Pin, 0);
-		Si_StartupConfig();
-		Si_Interrupts(NULL);
-		Si_SetTxPower(1);
-		Si_Sleep();
-		Si_FreqSet(active_channel.channel.freq);
-		RF_SetRX();
-		Si_StartRx(0, PLOAD_LEN);
-		r_initd=1;*/
-	}
+	;//
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -1520,19 +1481,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
 		}
-		else if(kbd_rcv_val=='a')	//TODO: automate this
-		{
-			r_initd=0;
-			Si_Reset();
-			Si_StartupConfig();
-			Si_Interrupts(NULL);
-			Si_SetTxPower(1);
-			Si_Sleep();
-			Si_FreqSet(active_channel.channel.freq);
-			RF_SetRX();
-			Si_StartRx(0, PLOAD_LEN);
-			r_initd=1;
-		}
 
 		HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
 	}
@@ -1545,11 +1493,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		//debug
 		//HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 1);
-
-		//anti-freeze
-		//HAL_TIM_Base_Stop_IT(&htim5);
-		//TIM5->CNT=0;
-		//HAL_TIM_Base_Start_IT(&htim5);
 
 		//Si nIRQ interrupt request
 		Si_Interrupts(ints);	//check pending interrupt flags
@@ -1636,11 +1579,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 
-		//start 100ms timer
-		TIM7->CNT=0;
-		HAL_TIM_Base_Start_IT(&htim7);
-
-		//while(adc_busy);
+		rx_reload_pend=1;
 	}
 }
 //-----------------------------ADXL345-----------------------------
@@ -1815,7 +1754,7 @@ int main(void)
   ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
   ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
 
-  //ADXL345 TEST
+  //TEST - ADXL345
   /*uint8_t dta[6];
   while(1)
   {
@@ -1828,7 +1767,7 @@ int main(void)
 	  HAL_Delay(1000);
   }*/
 
-  //TEST
+  //TEST - AF AMPLIFIER
   /*
   uint16_t test_sine[FRAMESIZE];
 
@@ -1849,26 +1788,31 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while(1)
   {
-	  /*if(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin) && !dac_busy)
+	  //check if we want to go back to RX mode after the PTT button has been released
+	  if(rx_reload_pend)
 	  {
-	  	playTone("tones/ready.raw");
-	  	HAL_Delay(70);
-	  	buff_num=0;
-	  	HAL_ADC_Start_DMA(&hadc1, buffer_1, FRAMESIZE);
-	  	RF_SetTX();
+		  HAL_Delay(100);
 
-	  	while(!HAL_GPIO_ReadPin(PTT_INT_GPIO_Port, PTT_INT_Pin));
-	  }*/
+		  if(r_tx)
+		  {
+			  //HAL_GPIO_TogglePin(TP1_GPIO_Port, TP1_Pin);
+			  r_initd=0;
+			  Si_Reset();
+			  Si_StartupConfig();
+			  Si_Interrupts(NULL);
+			  Si_SetTxPower(22);
+			  Si_Sleep();
+			  Si_FreqSet(active_channel.channel.freq);
+			  RF_SetRX();
+			  Si_StartRx(0, PLOAD_LEN);
+			  r_initd=1;
+		  }
 
-	  /*if(r_tx)
-	  {
-	  	HAL_Delay(100);
-	  	RF_SetRX();
-	  	Si_StartRx(0, PLOAD_LEN);
+		  if(self.frame)
+		  	self.frame=0;
+
+		  rx_reload_pend=0;
 	  }
-
-	  if(self.frame)
-	  	self.frame=0;*/
 
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
 	  HAL_Delay(500);
