@@ -1695,10 +1695,10 @@ int main(void)
   HAL_Delay(500);
 
   f_mount(&SDFatFS, (TCHAR const*)SDPath, 0);
-  //if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this
+  //if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this and add an error handler
 	//while(1);
   if(LoadCodeplug("CODEPLUG", &codeplug))
-	while(1);
+	while(1);	//TODO: add an error handler
 
   TFT_Init();
 
@@ -1748,11 +1748,16 @@ int main(void)
 
   //ADXL345 INIT
   if(ADXL_CheckID(ADXL_ADDR))
-	while(1);
-
-  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
-  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
-  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
+  {
+	  TFT_PutStrCentered(20, "ADXL ERROR", 1, CL_RED);
+	  //while(1);	//TODO: add an error handler
+  }
+  else
+  {
+	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
+	  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
+	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
+  }
 
   //TEST - ADXL345
   /*uint8_t dta[6];
