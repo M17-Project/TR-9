@@ -69,6 +69,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define FW_VER			1000					//firmware version
 #define	ADXL_ADDR		0x53
 
 #define	FRAMESIZE		160*2					//20+20=40ms frame
@@ -248,6 +249,7 @@ volatile uint8_t rx_reload_pend=0;			//go back to RX state after PTT release?
 volatile uint8_t mic_gain=10;				//microphone gain (linear) 0 -> mute
 volatile float spk_volume=1.0;				//speaker volume (linear) value >=0.0
 volatile float tones_volume=0.5;			//alert tones volume
+volatile uint8_t tx_pwr=10;					//TX power (arbitrary units)
 
 //ALERT TONES PLAYBACK
 volatile int16_t tone[TONE_SIZE];			//buffer for loading data from .RAW file
@@ -1071,6 +1073,12 @@ void TFT_PutStr(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t
 	}
 }
 
+void TFT_PutStrBold(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	TFT_PutStr(x, y, str, font, color);
+	TFT_PutStr(x+1, y, str, font, color);
+}
+
 void TFT_PutStrCentered(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
 {
 	uint8_t x=0;
@@ -1093,16 +1101,52 @@ void TFT_PutStrCentered(uint8_t y, const uint8_t* str, uint8_t font, uint16_t co
 	TFT_PutStr(x, y, str, font, color);
 }
 
+//TODO: not very efficient, but works
+void TFT_PutStrCenteredBold(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	uint8_t x=0;
+		uint8_t width=0;
+
+		if(font==1)
+		{
+			for(uint8_t i=0; i<strlen(str); i++)
+			{
+				if(str[i]!=' ')
+					width+=fonts_glyph_dsc[str[i]-'!'].w_px+2;
+				else
+					width+=2;
+			}
+
+			//x=(127-strlen(str)*9)/2;
+			x=(127-width)/2;
+		}
+
+		TFT_PutStr(x, y, str, font, color);
+		TFT_PutStr(x+1, y, str, font, color);
+}
+
 void displayEIN(uint8_t* src)
 {
 	TFT_Clear(CL_WHITE);
 
-	TFT_PutStrCentered(30, "EIN", 1, 0);
+	TFT_PutStrCenteredBold(30, "EIN", 1, 0);
 	for(uint8_t i=0; i<3; i++)
 	{
 		sprintf(text_line, "%02X%02X%02X%02X", EIN[i*4], EIN[i*4+1], EIN[i*4+2], EIN[i*4+3]);
 		TFT_PutStrCentered(30+22+i*16, text_line, 1, 0);
 	}
+}
+
+uint8_t checkTRX(void)
+{
+	uint8_t info[8];
+
+	Si_GetInfo(info);
+
+	if(info[1]==0x44 && info[2]==0x63)
+		return 0;
+
+	return 1;
 }
 
 void displayTRXInfo(void)
@@ -1113,7 +1157,7 @@ void displayTRXInfo(void)
 
 	TFT_Clear(CL_WHITE);
 
-	TFT_PutStrCentered(10, "TRX", 1, 0);
+	TFT_PutStrCenteredBold(10, "TRX", 1, 0);
 
 	sprintf(text_line, "PART  %02X%02X", info[1], info[2]);
 	TFT_PutStrCentered(10+22+16, text_line, 1, 0);
@@ -1132,16 +1176,16 @@ void displayTRXInfo(void)
 void TFT_DisplayActiveChannelData(struct CODEPLUG_DATA *cd, struct ACTIVE_CHANNEL_DATA *acd)
 {
 	uint8_t lin[20];
-	uint8_t base=42;
+	uint8_t base=47;
 
-	TFT_PutStrCentered(base, cd->bank[acd->bank_num].name, 1, 0);
+	TFT_PutStrCenteredBold(base, cd->bank[acd->bank_num].name, 1, 0);
 	TFT_PutStrCentered(base+18, acd->channel.name, 1, 0);
 	gcvt(acd->channel.freq/1000000.0, 7, lin);
 	TFT_PutStrCentered(base+18*2, lin, 1, 0);
 	if(acd->channel.enc_type)
-		TFT_PutStrCentered(base+18*3, "SZYFR", 1, CL_DARKGREEN);
+		TFT_PutStrCenteredBold(base+18*3, "ENCR", 1, CL_DARKGREEN);
 	else
-		TFT_PutStrCentered(base+18*3, "JAWNY", 1, CL_RED);
+		TFT_PutStrCenteredBold(base+18*3, "NO   ENCR", 1, CL_RED);
 }
 
 //-----------------------------------CODEPLUG------------------------------------
@@ -1436,8 +1480,14 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 		gcvt(v_batt, 3, test_line);
 		if(strlen(test_line)==3)
 			test_line[3]='0';
+		else if(strlen(test_line)==1)
+		{
+			test_line[1]='.';
+			test_line[2]='0';
+			test_line[3]='0';
+		}
 		TFT_RectangleFilled(127-30, 3, 127, 16, CL_WHITE);
-		TFT_PutStr(127-30, 3, test_line, 1, CL_BLACK);
+		TFT_PutStrBold(127-30, 3, test_line, 1, CL_BLACK);
 		HAL_ADC_Start_DMA(&hadc2, &u_batt, 1);
 	}
 }
@@ -1509,8 +1559,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 			if(rcv.content_type==CONTENT_VOICE && rcv.enc_type==ENC_NONE)
 			{
-				sprintf(text_line, "NAD: %d", rcv.sender_id);
-				TFT_PutStrCentered(18, text_line, 1, TFT_RGBtoCol(0, 100, 0));
+				TFT_PutStrCenteredBold(22, text_line, 1, CL_LIGHTGREY);
+				sprintf(text_line, "ID: %d", rcv.sender_id);
+				TFT_PutStrCenteredBold(22, text_line, 1, TFT_RGBtoCol(0, 100, 0));
 
 				codec2_decode(cod, sfr1, rcv_voice);
 				codec2_decode(cod, sfr2, &rcv_voice[8]);
@@ -1675,36 +1726,103 @@ int main(void)
   MX_TIM5_Init();
   MX_GFXSIMULATOR_Init();
   /* USER CODE BEGIN 2 */
+  //--------------------------TR-9 INIT-----------------------------
+  //turn off LEDs
   HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 1);
 
-  HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
+  //dim display backlight & TFT init
   TFT_SetBrght(0);
+  HAL_Delay(100);
+  TFT_Init();
+
+  //TRX module check
+  Si_Reset();
+  if(checkTRX())	//fucked up comms with Si4463?
+  {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(160/2-8, "TRX ERROR", 1, CL_RED);
+	  TFT_SetBrght(255);
+
+	  while(1) //HALT! error signalling
+	  {
+		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  HAL_Delay(100);
+	  }
+  }
+  Si_StartupConfig();
+  Si_Interrupts(NULL);
+  Si_SetTxPower(tx_pwr);
+  Si_Sleep();
+
+  //SD card check
+  if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
+  {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(160/2-8, "CARD ERROR", 1, CL_RED);
+	  TFT_SetBrght(255);
+
+	  while(1)
+	  {
+		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  HAL_Delay(250);
+	  }
+  }
+
+  //authentication check
+  if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this and add an error handler
+  {
+	  //while(1);
+  }
+
+  //codeplug check
+  if(LoadCodeplug("CODEPLUG", &codeplug))
+  {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(160/2-8, "NO CODEPLUG", 1, CL_RED);
+	  TFT_SetBrght(255);
+
+	  while(1)
+	  {
+	  	HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	  	HAL_Delay(500);
+	  }
+  }
+
+  //ADXL345 INIT
+  if(ADXL_CheckID(ADXL_ADDR))
+  {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(160/2-8, "ADXL ERROR", 1, CL_RED);
+	  TFT_SetBrght(255);
+
+	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+
+	  while(1);
+  }
+
+  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
+  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
+  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
+
+  //start timers and enable interrupts
+  HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
   HAL_TIM_Base_Start(&htim6);	//8kHz timebase
   HAL_ADC_Start_DMA(&hadc2, &u_batt, 1);
   HAL_TIM_Base_Start(&htim8);	//0.1Hz measure u_batt
 
-  HAL_Delay(500);
-  Si_Reset();
-  Si_StartupConfig();
-  Si_Interrupts(NULL);
-  Si_SetTxPower(22);
-  Si_Sleep();
-
+  //create codec instance and fill the CRC table TODO: use HW CRC calculation unit
   cod = codec2_create(CODEC2_MODE_3200);
   init_crc16_tab();
-  HAL_Delay(500);
 
-  f_mount(&SDFatFS, (TCHAR const*)SDPath, 0);
-  //if(authenticateCodeplug("AUTH")==CODEPLUG_AUTH_FAIL);	//TODO: fix this and add an error handler
-	//while(1);
-  if(LoadCodeplug("CODEPLUG", &codeplug))
-	while(1);	//TODO: add an error handler
-
-  TFT_Init();
-
+  //set radio related stuff
   SetActiveChannel(&codeplug, 0, 0, &active_channel);
   Si_FreqSet(active_channel.channel.freq);
+  RF_SetRX();
+  Si_StartRx(0, PLOAD_LEN);
+  r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up sequence
 
+  //TODO: change this
   if(EIN[2]==0x31)
   {
 	  self.sender_id=2600653;
@@ -1715,8 +1833,8 @@ int main(void)
 	  self.sender_id=2600500;
 	  self.recipient_id=2600653;
   }
-  RF_SetRX();
 
+  //clear disp and show splash image
   TFT_Clear(CL_WHITE);
   TFT_DisplaySplash("splash.raw");
   TFT_SetBrght(255);
@@ -1725,39 +1843,20 @@ int main(void)
   TFT_Clear(CL_WHITE);
   TFT_SetBrght(255);
 
-  Si_StartRx(0, PLOAD_LEN);
-  r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up
-
-  SPK_Enabled(1);
-  HAL_Delay(250);
-  playTone("tones/ready.raw");
-
   //displayEIN(EIN);
   //displayTRXInfo();
   //HAL_Delay(5000);
   //TFT_Clear(CL_WHITE);
 
+  //display channel data
   TFT_DisplayActiveChannelData(&codeplug, &active_channel);
-
   TFT_RectangleFilled(0, 160-25, 127, 159, CL_LIGHTGREY);
-  TFT_PutStr(10, 160-20, "Menu", 1, CL_BLACK);
-  TFT_PutStr(128-48, 160-20, "Opcje", 1, CL_BLACK);
+  TFT_PutStrBold(10, 160-20, "Menu", 1, CL_BLACK);
+  TFT_PutStrBold(128-48, 160-20, "Opcje", 1, CL_BLACK);
 
-  HAL_Delay(70);
-  HAL_GPIO_WritePin(TP1_GPIO_Port, TP1_Pin, 0);
-
-  //ADXL345 INIT
-  if(ADXL_CheckID(ADXL_ADDR))
-  {
-	  TFT_PutStrCentered(20, "ADXL ERROR", 1, CL_RED);
-	  //while(1);	//TODO: add an error handler
-  }
-  else
-  {
-	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
-	  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
-	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
-  }
+  //unmute the speaker and beep happily
+  SPK_Enabled(1);
+  playTone("tones/ready.raw");
 
   //TEST - ADXL345
   /*uint8_t dta[6];
@@ -1805,7 +1904,7 @@ int main(void)
 			  Si_Reset();
 			  Si_StartupConfig();
 			  Si_Interrupts(NULL);
-			  Si_SetTxPower(22);
+			  Si_SetTxPower(tx_pwr);
 			  Si_Sleep();
 			  Si_FreqSet(active_channel.channel.freq);
 			  RF_SetRX();
