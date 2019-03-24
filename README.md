@@ -8,6 +8,5 @@ This is a complete SW4STM32 project for the TR-9 board.
 - Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable  
 - Design a PCB for the keyboard and encoder  
   
-- Fix Si4463 - gets stuck often  
 - Implement hardware AES  
 - Add a GPS module  
