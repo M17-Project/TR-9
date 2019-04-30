@@ -425,7 +425,7 @@ void extractFields(uint8_t* stream)
 	rcv.frame=((stream[0]&0x0F)<<8) | stream[1];
 
 	rcv.sender_id=(stream[2]<<16) | (stream[3]<<8) | stream[4];
-	rcv.recipient_id=(stream[5]<<8) | (stream[6]<<8) | stream[7];
+	rcv.recipient_id=(stream[5]<<16) | (stream[6]<<8) | stream[7];
 
 	for(uint8_t i=0; i<32; i+=2)
 	{
