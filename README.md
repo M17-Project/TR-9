@@ -3,11 +3,16 @@ Open-source digital mobile radio, compatible with M17 standard. Uses Codec2 voco
 
 This is a complete SW4STM32 project for the TR-9 board.
 
-# TODO:
-- Adjust the antenna PCB trace to match 50ohm impedance 
-- Add 3..5W RF output power amplifier 
-- Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable  
-- Design a PCB for the keyboard and encoder  
+# Done: 
+- Changed the RF switch to HMC546MS8GETR 
+- Completely redesigned mainboard, verything done by hand 
+- Display and keyboard boards 
+- Added 3..5W RF output amplifier 
+
+# TODO: 
+- Adjust the antenna PCB trace
+- Test and tweak tge 3..5W RF output power amplifier 
+- Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable   
   
 - Implement hardware AES  
 - Add a GPS module  
