@@ -25621,13 +25621,6 @@ Source: http://www.molex.com/product/ffc/52745.html</description>
 <wire x1="147.32" y1="45.72" x2="147.32" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="SPK_SDN" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="P$1"/>
-<wire x1="73.66" y1="129.54" x2="63.5" y2="129.54" width="0.1524" layer="91"/>
-<label x="63.5" y="129.54" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
-</net>
 <net name="PTT_INT" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="P$97"/>
@@ -25843,13 +25836,6 @@ Source: http://www.molex.com/product/ffc/52745.html</description>
 <pinref part="U1" gate="G$1" pin="P$59"/>
 <wire x1="170.18" y1="88.9" x2="177.8" y2="88.9" width="0.1524" layer="91"/>
 <label x="177.8" y="88.9" size="1.27" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="TRX_TX_SW" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="P$4"/>
-<wire x1="73.66" y1="121.92" x2="63.5" y2="121.92" width="0.1524" layer="91"/>
-<label x="63.5" y="121.92" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="TRX_SW" class="0">
