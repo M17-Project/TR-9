@@ -5,7 +5,7 @@ This is a complete SW4STM32 project for the TR-9 board.
 
 # Done: 
 - Changed the RF switch to HMC546MS8GETR 
-- Completely redesigned mainboard, verything done by hand 
+- Completely redesigned mainboard, everything done by hand 
 - Display and keyboard boards 
 - Added 3..5W RF output amplifier 
 
