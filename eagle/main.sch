@@ -26324,7 +26324,7 @@ Source: http://www.molex.com/product/ffc/52745.html</description>
 <instance part="C48" gate="G$1" x="121.92" y="144.78" rot="R270"/>
 <instance part="GND61" gate="1" x="127" y="124.46"/>
 <instance part="L7" gate="G$1" x="114.3" y="121.92" rot="R90"/>
-<instance part="SUPPLY3" gate="G$1" x="114.3" y="154.94"/>
+<instance part="SUPPLY3" gate="G$1" x="114.3" y="157.48"/>
 <instance part="+3V9" gate="G$1" x="226.06" y="162.56"/>
 <instance part="GND62" gate="1" x="226.06" y="127"/>
 <instance part="R27" gate="G$1" x="226.06" y="134.62" rot="R90"/>
@@ -26788,7 +26788,19 @@ Source: http://www.molex.com/product/ffc/52745.html</description>
 <wire x1="154.94" y1="114.3" x2="160.02" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="+UB" class="0">
+<net name="N$28" class="0">
+<segment>
+<pinref part="R27" gate="G$1" pin="2"/>
+<pinref part="R29" gate="1" pin="A"/>
+</segment>
+</net>
+<net name="N$34" class="0">
+<segment>
+<pinref part="R28" gate="G$1" pin="1"/>
+<pinref part="R29" gate="1" pin="E"/>
+</segment>
+</net>
+<net name="+BATT" class="1">
 <segment>
 <pinref part="C46" gate="G$1" pin="1"/>
 <wire x1="116.84" y1="149.86" x2="114.3" y2="149.86" width="0.1524" layer="91"/>
@@ -26801,22 +26813,10 @@ Source: http://www.molex.com/product/ffc/52745.html</description>
 <wire x1="116.84" y1="144.78" x2="114.3" y2="144.78" width="0.1524" layer="91"/>
 <junction x="114.3" y="144.78"/>
 <junction x="114.3" y="129.54"/>
-<wire x1="114.3" y1="149.86" x2="114.3" y2="152.4" width="0.1524" layer="91"/>
-<junction x="114.3" y="149.86"/>
 <pinref part="L7" gate="G$1" pin="2"/>
 <pinref part="SUPPLY3" gate="G$1" pin="+UB"/>
-</segment>
-</net>
-<net name="N$28" class="0">
-<segment>
-<pinref part="R27" gate="G$1" pin="2"/>
-<pinref part="R29" gate="1" pin="A"/>
-</segment>
-</net>
-<net name="N$34" class="0">
-<segment>
-<pinref part="R28" gate="G$1" pin="1"/>
-<pinref part="R29" gate="1" pin="E"/>
+<wire x1="114.3" y1="149.86" x2="114.3" y2="154.94" width="0.1524" layer="91"/>
+<junction x="114.3" y="149.86"/>
 </segment>
 </net>
 </nets>
