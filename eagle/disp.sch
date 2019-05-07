@@ -3606,22 +3606,22 @@ Source: AVX .. aphvc.pdf</description>
 </packages>
 <symbols>
 <symbol name="TFT_MODULE">
-<pin name="GND1" x="-17.78" y="-12.7" length="short" rot="R90"/>
-<pin name="A0" x="-15.24" y="-12.7" length="short" rot="R90"/>
-<pin name="SCK" x="-12.7" y="-12.7" length="short" rot="R90"/>
-<pin name="MOSI" x="-10.16" y="-12.7" length="short" rot="R90"/>
-<pin name="GND2" x="-7.62" y="-12.7" length="short" rot="R90"/>
-<pin name="CS" x="-5.08" y="-12.7" length="short" rot="R90"/>
-<pin name="RESET" x="-2.54" y="-12.7" length="short" rot="R90"/>
-<pin name="LED-" x="0" y="-12.7" length="short" rot="R90"/>
-<pin name="LED+" x="2.54" y="-12.7" length="short" rot="R90"/>
-<pin name="VCC1" x="5.08" y="-12.7" length="short" rot="R90"/>
-<pin name="VCC2" x="7.62" y="-12.7" length="short" rot="R90"/>
-<pin name="GND3" x="10.16" y="-12.7" length="short" rot="R90"/>
-<pin name="NC1" x="12.7" y="-12.7" length="short" rot="R90"/>
-<pin name="NC2" x="15.24" y="-12.7" length="short" rot="R90"/>
-<pin name="NC3" x="17.78" y="-12.7" length="short" rot="R90"/>
-<pin name="NC4" x="20.32" y="-12.7" length="short" rot="R90"/>
+<pin name="GND1" x="-17.78" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="A0" x="-15.24" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="SCK" x="-12.7" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="MOSI" x="-10.16" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="GND2" x="-7.62" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="CS" x="-5.08" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="RESET" x="-2.54" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="LED-" x="0" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="LED+" x="2.54" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="VCC1" x="5.08" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="VCC2" x="7.62" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="GND3" x="10.16" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="NC1" x="12.7" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="NC2" x="15.24" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="NC3" x="17.78" y="-12.7" visible="pin" length="short" rot="R90"/>
+<pin name="NC4" x="20.32" y="-12.7" visible="pin" length="short" rot="R90"/>
 <wire x1="-20.32" y1="15.24" x2="22.86" y2="15.24" width="0.254" layer="94"/>
 <wire x1="22.86" y1="15.24" x2="22.86" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="22.86" y1="-10.16" x2="-20.32" y2="-10.16" width="0.254" layer="94"/>
