@@ -183,9 +183,9 @@
 <board>
 <plain>
 <wire x1="0" y1="0" x2="42" y2="0" width="0" layer="20"/>
-<wire x1="42" y1="0" x2="41.6825" y2="120.015" width="0" layer="20"/>
-<wire x1="41.6825" y1="120.015" x2="-0.3175" y2="120.015" width="0" layer="20"/>
-<wire x1="-0.3175" y1="120.015" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="42" y1="0" x2="42" y2="120" width="0" layer="20"/>
+<wire x1="42" y1="120" x2="0" y2="120" width="0" layer="20"/>
+<wire x1="0" y1="120" x2="0" y2="0" width="0" layer="20"/>
 <text x="12.7" y="20.0025" size="1.778" layer="51" font="vector">TR-9</text>
 <text x="6.6675" y="102.5525" size="1.778" layer="51" font="vector" rot="R270">TR_9_MAIN_BOARD_1.2</text>
 </plain>
@@ -3864,11 +3864,11 @@ design rules under a new name.</description>
 </element>
 <element name="U1" library="micro-stm_v3" package="LQFP100" value="STM32F777VIT" x="23.8125" y="42.8625"/>
 <element name="U4" library="microsd" package="MICROSD-PUSH-OUT" value="ADAM TECH MCSP-Q1-08-A-SG" x="1.905" y="47.625" rot="R270"/>
-<element name="X2" library="con-coax" package="J502-ND-142-0701-871/876" value="SMA" x="33.7125" y="120.015" rot="R270">
-<attribute name="MPN" value="142-0701-871" x="33.7125" y="120.015" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="OC_FARNELL" value="1339835" x="33.7125" y="120.015" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="MF" value="JOHNSON COMPONENTS" x="33.7125" y="120.015" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="OC_NEWARK" value="91B6105" x="33.7125" y="120.015" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="X2" library="con-coax" package="J502-ND-142-0701-871/876" value="SMA" x="33.7125" y="120" rot="R270">
+<attribute name="MPN" value="142-0701-871" x="33.7125" y="120" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="OC_FARNELL" value="1339835" x="33.7125" y="120" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MF" value="JOHNSON COMPONENTS" x="33.7125" y="120" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="OC_NEWARK" value="91B6105" x="33.7125" y="120" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="U5" library="SI4463-C2A-GM" package="QFN50P400X400X90-20N" value="SI4463-C2A-GM" x="30.7975" y="69.215" rot="R270">
 <attribute name="DESCRIPTION" value=" RF Transceiver FSK/GFSK/GMSK/MSK/OOK 3.3V 20-Pin QFN EP " x="30.7975" y="69.215" size="1.778" layer="27" rot="R270" display="off"/>
@@ -4558,6 +4558,11 @@ design rules under a new name.</description>
 <via x="7.9375" y="2.02" extent="1-16" drill="0.2"/>
 <via x="11.43" y="1.385" extent="1-16" drill="0.2"/>
 <via x="12.7" y="37.2625" extent="1-16" drill="0.2"/>
+<via x="40.3225" y="82.3475" extent="1-16" drill="0.2"/>
+<via x="38.735" y="79.49" extent="1-16" drill="0.2"/>
+<via x="40.005" y="76.6325" extent="1-16" drill="0.2"/>
+<via x="38.735" y="75.3625" extent="1-16" drill="0.2"/>
+<via x="40.3225" y="73.4575" extent="1-16" drill="0.2"/>
 </signal>
 <signal name="+3V3" class="1">
 <contactref element="U1" pad="100"/>
@@ -5452,7 +5457,7 @@ design rules under a new name.</description>
 <contactref element="CM3" pad="1"/>
 <contactref element="X2" pad="1"/>
 <wire x1="33.97" y1="113.9825" x2="33.7125" y2="113.605" width="0.254" layer="1"/>
-<wire x1="33.7125" y1="113.605" x2="33.7125" y2="117.4496" width="0.5" layer="1"/>
+<wire x1="33.7125" y1="113.605" x2="33.7125" y2="117.4346" width="0.5" layer="1"/>
 <wire x1="33.97" y1="113.9825" x2="35.88" y2="113.9825" width="0.254" layer="1"/>
 </signal>
 <signal name="N$22" class="2">
