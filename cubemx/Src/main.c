@@ -59,7 +59,8 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1000					//firmware version
+#define FW_VER			1010					//firmware version
+#define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	ADXL_ADDR		0x53
 
 #define	FRAMESIZE		160*2					//20+20=40ms frame
@@ -699,15 +700,29 @@ void Si_GetInfo(uint8_t *resp)
 //------------------------------RF SWITCH FUNCS------------------------------
 static void RF_SetTX(void)
 {
-	HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 1);
-	HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, 0);
+	if(HW_VER<=11)
+	{
+		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 1);
+		HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, 0);
+	}
+	else if(HW_VER==12)
+	{
+		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 1);
+	}
 	r_tx=1;
 }
 
 static void RF_SetRX(void)
 {
-	HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 0);
-	HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, 1);
+	if(HW_VER<=11)
+	{
+		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 0);
+		HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, 1);
+	}
+	else if(HW_VER==12)
+	{
+		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 0);
+	}
 	r_tx=0;
 }
 
