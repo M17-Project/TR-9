@@ -61,6 +61,7 @@
 
 #define FW_VER			1010					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
+#define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53
 
 #define	FRAMESIZE		160*2					//20+20=40ms frame
@@ -1639,6 +1640,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 
 		rx_reload_pend=1;
+		HAL_NVIC_DisableIRQ(EXTI0_IRQn);
 	}
 }
 //-----------------------------ADXL345-----------------------------
@@ -1798,20 +1800,23 @@ int main(void)
   }
 
   //ADXL345 INIT
-  if(ADXL_CheckID(ADXL_ADDR))
+  if(!NO_ADXL)
   {
-	  TFT_Clear(CL_BLACK);
-	  TFT_PutStrCenteredBold(160/2-8, "ADXL ERROR", 1, CL_RED);
-	  TFT_SetBrght(255);
+	  if(ADXL_CheckID(ADXL_ADDR))
+	  {
+		  TFT_Clear(CL_BLACK);
+		  TFT_PutStrCenteredBold(160/2-8, "ADXL ERROR", 1, CL_RED);
+		  TFT_SetBrght(255);
 
-	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 
-	  while(1);
+		  while(1);
+	  }
+
+	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
+	  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
+	  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
   }
-
-  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x00);
-  ADXL_WriteReg(ADXL_ADDR, 0x31, 0x01);
-  ADXL_WriteReg(ADXL_ADDR, 0x2D, 0x0B);
 
   //start timers and enable interrupts
   HAL_UART_Receive_IT(&huart3, &kbd_rcv_val, 1);
@@ -1924,6 +1929,7 @@ int main(void)
 		  	self.frame=0;
 
 		  rx_reload_pend=0;
+		  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 	  }
 
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
