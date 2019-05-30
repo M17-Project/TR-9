@@ -10,8 +10,11 @@ This is a complete SW4STM32 project for the TR-9 board.
 - Added 3..5W RF output amplifier 
 
 # TODO: 
-- Adjust the antenna PCB trace
-- Test and tweak tge 3..5W RF output power amplifier 
+- Merge keyboard and display boards into one 
+- Bypass R20 and R23 with 33p caps 
+- Add PWR_ON signal for the GPS module 
+- Add 4.7k pull-up resistor for the PTT microswitch 
+- Remove 5V voltage regulator? 
 - Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable   
   
 - Implement hardware AES  
