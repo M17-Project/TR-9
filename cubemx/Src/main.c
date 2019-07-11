@@ -59,8 +59,8 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1010					//firmware version
-#define HW_VER			12						//11 - v1.1, 12 - v1.2
+#define FW_VER			1020					//firmware version
+#define HW_VER			11						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53
 
@@ -395,29 +395,36 @@ void encodeBits(const uint8_t *inp, uint8_t *outp)
 	}
 }
 
-void formFrame(void)
+void formFrame(uint8_t encr_type)
 {
-	for(uint8_t i=0; i<PLOAD_LEN; i++)
-		f_bits[i]=0x00;
+	//if(encr_type==ENC_NONE)
+	{
+		memset(f_bits, 0, PLOAD_LEN);
 
-	f_bits[0]=(self.frame>>8);
-	f_bits[0]|=self.enc_type<<4;
-	f_bits[0]|=self.content_type<<6;
+		f_bits[0]|=self.content_type<<6;
+		f_bits[0]|=self.enc_type<<4;
+		f_bits[0]|=(self.frame>>8);
 
-	f_bits[1]=self.frame&0xFF;
+		f_bits[1]=self.frame&0xFF;
 
-	f_bits[2]=self.sender_id>>16;
-	f_bits[3]=self.sender_id>>8;
-	f_bits[4]=self.sender_id&0xFF;
+		//17 null bytes
 
-	f_bits[5]=self.recipient_id>>16;
-	f_bits[6]=self.recipient_id>>8;
-	f_bits[7]=self.recipient_id&0xFF;
+		f_bits[19]=self.sender_id>>16;
+		f_bits[20]=self.sender_id>>8;
+		f_bits[21]=self.sender_id&0xFF;
 
-	memcpy(&f_bits[8], c_bits, 36);
+		f_bits[22]=self.recipient_id>>16;
+		f_bits[23]=self.recipient_id>>8;
+		f_bits[24]=self.recipient_id&0xFF;
 
-	f_bits[95]=t_crc>>8;
-	f_bits[96]=t_crc&0xFF;
+		//10 reserved bytes
+
+		memcpy(&f_bits[35], bits, RAW_BYTES);
+
+		t_crc=crc_16(bits, 51);
+		f_bits[95]=t_crc>>8;
+		f_bits[96]=t_crc&0xFF;
+	}
 }
 
 void extractFields(uint8_t* stream)
@@ -426,13 +433,10 @@ void extractFields(uint8_t* stream)
 	rcv.enc_type=(stream[0]>>4)&3;
 	rcv.frame=((stream[0]&0x0F)<<8) | stream[1];
 
-	rcv.sender_id=(stream[2]<<16) | (stream[3]<<8) | stream[4];
-	rcv.recipient_id=(stream[5]<<16) | (stream[6]<<8) | stream[7];
+	rcv.sender_id=(stream[19]<<16) | (stream[20]<<8) | stream[21];
+	rcv.recipient_id=(stream[22]<<16) | (stream[23]<<8) | stream[24];
 
-	for(uint8_t i=0; i<32; i+=2)
-	{
-		rcv_voice[i/2]=stream[8+i];
-	}
+	memcpy(rcv_voice, &stream[35], RAW_BYTES);
 }
 
 //------------------------------SOUND PROCESSING------------------------------
@@ -701,12 +705,12 @@ void Si_GetInfo(uint8_t *resp)
 //------------------------------RF SWITCH FUNCS------------------------------
 static void RF_SetTX(void)
 {
-	if(HW_VER<=11)
+	if(HW_VER<=11)		//1.1 and older HW versions had CG2179M2 RF switch
 	{
 		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 1);
 		HAL_GPIO_WritePin(TRX_TX_SW_GPIO_Port, TRX_TX_SW_Pin, 0);
 	}
-	else if(HW_VER==12)
+	else if(HW_VER==12)	//upgraded to HMC546MS8GETR
 	{
 		HAL_GPIO_WritePin(TRX_RX_SW_GPIO_Port, TRX_RX_SW_Pin, 1);
 	}
@@ -1431,13 +1435,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 				;//TODO: AES goes here
 
 			//calculate CRC16
-			t_crc=crc_16(bits, RAW_BYTES);
+			//t_crc=crc_16(bits, RAW_BYTES);
 
-			//encode bitstream
-			encodeBits(bits, c_bits);
+			//encode vocoder bitstream
+			//encodeBits(bits, c_bits);
 
 			//form frame
-			formFrame();
+			formFrame(self.enc_type);
 
 			//transmit it already, for fucks sake!!
 			Si_TxData(f_bits, PLOAD_LEN, 0);
@@ -1461,13 +1465,13 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 				;//TODO: AES goes here
 
 			//calculate CRC16
-			t_crc=crc_16(bits, RAW_BYTES);
+			//t_crc=crc_16(bits, RAW_BYTES);
 
-			//encode bitstream
-			encodeBits(bits, c_bits);
+			//encode vocoder bitstream
+			//encodeBits(bits, c_bits);
 
 			//form frame
-			formFrame();
+			formFrame(self.enc_type);
 
 			//transmit it already, for fucks sake!!
 			Si_TxData(f_bits, PLOAD_LEN, 0);
