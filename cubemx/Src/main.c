@@ -60,7 +60,7 @@
 #include "codeplug.h"
 
 #define FW_VER			1020					//firmware version
-#define HW_VER			11						//11 - v1.1, 12 - v1.2
+#define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53
 
@@ -422,8 +422,15 @@ void formFrame(uint8_t encr_type)
 		memcpy(&f_bits[35], bits, RAW_BYTES);
 
 		t_crc=crc_16(bits, 51);
-		f_bits[95]=t_crc>>8;
-		f_bits[96]=t_crc&0xFF;
+		f_bits[52]=t_crc>>8;
+		f_bits[53]=t_crc&0xFF;
+
+		//Error Correcting Coding follows
+		//TODO
+	}
+	//else if(encr_type==ENC_STATIC)
+	{
+		//TODO: AES goes here
 	}
 }
 
@@ -700,6 +707,18 @@ void Si_GetInfo(uint8_t *resp)
 	SPI_Send(&cmd, 1);
 	SPI_WaitForCTS();
 	SPI_GetResponse(8, resp);
+}
+
+uint8_t checkTRX(void)
+{
+	uint8_t info[8];
+
+	Si_GetInfo(info);
+
+	if(info[1]==0x44 && info[2]==0x63)
+		return 0;
+
+	return 1;
 }
 
 //------------------------------RF SWITCH FUNCS------------------------------
@@ -1147,16 +1166,16 @@ void displayEIN(uint8_t* src)
 	}
 }
 
-uint8_t checkTRX(void)
+void displayVersion(void)
 {
-	uint8_t info[8];
+	TFT_Clear(CL_WHITE);
 
-	Si_GetInfo(info);
-
-	if(info[1]==0x44 && info[2]==0x63)
-		return 0;
-
-	return 1;
+	TFT_PutStrCenteredBold(30, "HW_VER", 1, 0);
+	sprintf(text_line, "%d", HW_VER);
+	TFT_PutStrCentered(30+16, text_line, 1, 0);
+	TFT_PutStrCenteredBold(30+16*2, "FW_VER", 1, 0);
+	sprintf(text_line, "%d", FW_VER);
+	TFT_PutStrCentered(30+16*3, text_line, 1, 0);
 }
 
 void displayTRXInfo(void)
@@ -1430,16 +1449,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 			codec2_encode(cod, bits, pr_buffer);
 			codec2_encode(cod, &bits[8], &pr_buffer[FRAMESIZE/2]);
 
-			//ENC_TYPE==0 means no encryption
-			if(self.enc_type)
-				;//TODO: AES goes here
-
-			//calculate CRC16
-			//t_crc=crc_16(bits, RAW_BYTES);
-
-			//encode vocoder bitstream
-			//encodeBits(bits, c_bits);
-
 			//form frame
 			formFrame(self.enc_type);
 
@@ -1459,16 +1468,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 			processBuff(0);
 			codec2_encode(cod, bits, pr_buffer);
 			codec2_encode(cod, &bits[8], &pr_buffer[FRAMESIZE/2]);
-
-			//ENC_TYPE==0 means no encryption
-			if(self.enc_type)
-				;//TODO: AES goes here
-
-			//calculate CRC16
-			//t_crc=crc_16(bits, RAW_BYTES);
-
-			//encode vocoder bitstream
-			//encodeBits(bits, c_bits);
 
 			//form frame
 			formFrame(self.enc_type);
@@ -1633,6 +1632,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			playTone("tones/ready.raw");
 			buff_num=0;
 			adc_busy=1;
+			//TODO: add a small delay here for the sound to be played BEFORE we start collecting ADC data
 			HAL_ADC_Start_DMA(&hadc1, buffer_1, FRAMESIZE);
 			RF_SetTX();
 		}
@@ -1644,7 +1644,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 
 		rx_reload_pend=1;
-		HAL_NVIC_DisableIRQ(EXTI0_IRQn);
+		HAL_NVIC_DisableIRQ(EXTI0_IRQn);	//anti-interference pick up on the PTT line
 	}
 }
 //-----------------------------ADXL345-----------------------------
@@ -1673,6 +1673,7 @@ uint8_t ADXL_ReadReg(uint8_t dev_addr, uint8_t reg)
 }
 
 //-----------------------------SPEAKER-----------------------------
+#if HW_VERSION < 12
 void SPK_Enabled(uint8_t ena)
 {
 	if(ena)
@@ -1680,7 +1681,7 @@ void SPK_Enabled(uint8_t ena)
 	else
 		HAL_GPIO_WritePin(SPK_SDN_GPIO_Port, SPK_SDN_Pin, 1);
 }
-
+#endif
 //------------------------------DEBUG------------------------------
 //
 //
@@ -1872,7 +1873,9 @@ int main(void)
   TFT_PutStrBold(128-48, 160-20, "Opcje", 1, CL_BLACK);
 
   //unmute the speaker and beep happily
-  SPK_Enabled(1);
+  #if HW_VER < 12
+  	  SPK_Enabled(1);
+  #endif
   playTone("tones/ready.raw");
 
   //TEST - ADXL345
