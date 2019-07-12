@@ -422,8 +422,8 @@ void formFrame(uint8_t encr_type)
 		memcpy(&f_bits[35], bits, RAW_BYTES);
 
 		t_crc=crc_16(bits, 51);
-		f_bits[52]=t_crc>>8;
-		f_bits[53]=t_crc&0xFF;
+		f_bits[51]=t_crc>>8;
+		f_bits[52]=t_crc&0xFF;
 
 		//Error Correcting Coding follows
 		//TODO
