@@ -59,7 +59,7 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1020					//firmware version
+#define FW_VER			1030					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53
@@ -421,7 +421,7 @@ void formFrame(uint8_t encr_type)
 
 		memcpy(&f_bits[35], bits, RAW_BYTES);
 
-		t_crc=crc_16(bits, 51);
+		t_crc=crc_16(f_bits, 51);
 		f_bits[51]=t_crc>>8;
 		f_bits[52]=t_crc&0xFF;
 
