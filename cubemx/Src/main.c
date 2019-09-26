@@ -59,7 +59,7 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1030					//firmware version
+#define FW_VER			1040					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53
@@ -68,7 +68,7 @@
 #define	RAW_BYTES		8*2
 #define	CRC_LEN			2
 #define	ENC_LEN			(RAW_BYTES)*2
-#define	PLOAD_LEN		97						//TODO: change to 93 (0x5D)
+#define	PLOAD_LEN		93						//TODO: change to 93 (0x5D) - was 97
 
 #define	DC_OFFSET		2040					//input signal DC offset
 
