@@ -27,8 +27,10 @@
 #define NUM_CHANNELS					6
 #define K_DESCR							"descr"
 #define DESCR							7
-#define K_FREQ							"freq"
-#define FREQ							8
+#define K_FREQ_RX						"freq_rx"
+#define FREQ_RX							81
+#define K_FREQ_TX						"freq_tx"
+#define FREQ_TX							82
 #define K_ENCR							"encr"
 #define ENCR							9
 #define K_GPS							"gps"

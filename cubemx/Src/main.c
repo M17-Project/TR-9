@@ -68,7 +68,7 @@
 #define	RAW_BYTES		8*2
 #define	CRC_LEN			2
 #define	ENC_LEN			(RAW_BYTES)*2
-#define	PLOAD_LEN		97
+#define	PLOAD_LEN		97						//TODO: change to 93 (0x5D)
 
 #define	DC_OFFSET		2040					//input signal DC offset
 
@@ -198,7 +198,8 @@ volatile uint8_t rcv_voice[RAW_BYTES];
 struct CHANNEL_DATA {
 	volatile uint8_t		name[MAX_NAME_LEN];		//channel name
 	volatile uint8_t		descr[MAX_NAME_LEN];	//channel description
-	volatile uint32_t		freq;					//frequency in Hz
+	volatile uint32_t		freq_rx;				//RX frequency in Hz
+	volatile uint32_t		freq_tx;				//TX frequency in Hz
 	volatile uint8_t		enc_type;				//encryption type
 	volatile uint8_t		gps;					//gps data transmission type
 	volatile uint16_t		tg_id;					//talkgroup ID
@@ -230,7 +231,7 @@ struct ACTIVE_CHANNEL_DATA {
 	struct CHANNEL_DATA channel;
 };
 
-struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, ENC_NONE, GPS_NONE, TALKGROUP_NONE};
+struct ACTIVE_CHANNEL_DATA active_channel={0, 0, "NONE", "-", 435000000, 435000000, ENC_NONE, GPS_NONE, TALKGROUP_NONE};
 
 //RADIO STATE
 volatile uint8_t r_initd=0;					//initialized?
@@ -393,6 +394,24 @@ void encodeBits(const uint8_t *inp, uint8_t *outp)
 		outp[i]=inp[i/2];
 		outp[i+1]=ecc_16_8_table[inp[i/2]];
 	}
+}
+
+void packData(uint8_t* dest, uint8_t* src, uint8_t len)
+{
+    memcpy(dest, src, 4);
+    dest[1]|=(src[4]<<2)&0b11000000;
+    dest[2]|=(src[4]<<4)&0b11000000;
+    dest[3]|=(src[4]<<6)&0b11000000;
+
+    uint8_t d=4;
+
+    for(uint8_t i=5; i<len; i+=4, d+=3)
+    {
+        memcpy(&dest[d], &src[i], 3);
+        dest[d+0]|=(src[i+3]<<2)&0b11000000;
+        dest[d+1]|=(src[i+3]<<4)&0b11000000;
+        dest[d+2]|=(src[i+3]<<6)&0b11000000;
+    }
 }
 
 void formFrame(uint8_t encr_type)
@@ -1209,7 +1228,7 @@ void TFT_DisplayActiveChannelData(struct CODEPLUG_DATA *cd, struct ACTIVE_CHANNE
 
 	TFT_PutStrCenteredBold(base, cd->bank[acd->bank_num].name, 1, 0);
 	TFT_PutStrCentered(base+18, acd->channel.name, 1, 0);
-	gcvt(acd->channel.freq/1000000.0, 7, lin);
+	gcvt(acd->channel.freq_tx/1000000.0, 7, lin);
 	TFT_PutStrCentered(base+18*2, lin, 1, 0);
 	if(acd->channel.enc_type)
 		TFT_PutStrCenteredBold(base+18*3, "ENCR", 1, CL_DARKGREEN);
@@ -1264,8 +1283,10 @@ uint8_t extractType(uint8_t *line)
 		return NUM_CHANNELS;
 	else if(strstr(line, K_NUM) != NULL)
 		return NUM;
-	else if(strstr(line, K_FREQ) != NULL)
-		return FREQ;
+	else if(strstr(line, K_FREQ_RX) != NULL)
+		return FREQ_RX;
+	else if(strstr(line, K_FREQ_TX) != NULL)
+		return FREQ_TX;
 	else if(strstr(line, K_ENCR) != NULL)
 		return ENCR;
 	else if(strstr(line, K_GPS) != NULL)
@@ -1369,9 +1390,14 @@ uint8_t LoadCodeplug(uint8_t* codeplug_file_path, struct CODEPLUG_DATA *cp)
 					extractString(file_line[line], cp->bank[bank_num-1].channel[channel_num-1].descr);
 			break;
 
-			case FREQ:
+			case FREQ_RX:
 				if(in_channel)
-					cp->bank[bank_num-1].channel[channel_num-1].freq=extractValue(file_line[line]);
+					cp->bank[bank_num-1].channel[channel_num-1].freq_rx=extractValue(file_line[line]);
+			break;
+
+			case FREQ_TX:
+				if(in_channel)
+					cp->bank[bank_num-1].channel[channel_num-1].freq_tx=extractValue(file_line[line]);
 			break;
 
 			case ENCR:
@@ -1408,7 +1434,8 @@ uint8_t SetActiveChannel(struct CODEPLUG_DATA *cp, uint8_t b, uint8_t ch, struct
 		acd->ch_num=ch;
 		memcpy(acd->channel.name, cp->bank[b].channel[ch].name, strlen(cp->bank[b].channel[ch].name));
 		memcpy(acd->channel.descr, cp->bank[b].channel[ch].descr, strlen(cp->bank[b].channel[ch].descr));
-		acd->channel.freq=cp->bank[b].channel[ch].freq;
+		acd->channel.freq_rx=cp->bank[b].channel[ch].freq_rx;
+		acd->channel.freq_tx=cp->bank[b].channel[ch].freq_tx;
 		acd->channel.enc_type=cp->bank[b].channel[ch].enc_type;
 		acd->channel.gps=cp->bank[b].channel[ch].gps;
 		acd->channel.tg_id=cp->bank[b].channel[ch].tg_id;
@@ -1519,7 +1546,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		if(kbd_rcv_val=='0')
 		{
 			SetActiveChannel(&codeplug, 0, 0, &active_channel);
-			Si_FreqSet(active_channel.channel.freq);
+			Si_FreqSet(active_channel.channel.freq_rx);
 
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
@@ -1527,7 +1554,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		else if(kbd_rcv_val=='1')
 		{
 			SetActiveChannel(&codeplug, 0, 1, &active_channel);
-			Si_FreqSet(active_channel.channel.freq);
+			Si_FreqSet(active_channel.channel.freq_rx);
 
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
@@ -1535,7 +1562,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		else if(kbd_rcv_val=='2')
 		{
 			SetActiveChannel(&codeplug, 0, 2, &active_channel);
-			Si_FreqSet(active_channel.channel.freq);
+			Si_FreqSet(active_channel.channel.freq_rx);
 
 			TFT_RectangleFilled(0, 30, 127, 120, CL_WHITE);
 			TFT_DisplayActiveChannelData(&codeplug, &active_channel);
@@ -1629,6 +1656,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		if(!dac_busy)
 		{
+			Si_FreqSet(active_channel.channel.freq_tx);
 			playTone("tones/ready.raw");
 			buff_num=0;
 			adc_busy=1;
@@ -1835,7 +1863,7 @@ int main(void)
 
   //set radio related stuff
   SetActiveChannel(&codeplug, 0, 0, &active_channel);
-  Si_FreqSet(active_channel.channel.freq);
+  Si_FreqSet(active_channel.channel.freq_rx);
   RF_SetRX();
   Si_StartRx(0, PLOAD_LEN);
   r_initd=1;	//we need this to avoid getting Si IRQ request right after power-up sequence
@@ -1926,7 +1954,7 @@ int main(void)
 			  Si_Interrupts(NULL);
 			  Si_SetTxPower(tx_pwr);
 			  Si_Sleep();
-			  Si_FreqSet(active_channel.channel.freq);
+			  Si_FreqSet(active_channel.channel.freq_rx);
 			  RF_SetRX();
 			  Si_StartRx(0, PLOAD_LEN);
 			  r_initd=1;
