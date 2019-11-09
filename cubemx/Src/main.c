@@ -59,10 +59,11 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1040					//firmware version
+#define FW_VER			1050					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
-#define	ADXL_ADDR		0x53
+#define	ADXL_ADDR		0x53					//ADXL address
+#define SHOW_DBG_INFO	1						//show version info on spashscreen?
 
 #define	FRAMESIZE		160*2					//20+20=40ms frame
 #define	RAW_BYTES		8*2
@@ -1072,16 +1073,16 @@ void TFT_DisplaySplash(uint8_t* img_path)
 
 	if(f_open(&myFile, img_path, FA_OPEN_EXISTING | FA_READ) == FR_OK)
 	{
-		if(f_read(&myFile, raw_image, 128*149*3, NULL) == FR_OK)
+		if(f_read(&myFile, raw_image, 128*160*3, NULL) == FR_OK)
 			f_close(&myFile);
 	}
 
 	for(uint8_t x=0; x<128; x++)
 	{
-		for(uint8_t y=0; y<149; y++)
+		for(uint8_t y=0; y<160; y++)
 		{
 			pix=TFT_RGBtoCol(raw_image[(y*128+x)*3], raw_image[(y*128+x)*3+1], raw_image[(y*128+x)*3+2]);
-			TFT_PutPixel(x, y+5, pix);
+			TFT_PutPixel(x, y, pix);
 		}
 	}
 }
