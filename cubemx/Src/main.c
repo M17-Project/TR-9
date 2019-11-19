@@ -59,11 +59,11 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1050					//firmware version
+#define FW_VER			1060					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53					//ADXL address
-#define SHOW_DBG_INFO	1						//show version info on spashscreen?
+#define SHOW_INFO		1						//show version info on spashscreen?
 
 #define	FRAMESIZE		160*2					//20+20=40ms frame
 #define	RAW_BYTES		8*2
@@ -1067,13 +1067,13 @@ void TFT_RectangleFilled(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint16_
 
 void TFT_DisplaySplash(uint8_t* img_path)
 {
-	uint8_t raw_image[128*160*3];
+	uint8_t raw_image[128*160*4];
 	uint16_t index=0;
 	uint16_t pix;
 
 	if(f_open(&myFile, img_path, FA_OPEN_EXISTING | FA_READ) == FR_OK)
 	{
-		if(f_read(&myFile, raw_image, 128*160*3, NULL) == FR_OK)
+		if(f_read(&myFile, raw_image, 128*160*4, NULL) == FR_OK)
 			f_close(&myFile);
 	}
 
@@ -1081,7 +1081,7 @@ void TFT_DisplaySplash(uint8_t* img_path)
 	{
 		for(uint8_t y=0; y<160; y++)
 		{
-			pix=TFT_RGBtoCol(raw_image[(y*128+x)*3], raw_image[(y*128+x)*3+1], raw_image[(y*128+x)*3+2]);
+			pix=TFT_RGBtoCol(raw_image[(y*128+x)*4], raw_image[(y*128+x)*4+1], raw_image[(y*128+x)*4+2]);
 			TFT_PutPixel(x, y, pix);
 		}
 	}
@@ -1884,8 +1884,18 @@ int main(void)
   //clear disp and show splash image
   TFT_Clear(CL_WHITE);
   TFT_DisplaySplash("splash.raw");
+
+  if(SHOW_INFO)
+  {
+  	  uint8_t t[16];
+  	  sprintf(t, "FW %d", FW_VER);
+  	  TFT_PutStr(2, 2, t, 1, CL_WHITE);
+  	  sprintf(t, "HW %d", HW_VER);
+  	  TFT_PutStr(2, 16+2, t, 1, CL_WHITE);
+  }
+
   TFT_SetBrght(255);
-  HAL_Delay(1000);
+  HAL_Delay(3000);
   TFT_SetBrght(0);
   TFT_Clear(CL_WHITE);
   TFT_SetBrght(255);
