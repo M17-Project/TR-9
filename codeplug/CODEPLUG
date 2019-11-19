@@ -1,0 +1,53 @@
+codeplug
+
+	author="SP5WWP"
+	version="19-11-2019_18:20:19"
+	num_banks=2
+
+bank
+	name="M17 CENTRUM"
+	num_channels=3
+
+	channel
+		name="K1"
+		descr="Repeater"
+		freq_rx=439075000
+		freq_tx=431475000
+		encr=0
+		gps=0
+	end
+
+	channel
+		name="K1S"
+		descr="TAKT SZYFR"
+		freq_rx=439575000
+		freq_tx=439575000
+		encr=1
+		gps=0
+	end
+	
+	channel
+		name="K2S"
+		descr="ZAPAS SZYFR"
+		freq_rx=430125000
+		freq_tx=430125000
+		encr=1
+		gps=0
+	end
+end
+
+bank
+	name="Repeaters"
+	num_channels=1
+	
+	channel
+		name="SR5ND"
+		descr=" "
+		freq_rx=439425000
+		freq_tx=431825000
+		encr=0
+		gps=0
+	end
+end
+end
+#codeplug end
