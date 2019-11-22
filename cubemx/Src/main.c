@@ -59,7 +59,7 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1060					//firmware version
+#define FW_VER			1070					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53					//ADXL address
@@ -69,7 +69,7 @@
 #define	RAW_BYTES		8*2
 #define	CRC_LEN			2
 #define	ENC_LEN			(RAW_BYTES)*2
-#define	PLOAD_LEN		93						//TODO: change to 93 (0x5D) - was 97
+#define	PLOAD_LEN		93						//
 
 #define	DC_OFFSET		2040					//input signal DC offset
 
@@ -265,7 +265,25 @@ uint16_t u_batt=0;			//raw adc value
 volatile float v_batt=0.0;	//calculated value (volts)
 
 //TEST
-//
+static const uint8_t hamming[16]=
+{
+	0b000,
+	0b110,
+	0b101,
+	0b011,
+	0b011,
+	0b101,
+	0b110,
+	0b000,
+	0b111,
+	0b001,
+	0b010,
+	0b100,
+	0b100,
+	0b010,
+	0b001,
+	0b111
+};
 
 /* USER CODE END PV */
 
@@ -388,16 +406,16 @@ uint16_t crc_16(const uint8_t *input_str, uint8_t num_bytes)
 	return crc;
 }
 
-void encodeBits(const uint8_t *inp, uint8_t *outp)
+/*void encodeBits(const uint8_t *inp, uint8_t *outp)
 {
 	for(uint8_t i=0; i<RAW_BYTES*2; i+=2)
 	{
 		outp[i]=inp[i/2];
 		outp[i+1]=ecc_16_8_table[inp[i/2]];
 	}
-}
+}*/
 
-void packData(uint8_t* dest, uint8_t* src, uint8_t len)
+/*void packData(uint8_t* dest, uint8_t* src, uint8_t len)
 {
     memcpy(dest, src, 4);
     dest[1]|=(src[4]<<2)&0b11000000;
@@ -413,7 +431,7 @@ void packData(uint8_t* dest, uint8_t* src, uint8_t len)
         dest[d+1]|=(src[i+3]<<4)&0b11000000;
         dest[d+2]|=(src[i+3]<<6)&0b11000000;
     }
-}
+}*/
 
 void formFrame(uint8_t encr_type)
 {
@@ -427,7 +445,7 @@ void formFrame(uint8_t encr_type)
 
 		f_bits[1]=self.frame&0xFF;
 
-		//17 null bytes
+		//16+1 null bytes
 
 		f_bits[19]=self.sender_id>>16;
 		f_bits[20]=self.sender_id>>8;
@@ -446,7 +464,22 @@ void formFrame(uint8_t encr_type)
 		f_bits[52]=t_crc&0xFF;
 
 		//Error Correcting Coding follows
-		//TODO
+		uint8_t j=53;
+		for(uint8_t i=0; i<40; i++)
+		{
+			f_bits[j]=(hamming[f_bits[i]>>4]<<3)|hamming[f_bits[i]&0x0F];
+			j++;
+		}
+		j=53;
+		for(uint8_t i=40; i<53; i++)
+		{
+			uint8_t v1=hamming[f_bits[i]>>4];
+			uint8_t v2=hamming[f_bits[i]&0xF];
+			f_bits[j]|=(v1<<6);							//AAXX XXXX
+			f_bits[j+1]|=(v2<<6);						//BBXX XXXX
+			f_bits[j+2]|=((v1>>2)<<7) | ((v2>>2)<<6);	//ABXX XXXX
+			j+=3;
+		}
 	}
 	//else if(encr_type==ENC_STATIC)
 	{
