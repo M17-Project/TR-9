@@ -59,7 +59,7 @@
 #include "fields.h"
 #include "codeplug.h"
 
-#define FW_VER			1070					//firmware version
+#define FW_VER			1080					//firmware version
 #define HW_VER			12						//11 - v1.1, 12 - v1.2
 #define	NO_ADXL			1						//no ADXL for testing
 #define	ADXL_ADDR		0x53					//ADXL address
@@ -87,9 +87,11 @@ DMA_HandleTypeDef hdma_adc2;
 CRC_HandleTypeDef hcrc;
 
 CRYP_HandleTypeDef hcryp;
-__ALIGN_BEGIN static const uint8_t pKeyCRYP[16] __ALIGN_END = {
+__ALIGN_BEGIN static const uint8_t pKeyCRYP[32] __ALIGN_END = {
                             0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                            0x00,0x00,0x00,0x00,0x00,0x00};
+                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                            0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                            0x00,0x00};
 __ALIGN_BEGIN static const uint8_t pInitVectCRYP[16] __ALIGN_END = {
                             0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                             0x00,0x00,0x00,0x00,0x00,0x00};
@@ -159,6 +161,7 @@ volatile struct CODEC2 *cod;
 //ENCRYPTION
 uint8_t key[32];							//key
 uint8_t iv[16];								//Initial Value
+uint8_t nonce[16];							//last nonce
 
 //CODEPLUG AUTHENTICATION TODO: fill this with real keys
 #include "codeplug_auth.h"
@@ -167,7 +170,7 @@ uint8_t iv[16];								//Initial Value
 volatile uint16_t t_crc=0;					//tail CRC-16
 uint8_t crc_tab16_init=0;
 uint16_t crc_tab16[256];
-#include "ecc_table.h"						//ECC precomputed table
+//#include "ecc_table.h"					//ECC precomputed table
 
 //CONSTANTS
 uint8_t EIN[12];							//Equipment Identity Number
@@ -320,6 +323,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN 0 */
 //--------------------------------CRYPTO-------------------------------
+//Generate 16-byte nonce
 void generateNonce(uint8_t* dest)
 {
 	uint32_t val[4]={0, 0, 0, 0};
@@ -435,55 +439,64 @@ uint16_t crc_16(const uint8_t *input_str, uint8_t num_bytes)
 
 void formFrame(uint8_t encr_type)
 {
-	//if(encr_type==ENC_NONE)
+	memset(f_bits, 0, PLOAD_LEN);
+
+	f_bits[0]|=self.content_type<<6;
+	f_bits[0]|=self.enc_type<<4;
+	f_bits[0]|=(self.frame>>8);
+
+	f_bits[1]=self.frame&0xFF;
+
+	//16+1 null bytes
+
+	f_bits[19]=self.sender_id>>16;
+	f_bits[20]=self.sender_id>>8;
+	f_bits[21]=self.sender_id&0xFF;
+
+	f_bits[22]=self.recipient_id>>16;
+	f_bits[23]=self.recipient_id>>8;
+	f_bits[24]=self.recipient_id&0xFF;
+
+	//10 reserved bytes
+
+	memcpy(&f_bits[35], bits, RAW_BYTES);
+
+	if(encr_type==ENC_STATIC_KEY)
 	{
-		memset(f_bits, 0, PLOAD_LEN);
+		//AES goes here
+		if(self.frame==0)
+			generateNonce(nonce);
+		hcryp.Init.pKey=key;
+		hcryp.Init.pInitVect=nonce;	//TODO: make it IV=nonce+framenumber
+		HAL_CRYP_Init(&hcryp);
 
-		f_bits[0]|=self.content_type<<6;
-		f_bits[0]|=self.enc_type<<4;
-		f_bits[0]|=(self.frame>>8);
-
-		f_bits[1]=self.frame&0xFF;
-
-		//16+1 null bytes
-
-		f_bits[19]=self.sender_id>>16;
-		f_bits[20]=self.sender_id>>8;
-		f_bits[21]=self.sender_id&0xFF;
-
-		f_bits[22]=self.recipient_id>>16;
-		f_bits[23]=self.recipient_id>>8;
-		f_bits[24]=self.recipient_id&0xFF;
-
-		//10 reserved bytes
-
-		memcpy(&f_bits[35], bits, RAW_BYTES);
-
-		t_crc=crc_16(f_bits, 51);
-		f_bits[51]=t_crc>>8;
-		f_bits[52]=t_crc&0xFF;
-
-		//Error Correcting Coding follows
-		uint8_t j=53;
-		for(uint8_t i=0; i<40; i++)
-		{
-			f_bits[j]=(hamming[f_bits[i]>>4]<<3)|hamming[f_bits[i]&0x0F];
-			j++;
-		}
-		j=53;
-		for(uint8_t i=40; i<53; i++)
-		{
-			uint8_t v1=hamming[f_bits[i]>>4];
-			uint8_t v2=hamming[f_bits[i]&0xF];
-			f_bits[j]|=(v1<<6);							//AAXX XXXX
-			f_bits[j+1]|=(v2<<6);						//BBXX XXXX
-			f_bits[j+2]|=((v1>>2)<<7) | ((v2>>2)<<6);	//ABXX XXXX
-			j+=3;
-		}
+		memcpy(&f_bits[2], nonce, 16);
+		f_bits[18]=0x01;	//KEY_ID=0x01 <- static key
+		uint8_t cryp_buff[32];
+		HAL_CRYP_AESCTR_Encrypt(&hcryp, &f_bits[19], 32, cryp_buff, 200);
+		memcpy(&f_bits[19], cryp_buff, 32);
 	}
-	//else if(encr_type==ENC_STATIC)
+
+	t_crc=crc_16(f_bits, 51);
+	f_bits[51]=t_crc>>8;
+	f_bits[52]=t_crc&0xFF;
+
+	//Error Correcting Coding follows
+	uint8_t j=53;
+	for(uint8_t i=0; i<40; i++)
 	{
-		//TODO: AES goes here
+		f_bits[j]=(hamming[f_bits[i]>>4]<<3)|hamming[f_bits[i]&0x0F];
+		j++;
+	}
+	j=53;
+	for(uint8_t i=40; i<53; i++)
+	{
+		uint8_t v1=hamming[f_bits[i]>>4];
+		uint8_t v2=hamming[f_bits[i]&0xF];
+		f_bits[j]|=(v1<<6);							//AAXX XXXX
+		f_bits[j+1]|=(v2<<6);						//BBXX XXXX
+		f_bits[j+2]|=((v1>>2)<<7) | ((v2>>2)<<6);	//ABXX XXXX
+		j+=3;
 	}
 }
 
@@ -2013,6 +2026,21 @@ int main(void)
 
 	  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
 	  HAL_Delay(500);
+
+	  //test
+	  /*uint8_t tst[PLOAD_LEN];
+	  uint8_t ctst[PLOAD_LEN];
+	  memset(tst, 0, PLOAD_LEN);
+	  memset(ctst, 0, PLOAD_LEN);
+	  memset(key, 0, 32);
+	  memset(iv, 0, 16);
+	  hcryp.Init.pKey=key;
+	  hcryp.Init.pInitVect=iv;
+	  HAL_CRYP_Init(&hcryp);
+	  HAL_CRYP_AESCTR_Encrypt(&hcryp, tst, 16, ctst, 200);
+	  Si_FreqSet(431475000);
+	  RF_SetTX();
+	  Si_TxData(ctst, PLOAD_LEN, 0);*/
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -2199,7 +2227,7 @@ static void MX_CRYP_Init(void)
 
   hcryp.Instance = CRYP;
   hcryp.Init.DataType = CRYP_DATATYPE_8B;
-  hcryp.Init.KeySize = CRYP_KEYSIZE_128B;
+  hcryp.Init.KeySize = CRYP_KEYSIZE_256B;
   hcryp.Init.pKey = (uint8_t *)pKeyCRYP;
   hcryp.Init.pInitVect = (uint8_t *)pInitVectCRYP;
   if (HAL_CRYP_Init(&hcryp) != HAL_OK)
