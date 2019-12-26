@@ -9,14 +9,15 @@ This is a complete SW4STM32 project for the TR-9 board.
 - Completely redesigned mainboard, everything done by hand 
 - Display and keyboard boards 
 - Added 3..5W RF output amplifier 
+- Bypass R20 and R23 with 33p caps 
+- Add 4.7k pull-up resistor for the PTT microswitch 
+- Started redrawing the schematics in KiCAD
 
 # TODO: 
 - Merge keyboard and display boards into one 
-- Bypass R20 and R23 with 33p caps 
 - Add PWR_ON signal for the GPS module 
-- Add 4.7k pull-up resistor for the PTT microswitch 
 - Remove 5V voltage regulator? 
-- Redraw the schematic and PCB using KiCAD to keep the project 100% open and editable   
+- Finish redrawing the schematics and PCB using KiCAD to keep the project 100% open and editable   
   
 - Implement hardware AES  
 - Add a GPS module  
