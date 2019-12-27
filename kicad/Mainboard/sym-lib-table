@@ -2,4 +2,5 @@
   (lib (name TR-9)(type Legacy)(uri ${KIPRJMOD}/TR-9.lib)(options "")(descr ""))
   (lib (name SamacSys_Parts)(type Legacy)(uri C:/Users/schmieder/Projekte/libraries/SamacSys_Parts.lib)(options "")(descr ""))
   (lib (name main-eagle-import)(type Legacy)(uri C:/Users/schmieder/Downloads/TR-9-master/eagle/Main/main-eagle-import.lib)(options "")(descr ""))
+  (lib (name Mainboard-rescue)(type Legacy)(uri ${KIPRJMOD}/Mainboard-rescue.lib)(options "")(descr ""))
 )
