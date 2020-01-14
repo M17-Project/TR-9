@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -451,8 +452,6 @@ Text GLabel 7100 3250 2    50   Input ~ 10
 SD_D0
 Text GLabel 7100 3350 2    50   Input ~ 10
 TFT_RST
-Text GLabel 7100 3450 2    50   Input ~ 10
-TFT_A0
 Text GLabel 7100 3850 2    50   Input ~ 10
 BLIGHT_CTRL
 Text GLabel 7100 4250 2    50   Input ~ 10
@@ -475,8 +474,6 @@ Wire Wire Line
 	6900 3250 7100 3250
 Wire Wire Line
 	6900 3350 7100 3350
-Wire Wire Line
-	6900 3450 7100 3450
 Wire Wire Line
 	6900 3850 7100 3850
 Wire Wire Line
@@ -699,7 +696,7 @@ Wire Wire Line
 Wire Wire Line
 	8300 1150 8400 1150
 Text Notes 3600 2850 0    50   ~ 10
-TODO: \n* add PWR_ON signal for the GPS module\n* Add pin names/functions
+TODO: \n* add PWR_ON signal for the GPS module\n* add pin names/functions\n* replace Q7 with logic-level  MOSFET
 $Comp
 L Mainboard-rescue:USBLC6-2SC6-ESD_Protection U2
 U 1 1 5DEBB47F

@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -451,8 +452,6 @@ Text GLabel 7100 3250 2    50   Input ~ 10
 SD_D0
 Text GLabel 7100 3350 2    50   Input ~ 10
 TFT_RST
-Text GLabel 7100 3450 2    50   Input ~ 10
-TFT_A0
 Text GLabel 7100 3850 2    50   Input ~ 10
 BLIGHT_CTRL
 Text GLabel 7100 4250 2    50   Input ~ 10
@@ -475,8 +474,6 @@ Wire Wire Line
 	6900 3250 7100 3250
 Wire Wire Line
 	6900 3350 7100 3350
-Wire Wire Line
-	6900 3450 7100 3450
 Wire Wire Line
 	6900 3850 7100 3850
 Wire Wire Line
@@ -699,7 +696,7 @@ Wire Wire Line
 Wire Wire Line
 	8300 1150 8400 1150
 Text Notes 3600 2850 0    50   ~ 10
-TODO: \n* add PWR_ON signal for the GPS module\n* Add pin names/functions
+TODO: \n* add PWR_ON signal for the GPS module\n* add pin names/functions
 $Comp
 L Mainboard-rescue:USBLC6-2SC6-ESD_Protection U2
 U 1 1 5DEBB47F
@@ -929,7 +926,7 @@ Wire Wire Line
 	6900 2650 7100 2650
 Wire Wire Line
 	6900 2750 7100 2750
-Text GLabel 1100 6900 0    50   Input ~ 10
+Text GLabel 1300 6900 0    50   Input ~ 10
 PTT
 Wire Wire Line
 	8450 5400 8650 5400
@@ -968,32 +965,6 @@ F 3 "" H 8300 5250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 4200 1550
-$Comp
-L Device:R_Small R?
-U 1 1 5E0DF68A
-P 1300 6900
-F 0 "R?" V 1104 6900 50  0000 C CNN
-F 1 "1k" V 1195 6900 50  0000 C CNN
-F 2 "" H 1300 6900 50  0001 C CNN
-F 3 "~" H 1300 6900 50  0001 C CNN
-	1    1300 6900
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1400 6900 1500 6900
-Wire Wire Line
-	1100 6900 1200 6900
-$Comp
-L Transistor_BJT:BC847 Q?
-U 1 1 5E0E8B40
-P 1700 6900
-F 0 "Q?" H 1891 6946 50  0000 L CNN
-F 1 "BC847" H 1891 6855 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 1900 6825 50  0001 L CIN
-F 3 "http://www.infineon.com/dgdl/Infineon-BC847SERIES_BC848SERIES_BC849SERIES_BC850SERIES-DS-v01_01-en.pdf?fileId=db3a304314dca389011541d4630a1657" H 1700 6900 50  0001 L CNN
-	1    1700 6900
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1900 6600 1800 6600
 Wire Wire Line
@@ -1039,4 +1010,17 @@ $EndComp
 Wire Wire Line
 	1800 7100 1800 7200
 NoConn ~ 4000 1550
+$Comp
+L Transistor_FET:BSS138 Q?
+U 1 1 5E22ECEC
+P 1700 6900
+F 0 "Q?" H 1906 6946 50  0000 L CNN
+F 1 "BSS138" H 1906 6855 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 1900 6825 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 1700 6900 50  0001 L CNN
+	1    1700 6900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 6900 1300 6900
 $EndSCHEMATC

@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -1003,7 +1004,7 @@ L Mainboard-rescue:R_Small-device R23
 U 1 1 5E0886AA
 P 3800 4800
 F 0 "R23" H 3859 4846 50  0000 L CNN
-F 1 "22k1" H 3859 4755 50  0000 L CNN
+F 1 "22k" H 3859 4755 50  0000 L CNN
 F 2 "" H 3800 4800 50  0001 C CNN
 F 3 "~" H 3800 4800 50  0001 C CNN
 	1    3800 4800

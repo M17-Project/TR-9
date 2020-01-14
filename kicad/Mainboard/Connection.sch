@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -97,51 +98,6 @@ Wire Wire Line
 Wire Wire Line
 	2900 1200 3000 1200
 $Comp
-L Mainboard-rescue:Conn_01x03-conn J14
-U 1 1 5E07E690
-P 4700 1300
-F 0 "J14" H 4780 1342 50  0000 L CNN
-F 1 "KBD_CONN" H 4780 1251 50  0000 L CNN
-F 2 "" H 4700 1300 50  0001 C CNN
-F 3 "~" H 4700 1300 50  0001 C CNN
-	1    4700 1300
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0108
-U 1 1 5E07ED77
-P 4400 1500
-F 0 "#PWR0108" H 4400 1250 50  0001 C CNN
-F 1 "GND" H 4405 1327 50  0000 C CNN
-F 2 "" H 4400 1500 50  0001 C CNN
-F 3 "" H 4400 1500 50  0001 C CNN
-	1    4400 1500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4400 1500 4400 1400
-Wire Wire Line
-	4400 1400 4500 1400
-$Comp
-L power:+3V3 #PWR0105
-U 1 1 5E07F45E
-P 4400 1100
-F 0 "#PWR0105" H 4400 950 50  0001 C CNN
-F 1 "+3V3" H 4415 1273 50  0000 C CNN
-F 2 "" H 4400 1100 50  0001 C CNN
-F 3 "" H 4400 1100 50  0001 C CNN
-	1    4400 1100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4400 1100 4400 1200
-Wire Wire Line
-	4400 1200 4500 1200
-Wire Wire Line
-	4500 1300 4400 1300
-Text GLabel 4400 1300 0    50   Input ~ 10
-USART3_RX
-$Comp
 L Mainboard-rescue:Micro_SD_Card-conn J15
 U 1 1 5E0856B5
 P 3350 2900
@@ -228,7 +184,7 @@ I2C1_SCL
 Text Notes 6050 3850 0    50   ~ 10
 ADDR 0x6B AG, 0x1E M
 Text Notes 2200 850  0    50   ~ 10
-TODO: Replace GPS and keyboard connectors
+TODO: Replace GPS connector
 $Comp
 L Sensor_Motion:LSM9DS1 U?
 U 1 1 5E067250

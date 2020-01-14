@@ -1,10 +1,11 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 4 7
-Title "Display Connector"
+Title "HMI Board Connector"
 Date ""
 Rev ""
 Comp ""
@@ -47,17 +48,6 @@ Wire Wire Line
 	3500 3800 3600 3800
 Text GLabel 3600 3800 2    50   Input ~ 10
 TFT_LED
-$Comp
-L Mainboard-rescue:Conn_01x08-conn J6
-U 1 1 5DF0C355
-P 5600 3600
-F 0 "J6" H 5518 4117 50  0000 C CNN
-F 1 "55746-0871" H 5518 4026 50  0000 C CNN
-F 2 "" H 5600 3600 50  0001 C CNN
-F 3 "~" H 5600 3600 50  0001 C CNN
-	1    5600 3600
-	-1   0    0    -1  
-$EndComp
 Text GLabel 6100 3300 2    50   Input ~ 10
 TFT_LED
 Text GLabel 6100 3400 2    50   Input ~ 10
@@ -68,8 +58,6 @@ Text GLabel 6100 3600 2    50   Input ~ 10
 SPI1_MOSI
 Text GLabel 6100 3700 2    50   Input ~ 10
 SPI1_SCK
-Text GLabel 6100 3800 2    50   Input ~ 10
-TFT_A0
 Wire Wire Line
 	5800 3300 6100 3300
 Wire Wire Line
@@ -81,35 +69,68 @@ Wire Wire Line
 Wire Wire Line
 	5800 3700 6100 3700
 Wire Wire Line
-	5800 3800 6100 3800
+	5800 3200 6000 3200
 Wire Wire Line
-	5800 3900 6000 3900
-Wire Wire Line
-	6000 3900 6000 3100
+	6000 3200 6000 3050
 $Comp
 L power:+3V3 #PWR049
 U 1 1 5DF0DB74
-P 6000 3100
-F 0 "#PWR049" H 6000 2950 50  0001 C CNN
-F 1 "+3V3" H 6015 3273 50  0000 C CNN
-F 2 "" H 6000 3100 50  0001 C CNN
-F 3 "" H 6000 3100 50  0001 C CNN
-	1    6000 3100
+P 6000 3050
+F 0 "#PWR049" H 6000 2900 50  0001 C CNN
+F 1 "+3V3" H 6015 3223 50  0000 C CNN
+F 2 "" H 6000 3050 50  0001 C CNN
+F 3 "" H 6000 3050 50  0001 C CNN
+	1    6000 3050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5800 4000 6000 4000
+	5800 4100 6000 4100
 Wire Wire Line
-	6000 4000 6000 4100
+	6000 4100 6000 4200
 $Comp
 L power:GND #PWR050
 U 1 1 5DF0E0D2
-P 6000 4100
-F 0 "#PWR050" H 6000 3850 50  0001 C CNN
-F 1 "GND" H 6005 3927 50  0000 C CNN
-F 2 "" H 6000 4100 50  0001 C CNN
-F 3 "" H 6000 4100 50  0001 C CNN
-	1    6000 4100
+P 6000 4200
+F 0 "#PWR050" H 6000 3950 50  0001 C CNN
+F 1 "GND" H 6005 4027 50  0000 C CNN
+F 2 "" H 6000 4200 50  0001 C CNN
+F 3 "" H 6000 4200 50  0001 C CNN
+	1    6000 4200
 	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 4000 6100 4000
+Text GLabel 6100 4000 2    50   Input ~ 10
+USART3_RX
+$Comp
+L power:GND #PWR?
+U 1 1 5E1E62B4
+P 6650 3900
+F 0 "#PWR?" H 6650 3650 50  0001 C CNN
+F 1 "GND" H 6655 3727 50  0000 C CNN
+F 2 "" H 6650 3900 50  0001 C CNN
+F 3 "" H 6650 3900 50  0001 C CNN
+	1    6650 3900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5800 3900 6200 3900
+Wire Wire Line
+	5800 3800 6200 3800
+Wire Wire Line
+	6200 3800 6200 3900
+Connection ~ 6200 3900
+Wire Wire Line
+	6200 3900 6650 3900
+$Comp
+L Connector_Generic:Conn_01x10 J?
+U 1 1 5E1EAE64
+P 5600 3700
+F 0 "J?" H 5518 2975 50  0000 C CNN
+F 1 "Conn_01x10" H 5518 3066 50  0000 C CNN
+F 2 "" H 5600 3700 50  0001 C CNN
+F 3 "~" H 5600 3700 50  0001 C CNN
+	1    5600 3700
+	-1   0    0    1   
 $EndComp
 $EndSCHEMATC
