@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -250,7 +251,6 @@ NoConn ~ 3100 3650
 NoConn ~ 3100 3750
 NoConn ~ 3100 3850
 NoConn ~ 3100 3950
-NoConn ~ 3100 4450
 NoConn ~ 3100 4550
 $Comp
 L power:+3V3 #PWR018
@@ -287,37 +287,13 @@ Wire Wire Line
 Wire Wire Line
 	6350 5500 6350 5400
 Text GLabel 4000 5450 3    50   Input ~ 10
-DAC_OUT
-Text GLabel 4100 5450 3    50   Input ~ 10
-SPI1_SCK
-Text GLabel 4200 5450 3    50   Input ~ 10
-SPI1_MISO
-Text GLabel 4300 5450 3    50   Input ~ 10
-SPI1_MOSI
-Text GLabel 4400 5450 3    50   Input ~ 10
-SPI1_CS
-Text GLabel 4600 5450 3    50   Input ~ 10
-TRX_SDN
-Text GLabel 4700 5450 3    50   Input ~ 10
-TRX_NIRQ
+AUDIO_DAC
 Text GLabel 5800 5450 3    50   Input ~ 10
 USART3_TX
 Text GLabel 5900 5450 3    50   Input ~ 10
 USART3_RX
 Wire Wire Line
 	4000 5350 4000 5450
-Wire Wire Line
-	4100 5350 4100 5450
-Wire Wire Line
-	4200 5350 4200 5450
-Wire Wire Line
-	4300 5350 4300 5450
-Wire Wire Line
-	4400 5350 4400 5450
-Wire Wire Line
-	4600 5350 4600 5450
-Wire Wire Line
-	4700 5350 4700 5450
 Wire Wire Line
 	5800 5350 5800 5450
 Wire Wire Line
@@ -511,7 +487,6 @@ F 3 "" H 7750 2850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7750 2750 7750 2850
-NoConn ~ 6900 3050
 NoConn ~ 6900 3550
 NoConn ~ 6900 3650
 NoConn ~ 6900 3750
@@ -603,9 +578,6 @@ Wire Wire Line
 	6200 1450 6200 1550
 NoConn ~ 4300 1550
 NoConn ~ 4700 1550
-NoConn ~ 4800 1550
-NoConn ~ 4900 1550
-NoConn ~ 5000 1550
 NoConn ~ 5300 1550
 NoConn ~ 5400 1550
 NoConn ~ 6100 1550
@@ -644,56 +616,56 @@ NRST
 $Comp
 L Mainboard-rescue:Conn_01x05-conn J1
 U 1 1 5DECD704
-P 8100 1050
-F 0 "J1" H 8018 625 50  0000 C CNN
-F 1 "SWD" H 8018 716 50  0000 C CNN
-F 2 "" H 8100 1050 50  0001 C CNN
-F 3 "~" H 8100 1050 50  0001 C CNN
-	1    8100 1050
+P 7900 1300
+F 0 "J1" H 7818 875 50  0000 C CNN
+F 1 "SWD" H 7818 966 50  0000 C CNN
+F 2 "" H 7900 1300 50  0001 C CNN
+F 3 "~" H 7900 1300 50  0001 C CNN
+	1    7900 1300
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:+3V3 #PWR02
 U 1 1 5DECE401
-P 8400 750
-F 0 "#PWR02" H 8400 600 50  0001 C CNN
-F 1 "+3V3" H 8415 923 50  0000 C CNN
-F 2 "" H 8400 750 50  0001 C CNN
-F 3 "" H 8400 750 50  0001 C CNN
-	1    8400 750 
+P 8200 1000
+F 0 "#PWR02" H 8200 850 50  0001 C CNN
+F 1 "+3V3" H 8215 1173 50  0000 C CNN
+F 2 "" H 8200 1000 50  0001 C CNN
+F 3 "" H 8200 1000 50  0001 C CNN
+	1    8200 1000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8300 850  8400 850 
+	8100 1100 8200 1100
 Wire Wire Line
-	8400 850  8400 750 
+	8200 1100 8200 1000
 $Comp
 L power:GND #PWR04
 U 1 1 5DED1019
-P 8400 1350
-F 0 "#PWR04" H 8400 1100 50  0001 C CNN
-F 1 "GND" H 8405 1177 50  0000 C CNN
-F 2 "" H 8400 1350 50  0001 C CNN
-F 3 "" H 8400 1350 50  0001 C CNN
-	1    8400 1350
+P 8200 1600
+F 0 "#PWR04" H 8200 1350 50  0001 C CNN
+F 1 "GND" H 8205 1427 50  0000 C CNN
+F 2 "" H 8200 1600 50  0001 C CNN
+F 3 "" H 8200 1600 50  0001 C CNN
+	1    8200 1600
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8300 1250 8400 1250
+	8100 1500 8200 1500
 Wire Wire Line
-	8400 1250 8400 1350
-Text GLabel 8400 950  2    50   Input ~ 10
+	8200 1500 8200 1600
+Text GLabel 8200 1200 2    50   Input ~ 10
 SWDIO
-Text GLabel 8400 1050 2    50   Input ~ 10
+Text GLabel 8200 1300 2    50   Input ~ 10
 SWCLK
-Text GLabel 8400 1150 2    50   Input ~ 10
+Text GLabel 8200 1400 2    50   Input ~ 10
 NRST
 Wire Wire Line
-	8300 950  8400 950 
+	8100 1200 8200 1200
 Wire Wire Line
-	8300 1050 8400 1050
+	8100 1300 8200 1300
 Wire Wire Line
-	8300 1150 8400 1150
+	8100 1400 8200 1400
 Text Notes 3600 2850 0    50   ~ 10
 TODO: \n* add PWR_ON signal for the GPS module\n* add pin names/functions
 $Comp
@@ -1022,4 +994,43 @@ F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 1700 6900 50  000
 $EndComp
 Wire Wire Line
 	1500 6900 1300 6900
+Wire Wire Line
+	4100 5450 4100 5350
+Text GLabel 4100 5450 3    50   Input ~ 10
+PA_RAMP
+Wire Wire Line
+	2800 4450 3100 4450
+Text GLabel 2800 4450 0    50   Input ~ 10
+ADC3_1
+Text Notes 850  4600 0    50   ~ 0
+ADC1_0    Microphone input\nADC3_1    FM demod input\nADC2_3    Battery voltage monitor
+Wire Notes Line
+	850  4350 2250 4350
+Wire Notes Line
+	2250 4350 2250 4600
+Wire Notes Line
+	2250 4600 850  4600
+Wire Notes Line
+	850  4600 850  4350
+NoConn ~ 4600 5350
+NoConn ~ 4700 5350
+NoConn ~ 4200 5350
+NoConn ~ 4300 5350
+NoConn ~ 4400 5350
+Wire Wire Line
+	4800 1450 4800 1550
+Wire Wire Line
+	4900 1450 4900 1550
+Wire Wire Line
+	5000 1450 5000 1550
+Text GLabel 4800 1450 1    50   Input ~ 10
+SPI1_CS
+Text GLabel 4900 1450 1    50   Input ~ 10
+SPI1_SCK
+Text GLabel 5000 1450 1    50   Input ~ 10
+SPI1_MOSI
+Wire Wire Line
+	7100 3050 6900 3050
+Text GLabel 7100 3050 2    50   Input ~ 10
+GPS_EN
 $EndSCHEMATC
