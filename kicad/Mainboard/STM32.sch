@@ -996,18 +996,16 @@ Wire Wire Line
 	2800 4450 3100 4450
 Text GLabel 2800 4450 0    50   Input ~ 10
 ADC3_1
-Text Notes 850  4600 0    50   ~ 0
-ADC1_0    Microphone input\nADC3_1    FM demod input\nADC2_3    Battery voltage monitor
+Text Notes 800  4550 0    50   ~ 0
+ADC1_0  Microphone input\nADC3_1  FM demod input\nADC2_3  Battery voltage monitor
 Wire Notes Line
-	850  4350 2250 4350
+	800  4300 2200 4300
 Wire Notes Line
-	2250 4350 2250 4600
+	2200 4300 2200 4550
 Wire Notes Line
-	2250 4600 850  4600
+	2200 4550 800  4550
 Wire Notes Line
-	850  4600 850  4350
-NoConn ~ 4600 5350
-NoConn ~ 4700 5350
+	800  4550 800  4300
 NoConn ~ 4200 5350
 NoConn ~ 4300 5350
 NoConn ~ 4400 5350
@@ -1034,4 +1032,12 @@ Wire Wire Line
 NoConn ~ 6900 3350
 NoConn ~ 6900 3450
 NoConn ~ 6900 3850
+Wire Wire Line
+	4600 5450 4600 5350
+Wire Wire Line
+	4700 5450 4700 5350
+Text GLabel 4600 5450 3    50   Input ~ 10
+SPK_AMP_SEL
+Text GLabel 4700 5450 3    50   Input ~ 10
+FM_MOD_SEL
 $EndSCHEMATC
