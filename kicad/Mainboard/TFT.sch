@@ -4,7 +4,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 7
+Sheet 4 8
 Title "HMI Board Connector"
 Date ""
 Rev ""
@@ -101,7 +101,7 @@ $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
 Text GLabel 6750 4150 2    50   Input ~ 10
-USART3_RX
+UART7_RX
 $Comp
 L power:GND #PWR?
 U 1 1 5E1E62B4

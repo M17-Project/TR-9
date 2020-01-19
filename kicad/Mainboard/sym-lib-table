@@ -4,4 +4,5 @@
   (lib (name main-eagle-import)(type Legacy)(uri C:/Users/schmieder/Downloads/TR-9-master/eagle/Main/main-eagle-import.lib)(options "")(descr "")(disabled))
   (lib (name Mainboard-rescue)(type Legacy)(uri ${KIPRJMOD}/Mainboard-rescue.lib)(options "")(descr ""))
   (lib (name adf7021)(type Legacy)(uri ${KIPRJMOD}/adf7021.lib)(options "")(descr ""))
+  (lib (name ESP8266)(type Legacy)(uri ${KIPRJMOD}/ESP8266.lib)(options "")(descr ""))
 )
