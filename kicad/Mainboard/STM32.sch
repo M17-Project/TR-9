@@ -422,7 +422,7 @@ TFT_RST
 Text GLabel 4700 1450 1    50   Input ~ 10
 BLIGHT_CTRL
 Text GLabel 7100 4250 2    50   Input ~ 10
-SPI2_CS
+ADF_CE
 Text GLabel 7100 4350 2    50   Input ~ 10
 SPI2_MOSI
 Text GLabel 7100 4450 2    50   Input ~ 10
@@ -476,11 +476,6 @@ $EndComp
 Wire Wire Line
 	7750 2750 7750 2850
 NoConn ~ 6900 3550
-NoConn ~ 6900 3650
-NoConn ~ 6900 3750
-NoConn ~ 6900 3950
-NoConn ~ 6900 4050
-NoConn ~ 6900 4150
 NoConn ~ 6900 4650
 Text GLabel 6200 1450 1    50   Input ~ 10
 SWCLK
@@ -1023,7 +1018,6 @@ Wire Wire Line
 	5300 1450 5300 1550
 NoConn ~ 6900 3350
 NoConn ~ 6900 3450
-NoConn ~ 6900 3850
 Wire Wire Line
 	4600 5450 4600 5350
 Wire Wire Line
@@ -1072,4 +1066,25 @@ Wire Notes Line
 	2200 5300 2200 5450
 Wire Notes Line
 	800  5300 800  5450
+Text GLabel 7100 4150 2    50   Input ~ 10
+ADF_SLE
+Text GLabel 7100 4050 2    50   Input ~ 10
+ADF_SDATA
+Text GLabel 7100 3950 2    50   Input ~ 10
+ADF_SREAD
+Text GLabel 7100 3850 2    50   Input ~ 10
+ADF_SCLK
+Text GLabel 7100 3750 2    50   Input ~ 10
+ADF_SWD
+NoConn ~ 6900 3650
+Wire Wire Line
+	6900 3750 7100 3750
+Wire Wire Line
+	7100 3850 6900 3850
+Wire Wire Line
+	6900 3950 7100 3950
+Wire Wire Line
+	6900 4050 7100 4050
+Wire Wire Line
+	7100 4150 6900 4150
 $EndSCHEMATC

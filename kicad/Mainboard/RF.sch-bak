@@ -1097,12 +1097,6 @@ Wire Wire Line
 	6600 8350 6700 8350
 Wire Wire Line
 	6600 8450 6700 8450
-Text GLabel 6700 8250 2    50   Input ~ 0
-ADF_CLKOUT
-Text GLabel 6700 8350 2    50   Input ~ 0
-ADF_DATAIN
-Text GLabel 6700 8450 2    50   Input ~ 0
-ADF_DATAOUT
 $Comp
 L Device:C_Small C?
 U 1 1 5E28B5A1
@@ -1178,13 +1172,13 @@ Wire Wire Line
 	6250 9250 6350 9250
 Wire Wire Line
 	6250 9350 6350 9350
-Text GLabel 6350 9050 2    50   Input ~ 0
+Text GLabel 6350 9050 2    50   Input ~ 10
 ADF_SCLK
-Text GLabel 6350 9150 2    50   Input ~ 0
+Text GLabel 6350 9150 2    50   Input ~ 10
 ADF_SREAD
-Text GLabel 6350 9250 2    50   Input ~ 0
+Text GLabel 6350 9250 2    50   Input ~ 10
 ADF_SDATA
-Text GLabel 6350 9350 2    50   Input ~ 0
+Text GLabel 6350 9350 2    50   Input ~ 10
 ADF_SLE
 Wire Wire Line
 	7650 8650 7650 8750
@@ -1197,7 +1191,7 @@ Wire Wire Line
 	5750 9900 5750 10000
 Wire Wire Line
 	5750 10000 5850 10000
-Text GLabel 5850 10000 2    50   Input ~ 0
+Text GLabel 5850 10000 2    50   Input ~ 10
 ADF_CE
 NoConn ~ 5650 9900
 NoConn ~ 5450 9900
@@ -2226,7 +2220,7 @@ Wire Wire Line
 	6250 8650 7650 8650
 Wire Wire Line
 	6250 8550 6700 8550
-Text GLabel 6700 8550 2    50   Output ~ 0
+Text GLabel 6700 8550 2    50   Output ~ 10
 ADF_SWD
 $Comp
 L Device:R_Small R?
@@ -2279,7 +2273,7 @@ Wire Wire Line
 	4450 6300 4450 6400
 Wire Wire Line
 	3650 6300 3550 6300
-Text GLabel 2550 6300 0    50   Input ~ 0
+Text GLabel 2550 6300 0    50   Input ~ 10
 FM_MOD
 Text Notes 4350 5700 2    50   ~ 0
 Voltage at this point should be 0.2-2V
@@ -2460,4 +2454,10 @@ Wire Wire Line
 Connection ~ 13300 5800
 Wire Wire Line
 	13300 5800 13600 5800
+Text GLabel 6700 8250 2    50   Input ~ 10
+SPI1_SCK
+Text GLabel 6700 8350 2    50   Input ~ 10
+SPI2_MISO
+Text GLabel 6700 8450 2    50   Input ~ 10
+SPI2_MOSI
 $EndSCHEMATC
