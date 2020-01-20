@@ -101,7 +101,7 @@ $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
 Text GLabel 6750 4150 2    50   Input ~ 10
-UART4_RX
+UART7_RX
 $Comp
 L power:GND #PWR?
 U 1 1 5E1E62B4
