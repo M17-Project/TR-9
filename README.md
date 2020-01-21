@@ -4,13 +4,15 @@ TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can 
 
 # Hardware  
 The heart of TR-9 is STM32F777VI microcontroller. The handheld also contains:  
+*  a **DEM128128** TFT display  
 *  an **ESP8266-12F** WiFi module  
 *  an **ADF7021** chip for the RF  
 *  an **LSM9DS1** 9DoF sensor  
 *  a USB-micro connector for firmware update (so-called *DFU mode*)  
 *  an SD-micro card slot for codeplug and storage  
 *  a connector for a GNSS module  
-*  a Kenwood connector for external MIC/SPK
+*  a Kenwood connector for external MIC/SPK  
+
 RF output level can be regulated by the software. The maximum power output is 3 watts. The radio can work with both analog and digital modulation.  
 
 # Software
