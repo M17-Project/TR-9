@@ -1879,9 +1879,9 @@ L Oscillator:ABLNO X?
 U 1 1 5E993693
 P 7100 7250
 F 0 "X?" H 6950 7000 50  0000 R CNN
-F 1 "14.7456MHz" H 6950 6900 50  0000 R CNN
-F 2 "Oscillator:Oscillator_SMD_Abracon_ABLNO" H 7100 6900 50  0001 C CNN
-F 3 "https://abracon.com/Precisiontiming/ABLNO.pdf" H 6900 7350 50  0001 C CNN
+F 1 "12.288MHz" H 6950 6900 50  0000 R CNN
+F 2 "" H 7100 6900 50  0001 C CNN
+F 3 "" H 6900 7350 50  0001 C CNN
 	1    7100 7250
 	-1   0    0    -1  
 $EndComp
@@ -2460,4 +2460,6 @@ Text GLabel 6700 8350 2    50   Input ~ 10
 SPI2_MISO
 Text GLabel 6700 8450 2    50   Input ~ 10
 SPI2_MOSI
+Text Notes 7250 6800 0    50   ~ 0
+ECS-TXO-3225-122.8-TR
 $EndSCHEMATC
