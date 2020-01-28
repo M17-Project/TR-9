@@ -1,9 +1,10 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 7
+Sheet 1 8
 Title "TR-9 Mainboard"
 Date ""
 Rev ""
@@ -48,5 +49,11 @@ S 5950 850  950  400
 U 5E07B88F
 F0 "Connections" 50
 F1 "Connection.sch" 50
+$EndSheet
+$Sheet
+S 7000 850  1000 400 
+U 5E25615D
+F0 "Modules" 50
+F1 "Modules.sch" 50
 $EndSheet
 $EndSCHEMATC
