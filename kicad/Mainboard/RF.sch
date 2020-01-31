@@ -21,7 +21,7 @@ U 1 1 5DF2A0DB
 P 5500 3200
 F 0 "C43" H 5592 3246 50  0000 L CNN
 F 1 "10p" H 5592 3155 50  0000 L CNN
-F 2 "" H 5500 3200 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5500 3200 50  0001 C CNN
 F 3 "~" H 5500 3200 50  0001 C CNN
 	1    5500 3200
 	1    0    0    -1  
@@ -47,7 +47,7 @@ U 1 1 5DF2BD32
 P 5500 2800
 F 0 "C42" H 5408 2754 50  0000 R CNN
 F 1 "10p" H 5408 2845 50  0000 R CNN
-F 2 "" H 5500 2800 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5500 2800 50  0001 C CNN
 F 3 "~" H 5500 2800 50  0001 C CNN
 	1    5500 2800
 	1    0    0    1   
@@ -129,7 +129,7 @@ U 1 1 5DF3BA09
 P 6700 2700
 F 0 "C51" H 6792 2746 50  0000 L CNN
 F 1 "10p" H 6792 2655 50  0000 L CNN
-F 2 "" H 6700 2700 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6700 2700 50  0001 C CNN
 F 3 "~" H 6700 2700 50  0001 C CNN
 	1    6700 2700
 	1    0    0    -1  
@@ -173,7 +173,7 @@ U 1 1 5DF3FB1E
 P 6550 1900
 F 0 "C49" V 6321 1900 50  0000 C CNN
 F 1 "100p" V 6412 1900 50  0000 C CNN
-F 2 "" H 6550 1900 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6550 1900 50  0001 C CNN
 F 3 "~" H 6550 1900 50  0001 C CNN
 	1    6550 1900
 	0    1    1    0   
@@ -203,7 +203,7 @@ U 1 1 5DF42BEF
 P 6550 1550
 F 0 "C48" V 6321 1550 50  0000 C CNN
 F 1 "1000p" V 6412 1550 50  0000 C CNN
-F 2 "" H 6550 1550 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6550 1550 50  0001 C CNN
 F 3 "~" H 6550 1550 50  0001 C CNN
 	1    6550 1550
 	0    1    1    0   
@@ -224,8 +224,9 @@ U 1 1 5DF45264
 P 6550 1200
 F 0 "C47" V 6321 1200 50  0000 C CNN
 F 1 "1u/TA" V 6412 1200 50  0000 C CNN
-F 2 "" H 6550 1200 50  0001 C CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A" H 6550 1200 50  0001 C CNN
 F 3 "~" H 6550 1200 50  0001 C CNN
+F 4 "T491A105M016AT" H 6550 1200 50  0001 C CNN "Partno"
 	1    6550 1200
 	0    1    1    0   
 $EndComp
@@ -273,7 +274,7 @@ U 1 1 5DF4BCB3
 P 7200 2850
 F 0 "C53" H 7292 2896 50  0000 L CNN
 F 1 "12p" H 7292 2805 50  0000 L CNN
-F 2 "" H 7200 2850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7200 2850 50  0001 C CNN
 F 3 "~" H 7200 2850 50  0001 C CNN
 	1    7200 2850
 	1    0    0    -1  
@@ -300,7 +301,7 @@ U 1 1 5DF4F239
 P 7200 2150
 F 0 "C52" H 7292 2196 50  0000 L CNN
 F 1 "7p" H 7292 2105 50  0000 L CNN
-F 2 "" H 7200 2150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7200 2150 50  0001 C CNN
 F 3 "~" H 7200 2150 50  0001 C CNN
 	1    7200 2150
 	1    0    0    -1  
@@ -341,7 +342,7 @@ U 1 1 5DF55FBF
 P 7600 2150
 F 0 "C54" H 7692 2196 50  0000 L CNN
 F 1 "2p" H 7692 2105 50  0000 L CNN
-F 2 "" H 7600 2150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7600 2150 50  0001 C CNN
 F 3 "~" H 7600 2150 50  0001 C CNN
 	1    7600 2150
 	1    0    0    -1  
@@ -369,7 +370,7 @@ U 1 1 5DF59892
 P 7600 2850
 F 0 "C55" H 7692 2896 50  0000 L CNN
 F 1 "10p" H 7692 2805 50  0000 L CNN
-F 2 "" H 7600 2850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7600 2850 50  0001 C CNN
 F 3 "~" H 7600 2850 50  0001 C CNN
 	1    7600 2850
 	1    0    0    -1  
@@ -396,7 +397,7 @@ U 1 1 5DF5D6C5
 P 7800 2500
 F 0 "C57" V 7571 2500 50  0000 C CNN
 F 1 "1000p" V 7662 2500 50  0000 C CNN
-F 2 "" H 7800 2500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7800 2500 50  0001 C CNN
 F 3 "~" H 7800 2500 50  0001 C CNN
 	1    7800 2500
 	0    1    1    0   
@@ -450,7 +451,7 @@ U 1 1 5DF6D7A4
 P 9450 3600
 F 0 "C61" H 9542 3646 50  0000 L CNN
 F 1 "33p" H 9542 3555 50  0000 L CNN
-F 2 "" H 9450 3600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 9450 3600 50  0001 C CNN
 F 3 "~" H 9450 3600 50  0001 C CNN
 	1    9450 3600
 	1    0    0    -1  
@@ -486,7 +487,7 @@ U 1 1 5DF79664
 P 7800 4450
 F 0 "C58" V 7571 4450 50  0000 C CNN
 F 1 "1000p" V 7662 4450 50  0000 C CNN
-F 2 "" H 7800 4450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7800 4450 50  0001 C CNN
 F 3 "~" H 7800 4450 50  0001 C CNN
 	1    7800 4450
 	0    1    1    0   
@@ -517,7 +518,7 @@ U 1 1 5E0C71B9
 P 10450 3000
 F 0 "C63" V 10221 3000 50  0000 C CNN
 F 1 "1000p" V 10312 3000 50  0000 C CNN
-F 2 "" H 10450 3000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 10450 3000 50  0001 C CNN
 F 3 "~" H 10450 3000 50  0001 C CNN
 	1    10450 3000
 	0    1    1    0   
@@ -528,7 +529,7 @@ U 1 1 5E0C7CC9
 P 10650 3200
 F 0 "C64" H 10558 3154 50  0000 R CNN
 F 1 "9p1" H 10558 3245 50  0000 R CNN
-F 2 "" H 10650 3200 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 10650 3200 50  0001 C CNN
 F 3 "~" H 10650 3200 50  0001 C CNN
 	1    10650 3200
 	1    0    0    1   
@@ -540,7 +541,7 @@ Wire Wire Line
 Wire Wire Line
 	10150 3000 10250 3000
 $Comp
-L Device:L_Small L12
+L Mainboard-rescue:L_Small-Device L12
 U 1 1 5E06C206
 P 9300 4450
 F 0 "L12" V 9485 4450 50  0000 C CNN
@@ -557,7 +558,7 @@ Connection ~ 10250 3000
 Wire Wire Line
 	10250 3000 10350 3000
 $Comp
-L Device:L_Small L11
+L Mainboard-rescue:L_Small-Device L11
 U 1 1 5E075990
 P 9300 2150
 F 0 "L11" V 9485 2150 50  0000 C CNN
@@ -615,7 +616,7 @@ U 1 1 5E0D325A
 P 11350 3200
 F 0 "C67" H 11258 3154 50  0000 R CNN
 F 1 "9p1" H 11258 3245 50  0000 R CNN
-F 2 "" H 11350 3200 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 11350 3200 50  0001 C CNN
 F 3 "~" H 11350 3200 50  0001 C CNN
 	1    11350 3200
 	-1   0    0    1   
@@ -654,12 +655,12 @@ F 3 "" H 11850 3000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C60
+L Mainboard-rescue:C_Small-Device C60
 U 1 1 5E09CAD6
 P 8400 5150
 F 0 "C60" H 8308 5104 50  0000 R CNN
 F 1 "6p2" H 8308 5195 50  0000 R CNN
-F 2 "" H 8400 5150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8400 5150 50  0001 C CNN
 F 3 "~" H 8400 5150 50  0001 C CNN
 	1    8400 5150
 	1    0    0    1   
@@ -680,12 +681,12 @@ Wire Wire Line
 Wire Wire Line
 	8400 4450 8400 5050
 $Comp
-L Device:C_Small C62
+L Mainboard-rescue:C_Small-Device C62
 U 1 1 5E0ABA80
 P 10250 5150
 F 0 "C62" H 10158 5104 50  0000 R CNN
 F 1 "7p" H 10158 5195 50  0000 R CNN
-F 2 "" H 10250 5150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 10250 5150 50  0001 C CNN
 F 3 "~" H 10250 5150 50  0001 C CNN
 	1    10250 5150
 	-1   0    0    1   
@@ -718,23 +719,23 @@ Wire Wire Line
 	10650 3000 10800 3000
 Connection ~ 10650 3000
 $Comp
-L Device:C_Small C65
+L Mainboard-rescue:C_Small-Device C65
 U 1 1 5E0DF0F8
 P 10800 3800
 F 0 "C65" H 10708 3754 50  0000 R CNN
 F 1 "0.5p" H 10708 3845 50  0000 R CNN
-F 2 "" H 10800 3800 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 10800 3800 50  0001 C CNN
 F 3 "~" H 10800 3800 50  0001 C CNN
 	1    10800 3800
 	1    0    0    1   
 $EndComp
 $Comp
-L Device:C_Small C66
+L Mainboard-rescue:C_Small-Device C66
 U 1 1 5E0DFF97
 P 11200 3800
 F 0 "C66" H 11108 3754 50  0000 R CNN
 F 1 "0.5p" H 11108 3845 50  0000 R CNN
-F 2 "" H 11200 3800 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 11200 3800 50  0001 C CNN
 F 3 "~" H 11200 3800 50  0001 C CNN
 	1    11200 3800
 	-1   0    0    1   
@@ -752,12 +753,12 @@ Wire Wire Line
 Wire Wire Line
 	11100 3000 11200 3000
 $Comp
-L Device:D_x2_KCom_AAK D2
+L Mainboard-rescue:D_x2_KCom_AAK-Device D2
 U 1 1 5E112EDE
 P 11900 4400
 F 0 "D2" V 11946 4479 50  0000 L CNN
 F 1 "BAS70-05" V 11855 4479 50  0000 L CNN
-F 2 "" H 11900 4400 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 11900 4400 50  0001 C CNN
 F 3 "~" H 11900 4400 50  0001 C CNN
 	1    11900 4400
 	0    -1   -1   0   
@@ -775,7 +776,7 @@ Wire Wire Line
 Wire Wire Line
 	11900 4800 11900 4700
 $Comp
-L Device:R_Small R22
+L Mainboard-rescue:R_Small-Device R22
 U 1 1 5E11FF61
 P 10800 5150
 F 0 "R22" H 10741 5104 50  0000 R CNN
@@ -786,7 +787,7 @@ F 3 "~" H 10800 5150 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 $Comp
-L Device:R_Small R23
+L Mainboard-rescue:R_Small-Device R23
 U 1 1 5E1211C3
 P 11200 5150
 F 0 "R23" H 11141 5104 50  0000 R CNN
@@ -829,12 +830,12 @@ $EndComp
 Wire Wire Line
 	11200 5250 11200 5350
 $Comp
-L Device:C_Small C68
+L Mainboard-rescue:C_Small-Device C68
 U 1 1 5E138597
 P 12200 4600
 F 0 "C68" H 12292 4646 50  0000 L CNN
 F 1 "1n" H 12292 4555 50  0000 L CNN
-F 2 "" H 12200 4600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 12200 4600 50  0001 C CNN
 F 3 "~" H 12200 4600 50  0001 C CNN
 	1    12200 4600
 	1    0    0    -1  
@@ -857,7 +858,7 @@ Wire Wire Line
 Wire Wire Line
 	12200 4400 12200 4500
 $Comp
-L Device:R_Small R24
+L Mainboard-rescue:R_Small-Device R24
 U 1 1 5E14502A
 P 12400 4400
 F 0 "R24" V 12204 4400 50  0000 C CNN
@@ -871,7 +872,7 @@ Wire Wire Line
 	12200 4400 12300 4400
 Connection ~ 12200 4400
 $Comp
-L Device:R_Small R25
+L Mainboard-rescue:R_Small-Device R25
 U 1 1 5E14B92B
 P 12600 4600
 F 0 "R25" H 12541 4554 50  0000 R CNN
@@ -899,12 +900,12 @@ $EndComp
 Wire Wire Line
 	12600 4700 12600 4800
 $Comp
-L Device:C_Small C69
+L Mainboard-rescue:C_Small-Device C69
 U 1 1 5E1743FD
 P 12950 4600
 F 0 "C69" H 13042 4646 50  0000 L CNN
 F 1 "1n" H 13042 4555 50  0000 L CNN
-F 2 "" H 12950 4600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 12950 4600 50  0001 C CNN
 F 3 "~" H 12950 4600 50  0001 C CNN
 	1    12950 4600
 	1    0    0    -1  
@@ -929,7 +930,7 @@ Wire Wire Line
 Connection ~ 12600 4400
 Connection ~ 12950 4400
 $Comp
-L Amplifier_Operational:LM2904 U7
+L Mainboard-rescue:LM2904-Amplifier_Operational U7
 U 3 1 5E17FA82
 P 14350 3300
 F 0 "U7" H 14308 3346 50  0000 L CNN
@@ -940,7 +941,7 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 14350 3300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Amplifier_Operational:LM2904 U7
+L Mainboard-rescue:LM2904-Amplifier_Operational U7
 U 1 1 5E1834DE
 P 14050 4300
 F 0 "U7" H 14050 4667 50  0000 C CNN
@@ -951,7 +952,7 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 14050 4300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Amplifier_Operational:LM2904 U7
+L Mainboard-rescue:LM2904-Amplifier_Operational U7
 U 2 1 5E1864A9
 P 13900 5900
 F 0 "U7" H 13900 6267 50  0000 C CNN
@@ -988,12 +989,12 @@ $EndComp
 Wire Wire Line
 	14250 3600 14250 3700
 $Comp
-L Device:C_Small C70
+L Mainboard-rescue:C_Small-Device C70
 U 1 1 5E198F63
 P 13250 4600
 F 0 "C70" H 13342 4646 50  0000 L CNN
 F 1 "10n" H 13342 4555 50  0000 L CNN
-F 2 "" H 13250 4600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 13250 4600 50  0001 C CNN
 F 3 "~" H 13250 4600 50  0001 C CNN
 	1    13250 4600
 	1    0    0    -1  
@@ -1014,7 +1015,7 @@ $EndComp
 Wire Wire Line
 	13250 4700 13250 4800
 $Comp
-L Device:R_Small R26
+L Mainboard-rescue:R_Small-Device R26
 U 1 1 5E1AF072
 P 13250 4000
 F 0 "R26" H 13191 3954 50  0000 R CNN
@@ -1032,12 +1033,12 @@ Wire Wire Line
 Text GLabel 13250 3800 1    50   Input ~ 10
 PA_RAMP
 $Comp
-L Device:C_Small C71
+L Mainboard-rescue:C_Small-Device C71
 U 1 1 5E1BF2C8
 P 13900 3350
 F 0 "C71" H 13992 3396 50  0000 L CNN
 F 1 "10n" H 13992 3305 50  0000 L CNN
-F 2 "" H 13900 3350 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 13900 3350 50  0001 C CNN
 F 3 "~" H 13900 3350 50  0001 C CNN
 	1    13900 3350
 	-1   0    0    -1  
@@ -1093,12 +1094,12 @@ Wire Wire Line
 Wire Wire Line
 	6600 8450 6700 8450
 $Comp
-L Device:C_Small C46
+L Mainboard-rescue:C_Small-Device C46
 U 1 1 5E28B5A1
 P 6500 8750
 F 0 "C46" V 6450 8850 39  0000 C CNN
 F 1 "100n" V 6550 8900 39  0000 C CNN
-F 2 "" H 6500 8750 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6500 8750 50  0001 C CNN
 F 3 "~" H 6500 8750 50  0001 C CNN
 	1    6500 8750
 	0    1    1    0   
@@ -1109,12 +1110,12 @@ Wire Wire Line
 	7100 8750 7100 8950
 NoConn ~ 6250 8850
 $Comp
-L Device:C_Small C56
+L Mainboard-rescue:C_Small-Device C56
 U 1 1 5E2A6268
 P 7650 8850
 F 0 "C56" H 7742 8896 50  0000 L CNN
 F 1 "10n" H 7742 8805 50  0000 L CNN
-F 2 "" H 7650 8850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7650 8850 50  0001 C CNN
 F 3 "~" H 7650 8850 50  0001 C CNN
 	1    7650 8850
 	1    0    0    -1  
@@ -1254,12 +1255,12 @@ Wire Wire Line
 Wire Wire Line
 	4000 9350 4000 10000
 $Comp
-L Device:C_Small C33
+L Mainboard-rescue:C_Small-Device C33
 U 1 1 5E406A00
 P 3700 9650
 F 0 "C33" H 3792 9696 50  0000 L CNN
 F 1 "100n" H 3792 9605 50  0000 L CNN
-F 2 "" H 3700 9650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3700 9650 50  0001 C CNN
 F 3 "~" H 3700 9650 50  0001 C CNN
 	1    3700 9650
 	1    0    0    -1  
@@ -1280,7 +1281,7 @@ Wire Wire Line
 Wire Wire Line
 	3700 9550 3700 9250
 $Comp
-L Device:R_Small R11
+L Mainboard-rescue:R_Small-Device R11
 U 1 1 5E41DD9F
 P 3400 9650
 F 0 "R11" H 3459 9696 50  0000 L CNN
@@ -1306,12 +1307,12 @@ Wire Wire Line
 Wire Wire Line
 	3400 9550 3400 9150
 $Comp
-L Device:C_Small C28
+L Mainboard-rescue:C_Small-Device C28
 U 1 1 5E435E4D
 P 3100 9650
 F 0 "C28" H 3192 9696 50  0000 L CNN
 F 1 "10n" H 3192 9605 50  0000 L CNN
-F 2 "" H 3100 9650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3100 9650 50  0001 C CNN
 F 3 "~" H 3100 9650 50  0001 C CNN
 	1    3100 9650
 	1    0    0    -1  
@@ -1330,7 +1331,7 @@ $EndComp
 Wire Wire Line
 	3100 9750 3100 10000
 $Comp
-L Device:R_Small R9
+L Mainboard-rescue:R_Small-Device R9
 U 1 1 5E45AB33
 P 2800 9650
 F 0 "R9" H 2859 9696 50  0000 L CNN
@@ -1370,7 +1371,7 @@ Wire Wire Line
 Wire Wire Line
 	2700 8850 2700 9150
 $Comp
-L Device:L_Small L4
+L Mainboard-rescue:L_Small-Device L4
 U 1 1 5E4E9959
 P 2500 8950
 F 0 "L4" V 2450 8900 50  0000 L CNN
@@ -1389,12 +1390,12 @@ Wire Wire Line
 Wire Wire Line
 	2500 8750 4100 8750
 $Comp
-L Device:C_Small C25
+L Mainboard-rescue:C_Small-Device C25
 U 1 1 5E5058E7
 P 2500 9650
 F 0 "C25" H 2592 9696 50  0000 L CNN
 F 1 "6p8" H 2592 9605 50  0000 L CNN
-F 2 "" H 2500 9650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2500 9650 50  0001 C CNN
 F 3 "~" H 2500 9650 50  0001 C CNN
 	1    2500 9650
 	1    0    0    -1  
@@ -1416,12 +1417,12 @@ Wire Wire Line
 	2500 9150 2500 9550
 Connection ~ 2500 9150
 $Comp
-L Device:C_Small C23
+L Mainboard-rescue:C_Small-Device C23
 U 1 1 5E522131
 P 2250 8750
 F 0 "C23" H 2400 8650 50  0000 C CNN
 F 1 "4p7" H 2400 8850 50  0000 C CNN
-F 2 "" H 2250 8750 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2250 8750 50  0001 C CNN
 F 3 "~" H 2250 8750 50  0001 C CNN
 	1    2250 8750
 	0    -1   1    0   
@@ -1434,12 +1435,12 @@ Wire Wire Line
 Text GLabel 2050 8750 0    50   Input ~ 10
 RX
 $Comp
-L Device:C_Small C22
+L Mainboard-rescue:C_Small-Device C22
 U 1 1 5E565560
 P 2250 8550
 F 0 "C22" H 2150 8450 50  0000 C CNN
 F 1 "10p" H 2150 8650 50  0000 C CNN
-F 2 "" H 2250 8550 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2250 8550 50  0001 C CNN
 F 3 "~" H 2250 8550 50  0001 C CNN
 	1    2250 8550
 	0    -1   1    0   
@@ -1460,7 +1461,7 @@ F 3 "" H 4000 8650 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:L_Small L3
+L Mainboard-rescue:L_Small-Device L3
 U 1 1 5E5822DB
 P 2500 8350
 F 0 "L3" V 2450 8300 50  0000 L CNN
@@ -1476,12 +1477,12 @@ Connection ~ 2500 8550
 Wire Wire Line
 	2500 8550 4100 8550
 $Comp
-L Device:C_Small C21
+L Mainboard-rescue:C_Small-Device C21
 U 1 1 5E58FDA7
 P 2150 7850
 F 0 "C21" H 2242 7896 50  0000 L CNN
 F 1 "220p" H 2242 7805 50  0000 L CNN
-F 2 "" H 2150 7850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2150 7850 50  0001 C CNN
 F 3 "~" H 2150 7850 50  0001 C CNN
 	1    2150 7850
 	1    0    0    -1  
@@ -1500,12 +1501,12 @@ $EndComp
 Wire Wire Line
 	2150 7950 2150 8050
 $Comp
-L Device:C_Small C26
+L Mainboard-rescue:C_Small-Device C26
 U 1 1 5E5ACCE9
 P 2850 7850
 F 0 "C26" H 2942 7896 50  0000 L CNN
 F 1 "10n" H 2942 7805 50  0000 L CNN
-F 2 "" H 2850 7850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2850 7850 50  0001 C CNN
 F 3 "~" H 2850 7850 50  0001 C CNN
 	1    2850 7850
 	-1   0    0    -1  
@@ -1563,12 +1564,12 @@ F 3 "" H 3100 7750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C31
+L Mainboard-rescue:C_Small-Device C31
 U 1 1 5E606EE2
 P 3400 8050
 F 0 "C31" H 3492 8096 50  0000 L CNN
 F 1 "10n" H 3492 8005 50  0000 L CNN
-F 2 "" H 3400 8050 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3400 8050 50  0001 C CNN
 F 3 "~" H 3400 8050 50  0001 C CNN
 	1    3400 8050
 	1    0    0    -1  
@@ -1602,7 +1603,7 @@ Wire Wire Line
 Wire Wire Line
 	4100 8250 4000 8250
 $Comp
-L Device:R_Small R12
+L Mainboard-rescue:R_Small-Device R12
 U 1 1 5E657124
 P 3600 7150
 F 0 "R12" V 3404 7150 50  0000 C CNN
@@ -1613,12 +1614,12 @@ F 3 "~" H 3600 7150 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:C_Small C30
+L Mainboard-rescue:C_Small-Device C30
 U 1 1 5E65807F
 P 3300 7150
 F 0 "C30" V 3071 7150 50  0000 C CNN
 F 1 "100n" V 3162 7150 50  0000 C CNN
-F 2 "" H 3300 7150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3300 7150 50  0001 C CNN
 F 3 "~" H 3300 7150 50  0001 C CNN
 	1    3300 7150
 	0    1    1    0   
@@ -1663,12 +1664,12 @@ F 3 "" H 4150 7650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C38
+L Mainboard-rescue:C_Small-Device C38
 U 1 1 5E69E757
 P 4450 7150
 F 0 "C38" V 4221 7150 50  0000 C CNN
 F 1 "22n" V 4312 7150 50  0000 C CNN
-F 2 "" H 4450 7150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4450 7150 50  0001 C CNN
 F 3 "~" H 4450 7150 50  0001 C CNN
 	1    4450 7150
 	0    1    1    0   
@@ -1699,7 +1700,7 @@ Wire Wire Line
 NoConn ~ 4850 7650
 NoConn ~ 5050 7650
 $Comp
-L Device:R_Small R15
+L Mainboard-rescue:R_Small-Device R15
 U 1 1 5E7B0720
 P 4450 6100
 F 0 "R15" H 4509 6146 50  0000 L CNN
@@ -1710,7 +1711,7 @@ F 3 "~" H 4450 6100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Small R17
+L Mainboard-rescue:R_Small-Device R17
 U 1 1 5E7B09A5
 P 4750 6100
 F 0 "R17" H 4809 6146 50  0000 L CNN
@@ -1721,34 +1722,34 @@ F 3 "~" H 4750 6100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C41
+L Mainboard-rescue:C_Small-Device C41
 U 1 1 5E7B0D8A
 P 5050 6100
 F 0 "C41" H 5100 6200 50  0000 L CNN
 F 1 "1n" H 5100 6000 50  0000 L CNN
-F 2 "" H 5050 6100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5050 6100 50  0001 C CNN
 F 3 "~" H 5050 6100 50  0001 C CNN
 	1    5050 6100
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C37
+L Mainboard-rescue:C_Small-Device C37
 U 1 1 5E7B1D9F
 P 4450 6500
 F 0 "C37" H 4542 6546 50  0000 L CNN
 F 1 "470p" H 4542 6455 50  0000 L CNN
-F 2 "" H 4450 6500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4450 6500 50  0001 C CNN
 F 3 "~" H 4450 6500 50  0001 C CNN
 	1    4450 6500
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C39
+L Mainboard-rescue:C_Small-Device C39
 U 1 1 5E7B3173
 P 4750 6500
 F 0 "C39" H 4842 6546 50  0000 L CNN
 F 1 "15n" H 4842 6455 50  0000 L CNN
-F 2 "" H 4750 6500 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4750 6500 50  0001 C CNN
 F 3 "~" H 4750 6500 50  0001 C CNN
 	1    4750 6500
 	1    0    0    -1  
@@ -1787,12 +1788,12 @@ Connection ~ 5050 5900
 NoConn ~ 5750 7650
 NoConn ~ 5650 7650
 $Comp
-L Device:C_Small C45
+L Mainboard-rescue:C_Small-Device C45
 U 1 1 5E88DD91
 P 6000 7550
 F 0 "C45" V 5771 7550 50  0000 C CNN
 F 1 "100n" V 5862 7550 50  0000 C CNN
-F 2 "" H 6000 7550 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6000 7550 50  0001 C CNN
 F 3 "~" H 6000 7550 50  0001 C CNN
 	1    6000 7550
 	0    -1   1    0   
@@ -1817,12 +1818,12 @@ Wire Wire Line
 Wire Wire Line
 	5350 7550 5900 7550
 $Comp
-L Device:C_Small C44
+L Mainboard-rescue:C_Small-Device C44
 U 1 1 5E8CFCCF
 P 6000 7150
 F 0 "C44" V 5771 7150 50  0000 C CNN
 F 1 "10n" V 5862 7150 50  0000 C CNN
-F 2 "" H 6000 7150 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6000 7150 50  0001 C CNN
 F 3 "~" H 6000 7150 50  0001 C CNN
 	1    6000 7150
 	0    -1   1    0   
@@ -1859,18 +1860,18 @@ F 3 "" H 5450 7050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C50
+L Mainboard-rescue:C_Small-Device C50
 U 1 1 5E9416C8
 P 6600 7250
 F 0 "C50" V 6371 7250 50  0000 C CNN
 F 1 "22p" V 6462 7250 50  0000 C CNN
-F 2 "" H 6600 7250 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6600 7250 50  0001 C CNN
 F 3 "~" H 6600 7250 50  0001 C CNN
 	1    6600 7250
 	0    -1   1    0   
 $EndComp
 $Comp
-L Oscillator:ABLNO X1
+L Mainboard-rescue:ABLNO-Oscillator X1
 U 1 1 5E993693
 P 7100 7250
 F 0 "X1" H 6950 7000 50  0000 R CNN
@@ -1913,12 +1914,12 @@ Connection ~ 7100 6850
 Wire Wire Line
 	7100 6850 7100 6950
 $Comp
-L Device:C_Small C59
+L Mainboard-rescue:C_Small-Device C59
 U 1 1 5EA0A2DD
 P 7800 7450
 F 0 "C59" H 7892 7496 50  0000 L CNN
 F 1 "10n" H 7892 7405 50  0000 L CNN
-F 2 "" H 7800 7450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7800 7450 50  0001 C CNN
 F 3 "~" H 7800 7450 50  0001 C CNN
 	1    7800 7450
 	1    0    0    -1  
@@ -1941,7 +1942,7 @@ Wire Wire Line
 Text Notes 8900 6500 0    79   ~ 0
 TODO: RX filtering
 $Comp
-L Device:L_Small L2
+L Mainboard-rescue:L_Small-Device L2
 U 1 1 5EA553CC
 P 2300 3000
 F 0 "L2" V 2485 3000 50  0000 C CNN
@@ -1952,23 +1953,23 @@ F 3 "~" H 2300 3000 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:L_Small L5
+L Mainboard-rescue:L_Small-Device L5
 U 1 1 5EA567ED
 P 2700 3000
 F 0 "L5" V 2885 3000 50  0000 C CNN
 F 1 "22n" V 2794 3000 50  0000 C CNN
-F 2 "" H 2700 3000 50  0001 C CNN
+F 2 "Inductor_SMD:L_0603_1608Metric" H 2700 3000 50  0001 C CNN
 F 3 "~" H 2700 3000 50  0001 C CNN
 	1    2700 3000
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:C_Small C24
+L Mainboard-rescue:C_Small-Device C24
 U 1 1 5EA5722F
 P 2500 3200
 F 0 "C24" H 2592 3246 50  0000 L CNN
 F 1 "6p8" H 2592 3155 50  0000 L CNN
-F 2 "" H 2500 3200 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2500 3200 50  0001 C CNN
 F 3 "~" H 2500 3200 50  0001 C CNN
 	1    2500 3200
 	1    0    0    -1  
@@ -2022,12 +2023,12 @@ Wire Wire Line
 Wire Wire Line
 	2500 3300 2500 3450
 $Comp
-L Device:C_Small C27
+L Mainboard-rescue:C_Small-Device C27
 U 1 1 5EB99359
 P 3000 3000
 F 0 "C27" V 2771 3000 50  0000 C CNN
 F 1 "220p" V 2862 3000 50  0000 C CNN
-F 2 "" H 3000 3000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3000 3000 50  0001 C CNN
 F 3 "~" H 3000 3000 50  0001 C CNN
 	1    3000 3000
 	0    1    1    0   
@@ -2039,7 +2040,7 @@ Wire Wire Line
 Wire Wire Line
 	4600 3000 4600 2900
 $Comp
-L Device:L_Small L6
+L Mainboard-rescue:L_Small-Device L6
 U 1 1 5EBDA0D5
 P 4600 2800
 F 0 "L6" H 4648 2846 50  0000 L CNN
@@ -2050,23 +2051,23 @@ F 3 "~" H 4600 2800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C36
+L Mainboard-rescue:C_Small-Device C36
 U 1 1 5EBDB09D
 P 4400 2250
 F 0 "C36" V 4171 2250 50  0000 C CNN
 F 1 "100p" V 4262 2250 50  0000 C CNN
-F 2 "" H 4400 2250 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4400 2250 50  0001 C CNN
 F 3 "~" H 4400 2250 50  0001 C CNN
 	1    4400 2250
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:C_Small C35
+L Mainboard-rescue:C_Small-Device C35
 U 1 1 5EBDC55E
 P 4400 1900
 F 0 "C35" V 4171 1900 50  0000 C CNN
 F 1 "1n" V 4262 1900 50  0000 C CNN
-F 2 "" H 4400 1900 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4400 1900 50  0001 C CNN
 F 3 "~" H 4400 1900 50  0001 C CNN
 	1    4400 1900
 	0    1    1    0   
@@ -2111,18 +2112,18 @@ Connection ~ 4600 2250
 Wire Wire Line
 	4600 2250 4600 2700
 $Comp
-L Device:CP_Small C34
+L Mainboard-rescue:CP_Small-Device C34
 U 1 1 5EC66BCC
 P 4400 1550
 F 0 "C34" V 4175 1550 50  0000 C CNN
 F 1 "1u" V 4266 1550 50  0000 C CNN
-F 2 "" H 4400 1550 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4400 1550 50  0001 C CNN
 F 3 "~" H 4400 1550 50  0001 C CNN
 	1    4400 1550
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_Small R16
+L Mainboard-rescue:R_Small-Device R16
 U 1 1 5EC67886
 P 4600 1350
 F 0 "R16" H 4541 1304 50  0000 R CNN
@@ -2151,12 +2152,12 @@ $EndComp
 Wire Wire Line
 	4600 1150 4600 1250
 $Comp
-L Device:C_Small C40
+L Mainboard-rescue:C_Small-Device C40
 U 1 1 5EC9AE06
 P 5000 3000
 F 0 "C40" V 4771 3000 50  0000 C CNN
 F 1 "220p" V 4862 3000 50  0000 C CNN
-F 2 "" H 5000 3000 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5000 3000 50  0001 C CNN
 F 3 "~" H 5000 3000 50  0001 C CNN
 	1    5000 3000
 	0    1    1    0   
@@ -2179,7 +2180,7 @@ Wire Notes Line
 Wire Notes Line
 	8750 6600 8750 6300
 $Comp
-L Device:R_Small R19
+L Mainboard-rescue:R_Small-Device R19
 U 1 1 5E340987
 P 6500 8250
 F 0 "R19" V 6304 8250 50  0000 C CNN
@@ -2190,7 +2191,7 @@ F 3 "~" H 6500 8250 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_Small R20
+L Mainboard-rescue:R_Small-Device R20
 U 1 1 5E34106A
 P 6500 8350
 F 0 "R20" V 6304 8350 50  0000 C CNN
@@ -2201,7 +2202,7 @@ F 3 "~" H 6500 8350 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_Small R21
+L Mainboard-rescue:R_Small-Device R21
 U 1 1 5E341145
 P 6500 8450
 F 0 "R21" V 6304 8450 50  0000 C CNN
@@ -2218,7 +2219,7 @@ Wire Wire Line
 Text GLabel 6700 8550 2    50   Output ~ 10
 ADF_SWD
 $Comp
-L Device:R_Small R14
+L Mainboard-rescue:R_Small-Device R14
 U 1 1 5E39EE3B
 P 4200 6300
 F 0 "R14" V 4004 6300 50  0000 C CNN
@@ -2229,7 +2230,7 @@ F 3 "~" H 4200 6300 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R_Small R13
+L Mainboard-rescue:R_Small-Device R13
 U 1 1 5E39F1EF
 P 3750 6300
 F 0 "R13" V 3554 6300 50  0000 C CNN
@@ -2240,12 +2241,12 @@ F 3 "~" H 3750 6300 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:C_Small C32
+L Mainboard-rescue:C_Small-Device C32
 U 1 1 5E39F459
 P 3450 6300
 F 0 "C32" V 3221 6300 50  0000 C CNN
 F 1 "100n" V 3312 6300 50  0000 C CNN
-F 2 "" H 3450 6300 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3450 6300 50  0001 C CNN
 F 3 "~" H 3450 6300 50  0001 C CNN
 	1    3450 6300
 	0    1    1    0   
@@ -2277,7 +2278,7 @@ Wire Notes Line
 Wire Notes Line
 	4350 5700 2850 5700
 $Comp
-L Connector:TestPoint_Probe TP2
+L Mainboard-rescue:TestPoint_Probe-Connector TP2
 U 1 1 5E4B8F5F
 P 4450 6300
 F 0 "TP2" H 4603 6401 50  0000 L CNN
@@ -2288,7 +2289,7 @@ F 3 "~" H 4650 6300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint_Probe TP1
+L Mainboard-rescue:TestPoint_Probe-Connector TP1
 U 1 1 5E4BA4A8
 P 4000 6800
 F 0 "TP1" H 4153 6901 50  0000 L CNN
@@ -2302,7 +2303,7 @@ Connection ~ 4000 6800
 Wire Wire Line
 	4000 6800 4000 8250
 $Comp
-L Connector:TestPoint_Probe TP3
+L Mainboard-rescue:TestPoint_Probe-Connector TP3
 U 1 1 5E4BB697
 P 5250 6300
 F 0 "TP3" H 5403 6401 50  0000 L CNN
@@ -2316,7 +2317,7 @@ Connection ~ 5250 6300
 Wire Wire Line
 	5250 6300 5250 5900
 $Comp
-L Device:R_Small R8
+L Mainboard-rescue:R_Small-Device R8
 U 1 1 5E462A64
 P 2650 6450
 F 0 "R8" V 2454 6450 50  0000 C CNN
@@ -2355,7 +2356,7 @@ Wire Wire Line
 Wire Wire Line
 	2650 6550 2650 6650
 $Comp
-L Device:R_Small R10
+L Mainboard-rescue:R_Small-Device R10
 U 1 1 5E4AF468
 P 2950 6300
 F 0 "R10" V 2754 6300 50  0000 C CNN
@@ -2366,12 +2367,12 @@ F 3 "~" H 2950 6300 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:C_Small C29
+L Mainboard-rescue:C_Small-Device C29
 U 1 1 5E4AF96C
 P 3150 6450
 F 0 "C29" V 2921 6450 50  0000 C CNN
 F 1 "2n2" V 3012 6450 50  0000 C CNN
-F 2 "" H 3150 6450 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3150 6450 50  0001 C CNN
 F 3 "~" H 3150 6450 50  0001 C CNN
 	1    3150 6450
 	-1   0    0    1   
@@ -2400,7 +2401,7 @@ Connection ~ 2650 6300
 Wire Wire Line
 	3050 6300 3150 6300
 $Comp
-L Device:R_Small R27
+L Mainboard-rescue:R_Small-Device R27
 U 1 1 5E27AFE6
 P 13300 5600
 F 0 "R27" V 13104 5600 50  0000 C CNN
@@ -2411,7 +2412,7 @@ F 3 "~" H 13300 5600 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R_Small R28
+L Mainboard-rescue:R_Small-Device R28
 U 1 1 5E29428E
 P 13300 6200
 F 0 "R28" V 13104 6200 50  0000 C CNN
@@ -2458,7 +2459,7 @@ SPI2_MOSI
 Text Notes 7250 6800 0    50   ~ 0
 ECS-TXO-3225-122.8-TR
 $Comp
-L Device:R_Small R29
+L Mainboard-rescue:R_Small-Device R29
 U 1 1 5E30B1F2
 P 13600 4600
 F 0 "R29" H 13541 4554 50  0000 R CNN

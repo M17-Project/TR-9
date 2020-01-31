@@ -1,0 +1,12 @@
+(fp_lib_table
+  (lib (name Capacitor_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Capacitor_SMD.pretty)(options "")(descr ""))
+  (lib (name Connector_Coaxial)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Connector_Coaxial.pretty)(options "")(descr ""))
+  (lib (name Connector_PinSocket_2.54mm)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Connector_PinSocket_2.54mm.pretty)(options "")(descr ""))
+  (lib (name Diode_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Diode_SMD.pretty)(options "")(descr ""))
+  (lib (name Inductor_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Inductor_SMD.pretty)(options "")(descr ""))
+  (lib (name Package_SO)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Package_SO.pretty)(options "")(descr ""))
+  (lib (name Package_TO_SOT_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Package_TO_SOT_SMD.pretty)(options "")(descr ""))
+  (lib (name Resistor_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Resistor_SMD.pretty)(options "")(descr ""))
+  (lib (name Capacitor_Tantalum_SMD)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Capacitor_Tantalum_SMD.pretty)(options "")(descr ""))
+  (lib (name Fuse)(type KiCad)(uri C:/Users/schmieder/Projekte/libraries/Fuse.pretty)(options "")(descr ""))
+)

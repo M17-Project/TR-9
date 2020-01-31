@@ -122,7 +122,7 @@ Connection ~ 6850 4050
 Wire Wire Line
 	6850 4050 7300 4050
 $Comp
-L Connector_Generic:Conn_01x10 J7
+L Mainboard-rescue:Conn_01x10-Connector_Generic J7
 U 1 1 5E1EAE64
 P 6250 3850
 F 0 "J7" H 6168 3125 50  0000 C CNN

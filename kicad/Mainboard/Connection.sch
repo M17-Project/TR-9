@@ -172,7 +172,7 @@ I2C1_SCL
 Text Notes 6700 3950 0    50   ~ 10
 ADDR 0x6B AG, 0x1E M
 $Comp
-L Sensor_Motion:LSM9DS1 U11
+L Mainboard-rescue:LSM9DS1-Sensor_Motion U11
 U 1 1 5E067250
 P 8400 3850
 F 0 "U11" H 8400 3900 50  0000 C CNN
@@ -268,7 +268,7 @@ Connection ~ 9200 4050
 Wire Wire Line
 	9200 4050 9200 4150
 $Comp
-L Device:R_Small R54
+L Mainboard-rescue:R_Small-Device R54
 U 1 1 5E07451A
 P 7500 3250
 F 0 "R54" H 7559 3296 50  0000 L CNN
@@ -279,7 +279,7 @@ F 3 "~" H 7500 3250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Small R53
+L Mainboard-rescue:R_Small-Device R53
 U 1 1 5E075066
 P 7250 3250
 F 0 "R53" H 7309 3296 50  0000 L CNN
@@ -326,23 +326,23 @@ Wire Wire Line
 Wire Wire Line
 	7500 3050 7500 3150
 $Comp
-L Device:C_Small C93
+L Mainboard-rescue:C_Small-Device C93
 U 1 1 5E07AC5C
 P 7500 4650
 F 0 "C93" H 7592 4696 50  0000 L CNN
 F 1 "100n" H 7592 4605 50  0000 L CNN
-F 2 "" H 7500 4650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7500 4650 50  0001 C CNN
 F 3 "~" H 7500 4650 50  0001 C CNN
 	1    7500 4650
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C_Small C92
+L Mainboard-rescue:C_Small-Device C92
 U 1 1 5E07BBD5
 P 7150 4650
 F 0 "C92" H 7242 4696 50  0000 L CNN
 F 1 "10n" H 7242 4605 50  0000 L CNN
-F 2 "" H 7150 4650 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7150 4650 50  0001 C CNN
 F 3 "~" H 7150 4650 50  0001 C CNN
 	1    7150 4650
 	1    0    0    -1  
@@ -388,7 +388,7 @@ Wire Wire Line
 Wire Wire Line
 	9200 4350 9200 4850
 $Comp
-L Device:R_Small R52
+L Mainboard-rescue:R_Small-Device R52
 U 1 1 5E085D7F
 P 6950 3250
 F 0 "R52" H 7009 3296 50  0000 L CNN
@@ -399,7 +399,7 @@ F 3 "~" H 6950 3250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Small R55
+L Mainboard-rescue:R_Small-Device R55
 U 1 1 5E086057
 P 9200 3250
 F 0 "R55" H 9259 3296 50  0000 L CNN
@@ -449,7 +449,7 @@ NoConn ~ 7700 3950
 NoConn ~ 9100 3750
 NoConn ~ 9100 3650
 $Comp
-L Device:R_Small R56
+L Mainboard-rescue:R_Small-Device R56
 U 1 1 5E0918A1
 P 9450 3250
 F 0 "R56" H 9509 3296 50  0000 L CNN
@@ -464,7 +464,7 @@ Wire Wire Line
 Wire Wire Line
 	9450 3550 9450 3350
 $Comp
-L Device:R_Small R51
+L Mainboard-rescue:R_Small-Device R51
 U 1 1 5E092F27
 P 6700 3250
 F 0 "R51" H 6759 3296 50  0000 L CNN
@@ -509,7 +509,7 @@ Wire Wire Line
 Wire Wire Line
 	6600 3550 7500 3550
 $Comp
-L Connector_Generic:Conn_01x05 J13
+L Mainboard-rescue:Conn_01x05-Connector_Generic J13
 U 1 1 5E3E7A55
 P 3300 2050
 F 0 "J13" H 3380 2092 50  0000 L CNN
