@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -2451,7 +2452,7 @@ Connection ~ 13300 5800
 Wire Wire Line
 	13300 5800 13600 5800
 Text GLabel 6700 8250 2    50   Input ~ 10
-SPI1_SCK
+SPI2_SCK
 Text GLabel 6700 8350 2    50   Input ~ 10
 SPI2_MISO
 Text GLabel 6700 8450 2    50   Input ~ 10
