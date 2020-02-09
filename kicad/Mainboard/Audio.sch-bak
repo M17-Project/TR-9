@@ -1703,4 +1703,8 @@ Wire Wire Line
 	2100 6250 2400 6250
 Text Notes 1350 7600 0    50   ~ 0
 This circuit provides amplification/attenuation and adds\nDC component to the analog FM demod output
+NoConn ~ 1100 1450
+NoConn ~ 1700 1450
+NoConn ~ 1850 1450
+NoConn ~ 2450 1450
 $EndSCHEMATC

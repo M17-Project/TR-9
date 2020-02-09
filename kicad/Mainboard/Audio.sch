@@ -1159,11 +1159,7 @@ Wire Wire Line
 Wire Notes Line
 	1200 7400 3750 7400
 Wire Notes Line
-	3750 7650 1200 7650
-Wire Notes Line
-	3750 7400 3750 7650
-Wire Notes Line
-	1200 7400 1200 7650
+	3750 7700 1200 7700
 $Comp
 L Mainboard-rescue:4066-4xxx U8
 U 2 1 5E2FADE2
@@ -1701,10 +1697,14 @@ Wire Wire Line
 	1700 5950 1900 5950
 Wire Wire Line
 	2100 6250 2400 6250
-Text Notes 1350 7600 0    50   ~ 0
-This circuit provides amplification/attenuation and adds\nDC component to the analog FM demod output
+Text Notes 1350 7650 0    50   ~ 0
+This circuit provides amplification/attenuation and adds\nDC component to the analog FM demod output.\nIt is also a 2nd order Sallen-Key lowpass for antialiasing.
 NoConn ~ 1100 1450
 NoConn ~ 1700 1450
 NoConn ~ 1850 1450
 NoConn ~ 2450 1450
+Wire Notes Line
+	1200 7400 1200 7700
+Wire Notes Line
+	3750 7400 3750 7700
 $EndSCHEMATC

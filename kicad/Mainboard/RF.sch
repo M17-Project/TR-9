@@ -931,7 +931,7 @@ L Mainboard-rescue:LM2904-Amplifier_Operational U7
 U 3 1 5E17FA82
 P 14350 3300
 F 0 "U7" H 14308 3346 50  0000 L CNN
-F 1 "LM2904" H 14308 3255 50  0000 L CNN
+F 1 "LM2904A" H 14308 3255 50  0000 L CNN
 F 2 "Package_SO:SO-8_3.9x4.9mm_P1.27mm" H 14350 3300 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 14350 3300 50  0001 C CNN
 	3    14350 3300
@@ -953,7 +953,7 @@ L Mainboard-rescue:LM2904-Amplifier_Operational U7
 U 2 1 5E1864A9
 P 13900 5900
 F 0 "U7" H 13900 6267 50  0000 C CNN
-F 1 "LM2904" H 13900 6176 50  0000 C CNN
+F 1 "LM2904A" H 13900 6176 50  0000 C CNN
 F 2 "Package_SO:SO-8_3.9x4.9mm_P1.27mm" H 13900 5900 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 13900 5900 50  0001 C CNN
 	2    13900 5900
