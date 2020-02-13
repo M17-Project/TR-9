@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -128,7 +127,7 @@ U 1 1 5E1EAE64
 P 6250 3850
 F 0 "J7" H 6168 3125 50  0000 C CNN
 F 1 "Conn_01x10" H 6168 3216 50  0000 C CNN
-F 2 "" H 6250 3850 50  0001 C CNN
+F 2 "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal" H 6250 3850 50  0001 C CNN
 F 3 "~" H 6250 3850 50  0001 C CNN
 	1    6250 3850
 	-1   0    0    1   

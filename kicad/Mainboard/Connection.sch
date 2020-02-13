@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -92,7 +91,7 @@ U 1 1 5E0856B5
 P 3950 3900
 F 0 "J14" H 3900 4617 50  0000 C CNN
 F 1 "Micro_SD_Card" H 3900 4526 50  0000 C CNN
-F 2 "" H 5100 4200 50  0001 C CNN
+F 2 "TR-9:microSD" H 5100 4200 50  0001 C CNN
 F 3 "http://katalog.we-online.de/em/datasheet/693072010801.pdf" H 3950 3900 50  0001 C CNN
 	1    3950 3900
 	1    0    0    -1  
