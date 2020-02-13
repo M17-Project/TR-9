@@ -1,4 +1,4 @@
-16945818477511654
+16947400098526654
 AnalogRF
 HMC595
 
@@ -70125,6 +70125,13 @@ SMD SMT crystal
 0
 4
 4
+TR-9
+HMC546MS8GETR
+MSOP, 8 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/mic5355_6.pdf#page=15), generated with kicad-footprint-generator ipc_gullwing_generator.py
+MSOP SO
+0
+19
+10
 TR-9
 MIC_EXT
 SJ-43515RS-SMT

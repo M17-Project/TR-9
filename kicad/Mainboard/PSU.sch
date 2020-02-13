@@ -98,7 +98,7 @@ U 1 1 5DEDF946
 P 5450 3100
 F 0 "U4" H 5450 3342 50  0000 C CNN
 F 1 "LD1117S33TR_SOT223" H 5450 3251 50  0000 C CNN
-F 2 "TO_SOT_Packages_SMD:SOT-223-3Lead_TabPin2" H 5450 3300 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 5450 3300 50  0001 C CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00000544.pdf" H 5550 2850 50  0001 C CNN
 	1    5450 3100
 	1    0    0    -1  
@@ -259,7 +259,7 @@ U 1 1 5DEEBDA4
 P 1450 6600
 F 0 "H1" V 1400 6800 50  0000 L CNN
 F 1 "MountingHole_Pad" V 1500 6800 50  0000 L CNN
-F 2 "Mounting_Holes:MountingHole_2.2mm_M2_ISO14580_Pad" H 1450 6600 50  0001 C CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 1450 6600 50  0001 C CNN
 F 3 "~" H 1450 6600 50  0001 C CNN
 	1    1450 6600
 	1    0    0    -1  
@@ -270,7 +270,7 @@ U 1 1 5DEEC535
 P 1700 6600
 F 0 "H2" V 1650 6800 50  0000 L CNN
 F 1 "MountingHole_Pad" V 1750 6800 50  0000 L CNN
-F 2 "Mounting_Holes:MountingHole_2.2mm_M2_ISO14580_Pad" H 1700 6600 50  0001 C CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 1700 6600 50  0001 C CNN
 F 3 "~" H 1700 6600 50  0001 C CNN
 	1    1700 6600
 	1    0    0    -1  
@@ -281,7 +281,7 @@ U 1 1 5DEEC787
 P 1950 6600
 F 0 "H3" V 1900 6800 50  0000 L CNN
 F 1 "MountingHole_Pad" V 2000 6800 50  0000 L CNN
-F 2 "Mounting_Holes:MountingHole_2.2mm_M2_ISO14580_Pad" H 1950 6600 50  0001 C CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 1950 6600 50  0001 C CNN
 F 3 "~" H 1950 6600 50  0001 C CNN
 	1    1950 6600
 	1    0    0    -1  
@@ -292,7 +292,7 @@ U 1 1 5DEEC94F
 P 2200 6600
 F 0 "H4" V 2150 6800 50  0000 L CNN
 F 1 "MountingHole_Pad" V 2250 6800 50  0000 L CNN
-F 2 "Mounting_Holes:MountingHole_2.2mm_M2_ISO14580_Pad" H 2200 6600 50  0001 C CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 2200 6600 50  0001 C CNN
 F 3 "~" H 2200 6600 50  0001 C CNN
 	1    2200 6600
 	1    0    0    -1  
@@ -616,7 +616,7 @@ U 1 1 5DFA9E6E
 P 4450 3100
 F 0 "U3" H 4450 3342 50  0000 C CNN
 F 1 "LD1117S50TR_SOT223" H 4450 3251 50  0000 C CNN
-F 2 "TO_SOT_Packages_SMD:SOT-223-3Lead_TabPin2" H 4450 3300 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 4450 3300 50  0001 C CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00000544.pdf" H 4550 2850 50  0001 C CNN
 	1    4450 3100
 	1    0    0    -1  
