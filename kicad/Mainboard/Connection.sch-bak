@@ -10,20 +10,9 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
+Comment3 "Author: DB9MAT Mathis ; edits: SO3ALG Nikoloz"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
-$Comp
-L power:+5V #PWR0155
-U 1 1 5E07BDC5
-P 3000 1750
-F 0 "#PWR0155" H 3000 1600 50  0001 C CNN
-F 1 "+5V" H 3015 1923 50  0000 C CNN
-F 2 "" H 3000 1750 50  0001 C CNN
-F 3 "" H 3000 1750 50  0001 C CNN
-	1    3000 1750
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3000 1750 3000 1850
 Wire Wire Line
@@ -523,4 +512,49 @@ Wire Wire Line
 	3000 2150 3100 2150
 Text GLabel 3000 2150 0    50   Input ~ 10
 GPS_EN
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5E4F7B10
+P 3000 1750
+AR Path="/5DEDCA32/5E4F7B10" Ref="#PWR?"  Part="1" 
+AR Path="/5E07B88F/5E4F7B10" Ref="#PWR0155"  Part="1" 
+F 0 "#PWR0155" H 3000 1600 50  0001 C CNN
+F 1 "+3V3" H 3015 1923 50  0000 C CNN
+F 2 "" H 3000 1750 50  0001 C CNN
+F 3 "" H 3000 1750 50  0001 C CNN
+	1    3000 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:C_Small-device C?
+U 1 1 5E532555
+P 2500 2450
+AR Path="/5DEDCA32/5E532555" Ref="C?"  Part="1" 
+AR Path="/5E07B88F/5E532555" Ref="C16"  Part="1" 
+F 0 "C16" H 2650 2500 50  0000 L CNN
+F 1 "10u/TA" H 2600 2400 50  0000 L CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A" H 2500 2450 50  0001 C CNN
+F 3 "~" H 2500 2450 50  0001 C CNN
+F 4 "TAJA226K006RNJV" H 2500 2450 50  0001 C CNN "Partno"
+	1    2500 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 2350 2500 1850
+Wire Wire Line
+	2500 1850 3000 1850
+Connection ~ 3000 1850
+$Comp
+L power:GND #PWR0181
+U 1 1 5E5377E4
+P 2500 2650
+F 0 "#PWR0181" H 2500 2400 50  0001 C CNN
+F 1 "GND" H 2505 2477 50  0000 C CNN
+F 2 "" H 2500 2650 50  0001 C CNN
+F 3 "" H 2500 2650 50  0001 C CNN
+	1    2500 2650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 2550 2500 2650
 $EndSCHEMATC

@@ -10,7 +10,7 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
+Comment3 "Author: DB9MAT Mathis, SO3ALG Nikoloz, SP5WWP Wojciech"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
 $Comp

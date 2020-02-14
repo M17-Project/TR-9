@@ -10,7 +10,7 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
+Comment3 "Author: DB9MAT Mathis ; edits: SO3ALG Nikoloz"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
 $Comp
@@ -483,103 +483,73 @@ F 4 "TAJA226K006RNJV" H 8150 3950 50  0001 C CNN "Partno"
 	1    8150 3950
 	1    0    0    -1  
 $EndComp
-$Comp
-L Mainboard-rescue:C_Small-device C16
-U 1 1 5DEF7F14
-P 8650 3950
-F 0 "C16" H 8742 3996 50  0000 L CNN
-F 1 "22u/TA" H 8742 3905 50  0000 L CNN
-F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A" H 8650 3950 50  0001 C CNN
-F 3 "~" H 8650 3950 50  0001 C CNN
-F 4 "TAJA226K006RNJV" H 8650 3950 50  0001 C CNN "Partno"
-	1    8650 3950
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8150 3750 8150 3850
 Wire Wire Line
 	7650 3750 7650 3850
 Wire Wire Line
-	8650 3750 8650 3850
-Wire Wire Line
 	7650 4050 7650 4150
 Wire Wire Line
 	8150 4150 8150 4050
-Wire Wire Line
-	8650 4150 8650 4050
 $Comp
 L Mainboard-rescue:C_Small-device C18
 U 1 1 5DEFA72D
-P 9150 3950
-F 0 "C18" H 9242 3996 50  0000 L CNN
-F 1 "1u" H 9242 3905 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 9150 3950 50  0001 C CNN
-F 3 "~" H 9150 3950 50  0001 C CNN
-	1    9150 3950
+P 8600 3950
+F 0 "C18" H 8692 3996 50  0000 L CNN
+F 1 "1u" H 8692 3905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8600 3950 50  0001 C CNN
+F 3 "~" H 8600 3950 50  0001 C CNN
+	1    8600 3950
 	1    0    0    -1  
 $EndComp
 $Comp
 L Mainboard-rescue:C_Small-device C19
 U 1 1 5DEFAD72
-P 9550 3950
-F 0 "C19" H 9642 3996 50  0000 L CNN
-F 1 "10n" H 9642 3905 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 9550 3950 50  0001 C CNN
-F 3 "~" H 9550 3950 50  0001 C CNN
-	1    9550 3950
+P 9000 3950
+F 0 "C19" H 9092 3996 50  0000 L CNN
+F 1 "10n" H 9092 3905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 9000 3950 50  0001 C CNN
+F 3 "~" H 9000 3950 50  0001 C CNN
+	1    9000 3950
 	1    0    0    -1  
 $EndComp
 $Comp
 L Mainboard-rescue:C_Small-device C20
 U 1 1 5DEFB19B
-P 9900 3950
-F 0 "C20" H 9992 3996 50  0000 L CNN
-F 1 "10n" H 9992 3905 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 9900 3950 50  0001 C CNN
-F 3 "~" H 9900 3950 50  0001 C CNN
-	1    9900 3950
+P 9350 3950
+F 0 "C20" H 9442 3996 50  0000 L CNN
+F 1 "10n" H 9442 3905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 9350 3950 50  0001 C CNN
+F 3 "~" H 9350 3950 50  0001 C CNN
+	1    9350 3950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	7650 3750 8150 3750
 Wire Wire Line
-	8650 3750 8150 3750
-Connection ~ 8150 3750
+	8600 3750 8600 3850
 Wire Wire Line
-	8650 3750 9150 3750
+	9000 3750 9000 3850
 Wire Wire Line
-	9150 3750 9150 3850
-Connection ~ 8650 3750
+	9000 3750 9350 3750
 Wire Wire Line
-	9550 3750 9550 3850
-Wire Wire Line
-	9550 3750 9900 3750
-Wire Wire Line
-	9900 3750 9900 3850
-Connection ~ 9550 3750
+	9350 3750 9350 3850
+Connection ~ 9000 3750
 Wire Wire Line
 	7650 4150 8150 4150
 Wire Wire Line
-	8150 4150 8650 4150
-Connection ~ 8150 4150
+	8600 4050 8600 4150
 Wire Wire Line
-	9150 4050 9150 4150
-Connection ~ 8650 4150
+	9000 4050 9000 4150
 Wire Wire Line
-	9550 4050 9550 4150
+	9350 4050 9350 4150
 Wire Wire Line
-	8650 4150 9150 4150
+	9350 4150 9000 4150
+Connection ~ 9000 4150
 Wire Wire Line
-	9900 4050 9900 4150
+	8600 3750 9000 3750
 Wire Wire Line
-	9900 4150 9550 4150
-Connection ~ 9550 4150
-Wire Wire Line
-	9150 3750 9550 3750
-Connection ~ 9150 3750
-Wire Wire Line
-	9150 4150 9550 4150
-Connection ~ 9150 4150
+	8600 4150 9000 4150
 $Comp
 L power:+3V3 #PWR049
 U 1 1 5DF0772F
@@ -608,7 +578,7 @@ $EndComp
 Wire Wire Line
 	7650 4150 7650 4250
 Connection ~ 7650 4150
-Text Notes 9650 3700 2    79   ~ 16
+Text Notes 9600 3650 2    79   ~ 16
 SD, RFM, GPS, OPA, ACCEL
 $Comp
 L Mainboard-rescue:LD1117S50TR_SOT223-regul U3
@@ -738,4 +708,12 @@ F 3 "" H 4800 3900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 3900 4800 3700
+Wire Wire Line
+	8600 3750 8150 3750
+Connection ~ 8600 3750
+Connection ~ 8150 3750
+Wire Wire Line
+	8150 4150 8600 4150
+Connection ~ 8150 4150
+Connection ~ 8600 4150
 $EndSCHEMATC
