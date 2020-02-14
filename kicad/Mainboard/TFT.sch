@@ -49,18 +49,16 @@ Text GLabel 4500 3450 2    50   Input ~ 10
 TFT_LED
 Text GLabel 6750 3450 2    50   Input ~ 10
 TFT_LED
-Text GLabel 6750 3550 2    50   Input ~ 10
+Text GLabel 6850 3950 2    50   Input ~ 10
 TFT_RST
 Text GLabel 6750 3650 2    50   Input ~ 10
 SPI1_CS
-Text GLabel 6750 3750 2    50   Input ~ 10
-SPI1_MOSI
 Text GLabel 6750 3850 2    50   Input ~ 10
+SPI1_MOSI
+Text GLabel 6750 3750 2    50   Input ~ 10
 SPI1_SCK
 Wire Wire Line
 	6450 3450 6750 3450
-Wire Wire Line
-	6450 3550 6750 3550
 Wire Wire Line
 	6450 3650 6750 3650
 Wire Wire Line
@@ -100,7 +98,7 @@ $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
 Text GLabel 6750 4150 2    50   Input ~ 10
-UART7_RX
+UART2_RX
 $Comp
 L power:GND #PWR054
 U 1 1 5E1E62B4
@@ -113,14 +111,7 @@ F 3 "" H 7300 4050 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	6450 4050 6850 4050
-Wire Wire Line
 	6450 3950 6850 3950
-Wire Wire Line
-	6850 3950 6850 4050
-Connection ~ 6850 4050
-Wire Wire Line
-	6850 4050 7300 4050
 $Comp
 L Mainboard-rescue:Conn_01x10-Connector_Generic J7
 U 1 1 5E1EAE64
@@ -132,4 +123,19 @@ F 3 "~" H 6250 3850 50  0001 C CNN
 	1    6250 3850
 	-1   0    0    1   
 $EndComp
+Wire Wire Line
+	6450 4050 7300 4050
+$Comp
+L power:GND #PWR0179
+U 1 1 5E47DF4D
+P 7300 3550
+F 0 "#PWR0179" H 7300 3300 50  0001 C CNN
+F 1 "GND" H 7305 3377 50  0000 C CNN
+F 2 "" H 7300 3550 50  0001 C CNN
+F 3 "" H 7300 3550 50  0001 C CNN
+	1    7300 3550
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6450 3550 7300 3550
 $EndSCHEMATC

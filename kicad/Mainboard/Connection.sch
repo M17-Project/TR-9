@@ -48,9 +48,9 @@ Wire Wire Line
 Wire Wire Line
 	3100 2050 3000 2050
 Text GLabel 3000 1950 0    50   Input ~ 10
-USART1_TX
+UART1_TX
 Text GLabel 3000 2050 0    50   Input ~ 10
-USART1_RX
+UART1_RX
 $Comp
 L Mainboard-rescue:Conn_01x03-conn J15
 U 1 1 5E07CB74
@@ -63,9 +63,9 @@ F 3 "~" H 4800 2150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 4500 2050 0    50   Input ~ 10
-USART2_TX
+UART7_TX
 Text GLabel 4500 2150 0    50   Input ~ 10
-USART2_RX
+UART7_RX
 $Comp
 L power:GND #PWR0157
 U 1 1 5E07D3F6

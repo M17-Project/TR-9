@@ -1028,7 +1028,7 @@ Wire Wire Line
 Text GLabel 5700 5450 3    50   Input ~ 10
 WIFI_EN
 Text Notes 800  5100 0    50   ~ 0
-USART1  GPS\nUSART2  Debug\nUSART3  ESP8266-12\nUSART7  HMI
+USART1  GPS\nUSART2  HMI\nUSART3  ESP8266-12\nUSART7  Debug
 Wire Notes Line
 	800  4750 2200 4750
 Wire Notes Line
@@ -1042,9 +1042,9 @@ Wire Wire Line
 Wire Wire Line
 	5000 5450 5000 5350
 Text GLabel 4900 5450 3    50   Input ~ 10
-UART7_RX
+USART7_RX
 Text GLabel 5000 5450 3    50   Input ~ 10
-UART7_TX
+USART7_TX
 Wire Wire Line
 	5100 5350 5100 5950
 Wire Wire Line

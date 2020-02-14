@@ -84,9 +84,9 @@ Wire Wire Line
 Text GLabel 4700 3600 0    50   Input ~ 10
 WIFI_EN
 Text GLabel 6750 3500 2    50   Input ~ 10
-USART3_TX
+UART3_TX
 Text GLabel 6750 3400 2    50   Input ~ 10
-USART3_RX
+UART3_RX
 $Comp
 L power:+3.3V #PWR0173
 U 1 1 5E25DB0A
