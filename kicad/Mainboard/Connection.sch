@@ -13,17 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
-$Comp
-L power:+5V #PWR0155
-U 1 1 5E07BDC5
-P 3000 1750
-F 0 "#PWR0155" H 3000 1600 50  0001 C CNN
-F 1 "+5V" H 3015 1923 50  0000 C CNN
-F 2 "" H 3000 1750 50  0001 C CNN
-F 3 "" H 3000 1750 50  0001 C CNN
-	1    3000 1750
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	3000 1750 3000 1850
 Wire Wire Line
@@ -523,4 +512,17 @@ Wire Wire Line
 	3000 2150 3100 2150
 Text GLabel 3000 2150 0    50   Input ~ 10
 GPS_EN
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5E4F7B10
+P 3000 1750
+AR Path="/5DEDCA32/5E4F7B10" Ref="#PWR?"  Part="1" 
+AR Path="/5E07B88F/5E4F7B10" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 3000 1600 50  0001 C CNN
+F 1 "+3V3" H 3015 1923 50  0000 C CNN
+F 2 "" H 3000 1750 50  0001 C CNN
+F 3 "" H 3000 1750 50  0001 C CNN
+	1    3000 1750
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

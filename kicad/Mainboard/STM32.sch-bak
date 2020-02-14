@@ -288,9 +288,9 @@ Wire Wire Line
 Text GLabel 4000 5450 3    50   Input ~ 10
 AUDIO_DAC
 Text GLabel 5800 5450 3    50   Input ~ 10
-USART3_TX
+UART3_TX
 Text GLabel 5900 5450 3    50   Input ~ 10
-USART3_RX
+UART3_RX
 Wire Wire Line
 	4000 5350 4000 5450
 Wire Wire Line
@@ -409,9 +409,9 @@ $EndComp
 Text GLabel 7100 2550 2    50   Input ~ 10
 SWDIO
 Text GLabel 7100 2850 2    50   Input ~ 10
-USART1_RX
+UART1_RX
 Text GLabel 7100 2950 2    50   Input ~ 10
-USART1_TX
+UART1_TX
 Text GLabel 7100 3150 2    50   Input ~ 10
 SD_D1
 Text GLabel 7100 3250 2    50   Input ~ 10
@@ -491,9 +491,9 @@ LED_RED
 Text GLabel 5500 1450 1    50   Input ~ 10
 SD_CMD
 Text GLabel 5200 1450 1    50   Input ~ 10
-USART2_TX
+UART2_TX
 Text GLabel 5100 1450 1    50   Input ~ 10
-USART2_RX
+UART2_RX
 Text GLabel 4600 1450 1    50   Input ~ 10
 I2C1_SCL
 Text GLabel 4500 1450 1    50   Input ~ 10
@@ -1028,7 +1028,7 @@ Wire Wire Line
 Text GLabel 5700 5450 3    50   Input ~ 10
 WIFI_EN
 Text Notes 800  5100 0    50   ~ 0
-USART1  GPS\nUSART2  HMI\nUSART3  ESP8266-12\nUSART7  Debug
+UART1  GPS\nUART2  HMI\nUART3  ESP8266-12\nUART7  Debug
 Wire Notes Line
 	800  4750 2200 4750
 Wire Notes Line
@@ -1042,9 +1042,9 @@ Wire Wire Line
 Wire Wire Line
 	5000 5450 5000 5350
 Text GLabel 4900 5450 3    50   Input ~ 10
-USART7_RX
+UART7_RX
 Text GLabel 5000 5450 3    50   Input ~ 10
-USART7_TX
+UART7_TX
 Wire Wire Line
 	5100 5350 5100 5950
 Wire Wire Line
