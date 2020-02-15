@@ -986,7 +986,7 @@ Wire Wire Line
 	5700 6950 5600 6950
 Text GLabel 5450 6350 0    50   Input ~ 10
 TFT_LED
-Text GLabel 5450 6850 0    50   Input ~ 10
+Text GLabel 5450 7050 0    50   Input ~ 10
 TFT_RST
 Text GLabel 5450 6550 0    50   Input ~ 10
 SPI1_CS
@@ -994,7 +994,7 @@ Text GLabel 5450 6750 0    50   Input ~ 10
 SPI1_MOSI
 Text GLabel 5450 6650 0    50   Input ~ 10
 SPI1_SCK
-Text GLabel 5450 7050 0    50   Input ~ 10
+Text GLabel 5450 6850 0    50   Input ~ 10
 TX
 Wire Wire Line
 	5450 7050 5700 7050
