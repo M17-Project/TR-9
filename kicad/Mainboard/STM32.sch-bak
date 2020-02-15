@@ -10,7 +10,7 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 "Author: DB9MAT Mathis ; edits: SO3ALG Nikoloz"
+Comment3 "Author: DB9MAT Mathis, SO3ALG Nikoloz, SP5WWP Wojciech"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
 $Comp
@@ -599,7 +599,7 @@ U 1 1 5DECD704
 P 9250 3350
 F 0 "J4" H 9168 2925 50  0000 C CNN
 F 1 "SWD" H 9168 3016 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 9250 3350 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x05_P1.27mm_Vertical" H 9250 3350 50  0001 C CNN
 F 3 "~" H 9250 3350 50  0001 C CNN
 	1    9250 3350
 	-1   0    0    1   
@@ -679,29 +679,27 @@ Wire Wire Line
 $Comp
 L Mainboard-rescue:L_Small-device L1
 U 1 1 5DED78AF
-P 8550 4900
-F 0 "L1" V 8500 4850 50  0000 L CNN
-F 1 "100MHz" V 8650 4750 50  0000 L CNN
-F 2 "Inductor_SMD:L_0603_1608Metric" H 8550 4900 50  0001 C CNN
-F 3 "~" H 8550 4900 50  0001 C CNN
-	1    8550 4900
+P 8550 4350
+F 0 "L1" V 8500 4300 50  0000 L CNN
+F 1 "100MHz" V 8650 4200 50  0000 L CNN
+F 2 "Inductor_SMD:L_0603_1608Metric" H 8550 4350 50  0001 C CNN
+F 3 "~" H 8550 4350 50  0001 C CNN
+	1    8550 4350
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	8450 5100 8550 5100
 Wire Wire Line
-	8550 5100 8550 5000
-Wire Wire Line
-	8550 4800 8550 4700
+	8550 4250 8550 4150
 $Comp
 L power:+5V #PWR019
 U 1 1 5DEDE3CA
-P 8550 4700
-F 0 "#PWR019" H 8550 4550 50  0001 C CNN
-F 1 "+5V" H 8565 4873 50  0000 C CNN
-F 2 "" H 8550 4700 50  0001 C CNN
-F 3 "" H 8550 4700 50  0001 C CNN
-	1    8550 4700
+P 8550 4150
+F 0 "#PWR019" H 8550 4000 50  0001 C CNN
+F 1 "+5V" H 8565 4323 50  0000 C CNN
+F 2 "" H 8550 4150 50  0001 C CNN
+F 3 "" H 8550 4150 50  0001 C CNN
+	1    8550 4150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1084,4 +1082,19 @@ Wire Wire Line
 	6900 4050 7100 4050
 Wire Wire Line
 	7100 4150 6900 4150
+$Comp
+L Device:D_Schottky D5
+U 1 1 5E4AE67A
+P 8550 4700
+F 0 "D5" V 8450 4250 50  0000 L CNN
+F 1 "PMEG4005ET.215" V 8550 4000 50  0000 L CNN
+F 2 "TR-9:PMEG4005ET.215" H 8550 4700 50  0001 C CNN
+F 3 "~" H 8550 4700 50  0001 C CNN
+	1    8550 4700
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8550 4550 8550 4450
+Wire Wire Line
+	8550 4850 8550 5100
 $EndSCHEMATC

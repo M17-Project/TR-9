@@ -10,7 +10,7 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 "Author: DB9MAT Mathis ; edits: SO3ALG Nikoloz"
+Comment3 "Author: DB9MAT Mathis, SO3ALG Nikoloz, SP5WWP Wojciech"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
 $Comp
@@ -263,7 +263,7 @@ U 1 1 5DFD555B
 P 9400 3100
 F 0 "J9" H 9480 3092 50  0000 L CNN
 F 1 "MIC_INT" H 9480 3001 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9400 3100 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 9400 3100 50  0001 C CNN
 F 3 "~" H 9400 3100 50  0001 C CNN
 	1    9400 3100
 	1    0    0    -1  
@@ -419,7 +419,7 @@ U 1 1 5DFF9CB5
 P 9400 4700
 F 0 "J11" H 9480 4692 50  0000 L CNN
 F 1 "SPK_INT" H 9480 4601 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9400 4700 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 9400 4700 50  0001 C CNN
 F 3 "~" H 9400 4700 50  0001 C CNN
 	1    9400 4700
 	1    0    0    -1  
@@ -1023,7 +1023,7 @@ U 1 1 5E5198E8
 P 7050 4900
 F 0 "RV1" H 6981 4946 50  0000 R CNN
 F 1 "50k/log" H 6981 4855 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 7050 4900 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x03_P1.27mm_Vertical" H 7050 4900 50  0001 C CNN
 F 3 "~" H 7050 4900 50  0001 C CNN
 	1    7050 4900
 	1    0    0    -1  

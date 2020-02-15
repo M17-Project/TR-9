@@ -10,7 +10,7 @@ Rev ""
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 "Author: DB9MAT Mathis ; edits: SO3ALG Nikoloz"
+Comment3 "Author: DB9MAT Mathis, SO3ALG Nikoloz, SP5WWP Wojciech"
 Comment4 "TR-9 Open Source Digital Radio"
 $EndDescr
 $Comp
@@ -19,7 +19,7 @@ U 1 1 5DEDCC67
 P 1500 3600
 F 0 "J5" H 1418 3917 50  0000 C CNN
 F 1 "BATT" H 1418 3826 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 1500 3600 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x03_P1.27mm_Vertical" H 1500 3600 50  0001 C CNN
 F 3 "~" H 1500 3600 50  0001 C CNN
 	1    1500 3600
 	-1   0    0    -1  
@@ -662,7 +662,7 @@ U 1 1 5E2A6BF0
 P 2250 3250
 F 0 "J6" V 2214 3062 50  0000 R CNN
 F 1 "POT_PWR_SW" V 2123 3062 50  0000 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 2250 3250 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 2250 3250 50  0001 C CNN
 F 3 "~" H 2250 3250 50  0001 C CNN
 	1    2250 3250
 	0    -1   -1   0   

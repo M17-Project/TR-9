@@ -46,7 +46,7 @@ U 1 1 5E07CB74
 P 4800 2150
 F 0 "J15" H 4880 2192 50  0000 L CNN
 F 1 "DBG_CONN" H 4880 2101 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4800 2150 50  0001 C CNN
+F 2 "Connector_PinHeader_1.27mm:PinHeader_1x03_P1.27mm_Vertical" H 4800 2150 50  0001 C CNN
 F 3 "~" H 4800 2150 50  0001 C CNN
 	1    4800 2150
 	1    0    0    -1  
