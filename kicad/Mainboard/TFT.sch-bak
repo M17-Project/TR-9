@@ -49,7 +49,7 @@ Text GLabel 4500 3450 2    50   Input ~ 10
 TFT_LED
 Text GLabel 6750 3450 2    50   Input ~ 10
 TFT_LED
-Text GLabel 6850 3950 2    50   Input ~ 10
+Text GLabel 6750 4150 2    50   Input ~ 10
 TFT_RST
 Text GLabel 6750 3650 2    50   Input ~ 10
 SPI1_CS
@@ -97,7 +97,7 @@ F 3 "" H 6650 4350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
-Text GLabel 6750 4150 2    50   Input ~ 10
+Text GLabel 6850 3950 2    50   Input ~ 10
 UART2_RX
 $Comp
 L power:GND #PWR054
