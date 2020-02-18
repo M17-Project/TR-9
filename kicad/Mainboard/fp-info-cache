@@ -1,4 +1,4 @@
-16948982135833654
+16948982567072654
 AnalogRF
 HMC595
 
@@ -70130,7 +70130,7 @@ HMC546MS8GETR
 MSOP, 8 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/mic5355_6.pdf#page=15), generated with kicad-footprint-generator ipc_gullwing_generator.py
 MSOP SO
 0
-19
+21
 10
 TR-9
 MIC_EXT
