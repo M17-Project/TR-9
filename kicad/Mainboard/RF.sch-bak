@@ -71,18 +71,16 @@ Wire Wire Line
 $Comp
 L Mainboard-rescue:R_Small-device R18
 U 1 1 5DF2DFA1
-P 5900 2800
-F 0 "R18" H 5959 2846 50  0000 L CNN
-F 1 "6k8" H 5959 2755 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 5900 2800 50  0001 C CNN
-F 3 "~" H 5900 2800 50  0001 C CNN
-	1    5900 2800
-	1    0    0    -1  
+P 15050 4300
+F 0 "R18" H 15109 4346 50  0000 L CNN
+F 1 "4k7" H 15109 4255 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 15050 4300 50  0001 C CNN
+F 3 "~" H 15050 4300 50  0001 C CNN
+	1    15050 4300
+	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	5800 3000 5900 3000
-Wire Wire Line
-	5900 3000 5900 2900
 $Comp
 L power:GND #PWR079
 U 1 1 5DF329C7
@@ -94,7 +92,7 @@ F 3 "" H 5500 2550 50  0001 C CNN
 	1    5500 2550
 	-1   0    0    1   
 $EndComp
-Text GLabel 5900 2500 1    50   Input ~ 10
+Text GLabel 5900 2700 1    50   Input ~ 10
 PA_BIAS
 $Comp
 L TR-9:AFT05MS004NT1 T1
@@ -502,7 +500,7 @@ Wire Wire Line
 	7700 4450 7600 4450
 Text GLabel 7600 4450 0    50   Input ~ 10
 RX
-Text GLabel 14550 4300 2    50   Input ~ 10
+Text GLabel 15250 4300 2    50   Input ~ 10
 PA_BIAS
 Wire Wire Line
 	9750 3500 9850 3500
@@ -2164,8 +2162,6 @@ Connection ~ 4600 3000
 Wire Wire Line
 	5100 3000 5500 3000
 Wire Wire Line
-	5900 2500 5900 2700
-Wire Wire Line
 	5500 2550 5500 2700
 Wire Notes Line
 	8750 6300 10100 6300
@@ -2489,4 +2485,50 @@ Wire Wire Line
 	13600 4400 13750 4400
 Wire Wire Line
 	13600 4200 13600 4500
+Wire Wire Line
+	5900 2700 5900 3000
+$Comp
+L Mainboard-rescue:R_Small-device R?
+U 1 1 5E551D56
+P 14650 4300
+F 0 "R?" H 14709 4346 50  0000 L CNN
+F 1 "5k6" H 14709 4255 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 14650 4300 50  0001 C CNN
+F 3 "~" H 14650 4300 50  0001 C CNN
+	1    14650 4300
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Mainboard-rescue:R_Small-device R?
+U 1 1 5E551F85
+P 14850 4600
+F 0 "R?" H 14909 4646 50  0000 L CNN
+F 1 "5k6" H 14909 4555 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 14850 4600 50  0001 C CNN
+F 3 "~" H 14850 4600 50  0001 C CNN
+	1    14850 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E5D0358
+P 14850 4800
+F 0 "#PWR?" H 14850 4550 50  0001 C CNN
+F 1 "GND" H 14855 4627 50  0000 C CNN
+F 2 "" H 14850 4800 50  0001 C CNN
+F 3 "" H 14850 4800 50  0001 C CNN
+	1    14850 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	14750 4300 14850 4300
+Wire Wire Line
+	15150 4300 15250 4300
+Wire Wire Line
+	14850 4300 14850 4500
+Connection ~ 14850 4300
+Wire Wire Line
+	14850 4300 14950 4300
+Wire Wire Line
+	14850 4700 14850 4800
 $EndSCHEMATC
