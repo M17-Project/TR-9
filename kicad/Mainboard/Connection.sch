@@ -36,9 +36,9 @@ Wire Wire Line
 	3100 1950 3000 1950
 Wire Wire Line
 	3100 2050 3000 2050
-Text GLabel 3000 1950 0    50   Input ~ 10
-UART1_TX
 Text GLabel 3000 2050 0    50   Input ~ 10
+UART1_TX
+Text GLabel 3000 1950 0    50   Input ~ 10
 UART1_RX
 $Comp
 L Mainboard-rescue:Conn_01x03-conn J15

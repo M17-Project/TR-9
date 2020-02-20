@@ -1666,8 +1666,6 @@ Wire Wire Line
 Connection ~ 3900 7150
 Wire Wire Line
 	3900 7150 4350 7150
-NoConn ~ 4850 7650
-NoConn ~ 5050 7650
 $Comp
 L Mainboard-rescue:R_Small-Device R15
 U 1 1 5E7B0720
@@ -2531,4 +2529,19 @@ Wire Wire Line
 Connection ~ 10800 4000
 Wire Wire Line
 	10800 4000 10800 5050
+$Comp
+L Mainboard-rescue:L_Small-Device L14
+U 1 1 5E528AE0
+P 4950 7400
+F 0 "L14" V 4900 7350 50  0000 L CNN
+F 1 "DNP" V 5050 7350 50  0000 L CNN
+F 2 "Inductor_SMD:L_0603_1608Metric" H 4950 7400 50  0001 C CNN
+F 3 "~" H 4950 7400 50  0001 C CNN
+	1    4950 7400
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5050 7400 5050 7650
+Wire Wire Line
+	4850 7400 4850 7650
 $EndSCHEMATC

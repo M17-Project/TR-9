@@ -257,17 +257,6 @@ F 3 "" H 5150 2400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5150 2200 5150 2400
-$Comp
-L Mainboard-rescue:Conn_01x02-conn J9
-U 1 1 5DFD555B
-P 9400 3100
-F 0 "J9" H 9480 3092 50  0000 L CNN
-F 1 "MIC_INT" H 9480 3001 50  0000 L CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 9400 3100 50  0001 C CNN
-F 3 "~" H 9400 3100 50  0001 C CNN
-	1    9400 3100
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8600 3450 8600 3350
 Connection ~ 8600 3450
@@ -413,17 +402,6 @@ Wire Wire Line
 	9550 1400 9450 1400
 Text GLabel 9450 1400 0    50   Input ~ 10
 PTT
-$Comp
-L Mainboard-rescue:Conn_01x02-conn J11
-U 1 1 5DFF9CB5
-P 9400 4700
-F 0 "J11" H 9480 4692 50  0000 L CNN
-F 1 "SPK_INT" H 9480 4601 50  0000 L CNN
-F 2 "Connector_PinHeader_1.27mm:PinHeader_1x02_P1.27mm_Vertical" H 9400 4700 50  0001 C CNN
-F 3 "~" H 9400 4700 50  0001 C CNN
-	1    9400 4700
-	1    0    0    -1  
-$EndComp
 $Comp
 L Mainboard-rescue:Ferrite_Bead_Small-device FB4
 U 1 1 5E039F5C
@@ -1709,5 +1687,49 @@ F 2 "" H 6750 3650 50  0001 C CNN
 F 3 "" H 6750 3650 50  0001 C CNN
 	1    6750 3650
 	-1   0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint MIC1
+U 1 1 5E674F7E
+P 9200 3100
+F 0 "MIC1" V 9154 3288 50  0000 L CNN
+F 1 "Microphone pin 1" V 9150 3500 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 9400 3100 50  0001 C CNN
+F 3 "~" H 9400 3100 50  0001 C CNN
+	1    9200 3100
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:TestPoint MIC2
+U 1 1 5E676205
+P 9200 3200
+F 0 "MIC2" V 9154 3388 50  0000 L CNN
+F 1 "Microphone pin 2" V 9150 3600 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 9400 3200 50  0001 C CNN
+F 3 "~" H 9400 3200 50  0001 C CNN
+	1    9200 3200
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:TestPoint SPK1
+U 1 1 5E67720D
+P 9200 4700
+F 0 "SPK1" V 9154 4888 50  0000 L CNN
+F 1 "Speaker pin 1" V 9150 5100 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 9400 4700 50  0001 C CNN
+F 3 "~" H 9400 4700 50  0001 C CNN
+	1    9200 4700
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:TestPoint SPK2
+U 1 1 5E678D29
+P 9200 4800
+F 0 "SPK2" V 9154 4988 50  0000 L CNN
+F 1 "Speaker pin 2" V 9150 5200 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 9400 4800 50  0001 C CNN
+F 3 "~" H 9400 4800 50  0001 C CNN
+	1    9200 4800
+	0    1    1    0   
 $EndComp
 $EndSCHEMATC
