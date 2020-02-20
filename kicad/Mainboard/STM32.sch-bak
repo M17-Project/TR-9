@@ -1103,4 +1103,83 @@ Wire Wire Line
 Wire Wire Line
 	8800 5100 8800 5000
 Connection ~ 8650 5300
+$Comp
+L Mainboard-rescue:BSS138-Transistor_FET Q?
+U 1 1 5E4ED2C2
+P 8400 1750
+F 0 "Q?" H 8606 1796 50  0000 L CNN
+F 1 "BSS138" H 8606 1705 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 8600 1675 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 8400 1750 50  0001 L CNN
+	1    8400 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8500 1950 8500 2050
+$Comp
+L power:GND #PWR?
+U 1 1 5E4FA0B3
+P 8500 2050
+F 0 "#PWR?" H 8500 1800 50  0001 C CNN
+F 1 "GND" H 8505 1877 50  0000 C CNN
+F 2 "" H 8500 2050 50  0001 C CNN
+F 3 "" H 8500 2050 50  0001 C CNN
+	1    8500 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:D_Small-device D?
+U 1 1 5E500AEA
+P 8250 1200
+F 0 "D?" H 8300 1050 50  0000 L CNN
+F 1 "CGRM4007-G" H 8300 1150 50  0000 L CNN
+F 2 "Diode_SMD:D_SOD-123" V 8250 1200 50  0001 C CNN
+F 3 "~" V 8250 1200 50  0001 C CNN
+	1    8250 1200
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 5E506923
+P 8800 1200
+F 0 "J?" H 8880 1192 50  0000 L CNN
+F 1 "VIBRO" H 8880 1101 50  0000 L CNN
+F 2 "" H 8800 1200 50  0001 C CNN
+F 3 "~" H 8800 1200 50  0001 C CNN
+	1    8800 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5E507661
+P 8500 1050
+F 0 "#PWR?" H 8500 900 50  0001 C CNN
+F 1 "+3V3" H 8515 1223 50  0000 C CNN
+F 2 "" H 8500 1050 50  0001 C CNN
+F 3 "" H 8500 1050 50  0001 C CNN
+	1    8500 1050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8600 1200 8500 1200
+Wire Wire Line
+	8500 1200 8500 1050
+Wire Wire Line
+	8600 1300 8500 1300
+Wire Wire Line
+	8500 1300 8500 1550
+Wire Wire Line
+	8350 1200 8500 1200
+Connection ~ 8500 1200
+Wire Wire Line
+	8150 1200 8100 1200
+Wire Wire Line
+	8100 1200 8100 1300
+Connection ~ 8500 1300
+Wire Wire Line
+	8100 1300 8500 1300
+Text GLabel 8000 1750 0    50   Input ~ 10
+VIBRO
+Wire Wire Line
+	8000 1750 8200 1750
 $EndSCHEMATC
