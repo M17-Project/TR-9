@@ -1012,7 +1012,7 @@ Wire Wire Line
 Text GLabel 5700 5450 3    50   Input ~ 10
 WIFI_EN
 Text Notes 800  5100 0    50   ~ 0
-UART1  GPS\nUART2  HMI\nUART3  ESP8266-12\nUART7  Debug
+UART1  GPS\nUART2  HMI\nUART3  ESP8266\nUART7  Debug
 Wire Notes Line
 	800  4750 2200 4750
 Wire Notes Line
@@ -1038,7 +1038,7 @@ Wire Wire Line
 Text GLabel 5600 5450 3    50   Input ~ 10
 WIFI_RST
 Text Notes 800  5450 0    50   ~ 0
-SPI1  Display\nSPI2  ADF7021 data?
+SPI1  Display\nSPI2  ADF7021 data
 Wire Notes Line
 	800  5300 2200 5300
 Wire Notes Line
@@ -1178,7 +1178,7 @@ Wire Wire Line
 Text GLabel 8000 1750 0    50   Input ~ 10
 VIBRATE
 Wire Wire Line
-	8000 1750 8200 1750
+	8000 1750 8150 1750
 Wire Wire Line
 	2800 3850 3100 3850
 Text GLabel 2800 3850 0    50   Input ~ 10
@@ -1187,4 +1187,54 @@ Wire Wire Line
 	9800 3650 9800 3450
 Wire Wire Line
 	9450 3450 9800 3450
+$Comp
+L Mainboard-rescue:R_Small-device R?
+U 1 1 5E590041
+P 8150 1950
+AR Path="/5DFC2ACA/5E590041" Ref="R?"  Part="1" 
+AR Path="/5DE274F4/5E590041" Ref="R67"  Part="1" 
+F 0 "R67" H 8209 1996 50  0000 L CNN
+F 1 "22k" H 8209 1905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 8150 1950 50  0001 C CNN
+F 3 "~" H 8150 1950 50  0001 C CNN
+	1    8150 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E590047
+P 8150 2150
+AR Path="/5DFC2ACA/5E590047" Ref="#PWR?"  Part="1" 
+AR Path="/5DE274F4/5E590047" Ref="#PWR0199"  Part="1" 
+F 0 "#PWR0199" H 8150 1900 50  0001 C CNN
+F 1 "GND" H 8155 1977 50  0000 C CNN
+F 2 "" H 8150 2150 50  0001 C CNN
+F 3 "" H 8150 2150 50  0001 C CNN
+	1    8150 2150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8150 2050 8150 2150
+Wire Wire Line
+	8150 1850 8150 1750
+Connection ~ 8150 1750
+Wire Wire Line
+	8150 1750 8200 1750
+$Comp
+L Mainboard-rescue:C_Small-device C20
+U 1 1 5E604107
+P 950 3350
+F 0 "C20" H 858 3304 50  0000 R CNN
+F 1 "10n" H 858 3395 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 950 3350 50  0001 C CNN
+F 3 "~" H 950 3350 50  0001 C CNN
+	1    950  3350
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	950  3450 950  3550
+Connection ~ 950  3550
+Wire Wire Line
+	950  3250 950  3150
+Connection ~ 950  3150
 $EndSCHEMATC

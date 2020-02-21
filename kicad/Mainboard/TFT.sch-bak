@@ -39,7 +39,7 @@ Wire Wire Line
 	4400 3950 4400 4050
 Wire Wire Line
 	4100 3750 4000 3750
-Text GLabel 4000 3750 0    50   Input ~ 10
+Text GLabel 3900 3750 0    50   Input ~ 10
 BLIGHT_CTRL
 Wire Wire Line
 	4400 3550 4400 3450
@@ -144,4 +144,37 @@ Wire Wire Line
 	7550 3200 7550 4050
 Wire Wire Line
 	6450 4050 7550 4050
+$Comp
+L Mainboard-rescue:R_Small-device R?
+U 1 1 5E57229A
+P 4000 3950
+AR Path="/5DFC2ACA/5E57229A" Ref="R?"  Part="1" 
+AR Path="/5DF0AC25/5E57229A" Ref="R68"  Part="1" 
+F 0 "R68" H 4059 3996 50  0000 L CNN
+F 1 "22k" H 4059 3905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 4000 3950 50  0001 C CNN
+F 3 "~" H 4000 3950 50  0001 C CNN
+	1    4000 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E5722A6
+P 4000 4150
+AR Path="/5DFC2ACA/5E5722A6" Ref="#PWR?"  Part="1" 
+AR Path="/5DF0AC25/5E5722A6" Ref="#PWR0200"  Part="1" 
+F 0 "#PWR0200" H 4000 3900 50  0001 C CNN
+F 1 "GND" H 4005 3977 50  0000 C CNN
+F 2 "" H 4000 4150 50  0001 C CNN
+F 3 "" H 4000 4150 50  0001 C CNN
+	1    4000 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 3750 4000 3850
+Wire Wire Line
+	4000 4050 4000 4150
+Wire Wire Line
+	3900 3750 4000 3750
+Connection ~ 4000 3750
 $EndSCHEMATC
