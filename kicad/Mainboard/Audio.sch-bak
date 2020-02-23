@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -333,13 +334,13 @@ $EndComp
 $Comp
 L Mainboard-rescue:SW_Push-switches SW1
 U 1 1 5DFE1B21
-P 10650 1650
-F 0 "SW1" V 10604 1798 50  0000 L CNN
-F 1 "INT_PTT_SW" V 10695 1798 50  0000 L CNN
-F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 10650 1850 50  0001 C CNN
-F 3 "" H 10650 1850 50  0001 C CNN
-	1    10650 1650
-	0    1    1    0   
+P 10500 1650
+F 0 "SW1" V 10450 1400 50  0000 L CNN
+F 1 "INT_PTT_SW" V 10550 1150 50  0000 L CNN
+F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 10500 1850 50  0001 C CNN
+F 3 "" H 10500 1850 50  0001 C CNN
+	1    10500 1650
+	0    -1   1    0   
 $EndComp
 $Comp
 L Mainboard-rescue:R_Small-device R48
@@ -366,13 +367,13 @@ $EndComp
 $Comp
 L power:GND #PWR0150
 U 1 1 5DFE3FE9
-P 10650 1350
-F 0 "#PWR0150" H 10650 1100 50  0001 C CNN
-F 1 "GND" H 10655 1177 50  0000 C CNN
-F 2 "" H 10650 1350 50  0001 C CNN
-F 3 "" H 10650 1350 50  0001 C CNN
-	1    10650 1350
-	-1   0    0    1   
+P 10500 1900
+F 0 "#PWR0150" H 10500 1650 50  0001 C CNN
+F 1 "GND" H 10505 1727 50  0000 C CNN
+F 2 "" H 10500 1900 50  0001 C CNN
+F 3 "" H 10500 1900 50  0001 C CNN
+	1    10500 1900
+	1    0    0    -1  
 $EndComp
 $Comp
 L Mainboard-rescue:C_Small-device C90
@@ -1153,14 +1154,14 @@ $EndComp
 $Comp
 L Mainboard-rescue:4066-4xxx U8
 U 4 1 5E30A84B
-P 2150 1450
+P 2350 1450
 AR Path="/5E30A84B" Ref="U8"  Part="4" 
 AR Path="/5DFC2ACA/5E30A84B" Ref="U8"  Part="4" 
-F 0 "U8" H 2150 1185 50  0000 C CNN
-F 1 "HEF4066B" H 2150 1276 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2150 1450 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/cd4066b.pdf" H 2150 1450 50  0001 C CNN
-	4    2150 1450
+F 0 "U8" H 2350 1185 50  0000 C CNN
+F 1 "HEF4066B" H 2350 1276 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2350 1450 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/cd4066b.pdf" H 2350 1450 50  0001 C CNN
+	4    2350 1450
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
@@ -1207,12 +1208,12 @@ $EndComp
 $Comp
 L power:GND #PWR0127
 U 1 1 5E5674BF
-P 2150 1750
-F 0 "#PWR0127" H 2150 1500 50  0001 C CNN
-F 1 "GND" H 2155 1577 50  0000 C CNN
-F 2 "" H 2150 1750 50  0001 C CNN
-F 3 "" H 2150 1750 50  0001 C CNN
-	1    2150 1750
+P 2350 1750
+F 0 "#PWR0127" H 2350 1500 50  0001 C CNN
+F 1 "GND" H 2355 1577 50  0000 C CNN
+F 2 "" H 2350 1750 50  0001 C CNN
+F 3 "" H 2350 1750 50  0001 C CNN
+	1    2350 1750
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1663,16 +1664,10 @@ Wire Wire Line
 	2100 6250 2400 6250
 Text Notes 1350 7650 0    50   ~ 0
 This circuit provides amplification/attenuation and adds\nDC component to the analog FM demod output.\nIt is also a 2nd order Sallen-Key lowpass for antialiasing.
-NoConn ~ 1100 1450
-NoConn ~ 1700 1450
-NoConn ~ 1850 1450
-NoConn ~ 2450 1450
 Wire Notes Line
 	1200 7400 1200 7700
 Wire Notes Line
 	3750 7400 3750 7700
-Wire Wire Line
-	10200 1400 10350 1400
 $Comp
 L power:+BATT #PWR0134
 U 1 1 5E039A23
@@ -1813,9 +1808,69 @@ Wire Wire Line
 Wire Wire Line
 	4550 1500 4650 1500
 Wire Wire Line
-	10350 1400 10350 1850
+	10500 1850 10500 1900
 Wire Wire Line
-	10350 1850 10650 1850
+	10500 1450 10500 1400
 Wire Wire Line
-	10650 1450 10650 1350
+	10200 1400 10500 1400
+$Comp
+L power:GND #PWR?
+U 1 1 5E58107A
+P 1050 1550
+F 0 "#PWR?" H 1050 1300 50  0001 C CNN
+F 1 "GND" H 1055 1377 50  0000 C CNN
+F 2 "" H 1050 1550 50  0001 C CNN
+F 3 "" H 1050 1550 50  0001 C CNN
+	1    1050 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E581214
+P 1750 1550
+F 0 "#PWR?" H 1750 1300 50  0001 C CNN
+F 1 "GND" H 1755 1377 50  0000 C CNN
+F 2 "" H 1750 1550 50  0001 C CNN
+F 3 "" H 1750 1550 50  0001 C CNN
+	1    1750 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E581468
+P 2000 1550
+F 0 "#PWR?" H 2000 1300 50  0001 C CNN
+F 1 "GND" H 2005 1377 50  0000 C CNN
+F 2 "" H 2000 1550 50  0001 C CNN
+F 3 "" H 2000 1550 50  0001 C CNN
+	1    2000 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E5815FD
+P 2700 1550
+F 0 "#PWR?" H 2700 1300 50  0001 C CNN
+F 1 "GND" H 2705 1377 50  0000 C CNN
+F 2 "" H 2700 1550 50  0001 C CNN
+F 3 "" H 2700 1550 50  0001 C CNN
+	1    2700 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1050 1550 1050 1450
+Wire Wire Line
+	1050 1450 1100 1450
+Wire Wire Line
+	1700 1450 1750 1450
+Wire Wire Line
+	1750 1450 1750 1550
+Wire Wire Line
+	2000 1550 2000 1450
+Wire Wire Line
+	2000 1450 2050 1450
+Wire Wire Line
+	2650 1450 2700 1450
+Wire Wire Line
+	2700 1450 2700 1550
 $EndSCHEMATC

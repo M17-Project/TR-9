@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -1058,7 +1057,6 @@ Text GLabel 7100 3850 2    50   Input ~ 10
 ADF_SCLK
 Text GLabel 7100 3750 2    50   Input ~ 10
 ADF_SWD
-NoConn ~ 6900 3650
 Wire Wire Line
 	6900 3750 7100 3750
 Wire Wire Line
@@ -1238,4 +1236,8 @@ Connection ~ 950  3550
 Wire Wire Line
 	950  3250 950  3150
 Connection ~ 950  3150
+Text GLabel 7150 3650 2    50   Output ~ 10
+ADF_MUXOUT
+Wire Wire Line
+	6900 3650 7150 3650
 $EndSCHEMATC
