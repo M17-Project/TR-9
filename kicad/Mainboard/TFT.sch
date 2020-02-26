@@ -87,7 +87,7 @@ $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
 Text GLabel 6850 3950 2    50   Input ~ 10
-UART2_RX
+UART3_RX
 Wire Wire Line
 	6450 3950 6850 3950
 $Comp

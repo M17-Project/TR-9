@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -184,7 +183,7 @@ U 1 1 5E4C9829
 P 5000 6550
 F 0 "U12" H 5150 7000 50  0000 C CNN
 F 1 "GD25Q16CSIGTR" H 5400 6900 50  0000 C CNN
-F 2 "" H 5000 6550 50  0001 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 5000 6550 50  0001 C CNN
 F 3 "" H 5000 6550 50  0001 C CNN
 	1    5000 6550
 	1    0    0    -1  
@@ -279,9 +278,9 @@ Wire Wire Line
 Wire Wire Line
 	4550 3700 5150 3700
 Text GLabel 7150 3600 2    50   Input ~ 10
-UART3_RX
+UART2_RX
 Text GLabel 7150 3500 2    50   Input ~ 10
-UART3_TX
+UART2_TX
 Wire Wire Line
 	6950 3500 7150 3500
 Wire Wire Line

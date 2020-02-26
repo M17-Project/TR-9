@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -1040,18 +1039,6 @@ F 3 "" H 13300 6300 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	14350 4300 14550 4300
-Wire Wire Line
-	6250 8250 6400 8250
-Wire Wire Line
-	6250 8350 6400 8350
-Wire Wire Line
-	6250 8450 6400 8450
-Wire Wire Line
-	6600 8250 6700 8250
-Wire Wire Line
-	6600 8350 6700 8350
-Wire Wire Line
-	6600 8450 6700 8450
 $Comp
 L Mainboard-rescue:C_Small-Device C46
 U 1 1 5E28B5A1
@@ -1066,7 +1053,7 @@ $EndComp
 Wire Wire Line
 	6250 8750 6400 8750
 Wire Wire Line
-	7100 8750 7100 8950
+	7500 8750 7500 8950
 NoConn ~ 6250 8850
 $Comp
 L Mainboard-rescue:C_Small-Device C56
@@ -1108,40 +1095,28 @@ Wire Wire Line
 $Comp
 L power:GND #PWR090
 U 1 1 5E2C3292
-P 7100 9050
-F 0 "#PWR090" H 7100 8800 50  0001 C CNN
-F 1 "GND" H 7105 8877 50  0000 C CNN
-F 2 "" H 7100 9050 50  0001 C CNN
-F 3 "" H 7100 9050 50  0001 C CNN
-	1    7100 9050
+P 7500 9050
+F 0 "#PWR090" H 7500 8800 50  0001 C CNN
+F 1 "GND" H 7505 8877 50  0000 C CNN
+F 2 "" H 7500 9050 50  0001 C CNN
+F 3 "" H 7500 9050 50  0001 C CNN
+	1    7500 9050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7100 8950 7100 9050
-Connection ~ 7100 8950
-Wire Wire Line
-	6250 9050 6350 9050
-Wire Wire Line
-	6250 9150 6350 9150
-Wire Wire Line
-	6250 9250 6350 9250
-Wire Wire Line
-	6250 9350 6350 9350
-Text GLabel 6350 9050 2    50   Input ~ 10
+	7500 8950 7500 9050
+Connection ~ 7500 8950
+Text GLabel 6900 9050 2    50   Input ~ 10
 ADF_SCLK
-Text GLabel 6350 9150 2    50   Input ~ 10
+Text GLabel 6900 9150 2    50   Input ~ 10
 ADF_SREAD
-Text GLabel 6350 9250 2    50   Input ~ 10
+Text GLabel 6900 9250 2    50   Input ~ 10
 ADF_SDATA
-Text GLabel 6350 9350 2    50   Input ~ 10
+Text GLabel 6900 9350 2    50   Input ~ 10
 ADF_SLE
 Wire Wire Line
 	7650 8650 7650 8750
 Connection ~ 7650 8650
-Wire Wire Line
-	6600 8750 7100 8750
-Wire Wire Line
-	6250 8950 7100 8950
 Wire Wire Line
 	5750 9900 5750 10000
 Wire Wire Line
@@ -2133,44 +2108,9 @@ Wire Notes Line
 	10100 6600 8750 6600
 Wire Notes Line
 	8750 6600 8750 6300
-$Comp
-L Mainboard-rescue:R_Small-Device R19
-U 1 1 5E340987
-P 6500 8250
-F 0 "R19" V 6450 8100 50  0000 C CNN
-F 1 "1k" V 6450 8400 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 6500 8250 50  0001 C CNN
-F 3 "~" H 6500 8250 50  0001 C CNN
-	1    6500 8250
-	0    1    1    0   
-$EndComp
-$Comp
-L Mainboard-rescue:R_Small-Device R20
-U 1 1 5E34106A
-P 6500 8350
-F 0 "R20" V 6450 8200 50  0000 C CNN
-F 1 "1k" V 6450 8500 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 6500 8350 50  0001 C CNN
-F 3 "~" H 6500 8350 50  0001 C CNN
-	1    6500 8350
-	0    1    1    0   
-$EndComp
-$Comp
-L Mainboard-rescue:R_Small-Device R21
-U 1 1 5E341145
-P 6500 8450
-F 0 "R21" V 6450 8300 50  0000 C CNN
-F 1 "1k" V 6450 8600 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 6500 8450 50  0001 C CNN
-F 3 "~" H 6500 8450 50  0001 C CNN
-	1    6500 8450
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	6250 8650 7650 8650
-Wire Wire Line
-	6250 8550 6700 8550
-Text GLabel 6700 8550 2    50   Output ~ 10
+Text GLabel 7050 8550 2    50   Output ~ 10
 ADF_SWD
 $Comp
 L Mainboard-rescue:R_Small-Device R14
@@ -2393,11 +2333,11 @@ Wire Wire Line
 Connection ~ 13300 5800
 Wire Wire Line
 	13300 5800 13600 5800
-Text GLabel 6700 8250 2    50   Input ~ 10
+Text GLabel 7050 8250 2    50   Input ~ 10
 SPI2_SCK
-Text GLabel 6700 8350 2    50   Input ~ 10
+Text GLabel 7050 8350 2    50   Input ~ 10
 SPI2_MISO
-Text GLabel 6700 8450 2    50   Input ~ 10
+Text GLabel 7050 8450 2    50   Input ~ 10
 SPI2_MOSI
 Text Notes 7250 6800 0    50   ~ 0
 ECS-TXO-3225-122.8-TR
@@ -2573,7 +2513,7 @@ F 3 "" H 7350 10000 50  0001 C CNN
 	1    7350 10000
 	1    0    0    -1  
 $EndComp
-Text GLabel 6700 8000 2    50   Output ~ 10
+Text GLabel 7050 8150 2    50   Output ~ 10
 ADF_MUXOUT
 $Comp
 L adf7021:ADF7021 U5
@@ -2590,21 +2530,66 @@ Wire Wire Line
 	5750 7650 5750 7450
 Wire Wire Line
 	5750 7450 6300 7450
-Wire Wire Line
-	6300 7450 6300 8000
 $Comp
-L Mainboard-rescue:R_Small-Device R69
-U 1 1 5E5B26C4
-P 6500 8000
-F 0 "R69" V 6450 7850 50  0000 C CNN
-F 1 "1k" V 6450 8150 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 6500 8000 50  0001 C CNN
-F 3 "~" H 6500 8000 50  0001 C CNN
-	1    6500 8000
+L Device:R_Pack04 RN?
+U 1 1 5E711FA8
+P 6650 8350
+F 0 "RN?" V 6233 8350 50  0000 C CNN
+F 1 "R_Pack04" V 6324 8350 50  0000 C CNN
+F 2 "" V 6925 8350 50  0001 C CNN
+F 3 "~" H 6650 8350 50  0001 C CNN
+	1    6650 8350
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	6700 8000 6600 8000
+	6250 8550 7050 8550
 Wire Wire Line
-	6400 8000 6300 8000
+	6850 8450 7050 8450
+Wire Wire Line
+	7050 8350 6850 8350
+Wire Wire Line
+	6850 8250 7050 8250
+Wire Wire Line
+	7050 8150 6850 8150
+Wire Wire Line
+	6300 8150 6450 8150
+Wire Wire Line
+	6300 7450 6300 8150
+Wire Wire Line
+	6450 8250 6250 8250
+Wire Wire Line
+	6450 8350 6250 8350
+Wire Wire Line
+	6450 8450 6250 8450
+$Comp
+L Device:R_Pack04 RN?
+U 1 1 5E8F8B20
+P 6600 9250
+F 0 "RN?" V 6800 9250 50  0000 C CNN
+F 1 "R_Pack04" V 6900 9250 50  0000 C CNN
+F 2 "" V 6875 9250 50  0001 C CNN
+F 3 "~" H 6600 9250 50  0001 C CNN
+	1    6600 9250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6600 8750 7500 8750
+Wire Wire Line
+	6250 8950 7500 8950
+Wire Wire Line
+	6250 9050 6400 9050
+Wire Wire Line
+	6250 9150 6400 9150
+Wire Wire Line
+	6250 9250 6400 9250
+Wire Wire Line
+	6250 9350 6400 9350
+Wire Wire Line
+	6800 9050 6900 9050
+Wire Wire Line
+	6900 9150 6800 9150
+Wire Wire Line
+	6800 9250 6900 9250
+Wire Wire Line
+	6800 9350 6900 9350
 $EndSCHEMATC

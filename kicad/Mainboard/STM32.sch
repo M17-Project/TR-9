@@ -557,7 +557,6 @@ Wire Wire Line
 	6000 1450 6000 1550
 Wire Wire Line
 	6200 1450 6200 1550
-NoConn ~ 4300 1550
 NoConn ~ 5400 1550
 NoConn ~ 6100 1550
 Wire Wire Line
@@ -897,7 +896,6 @@ F 3 "" H 8300 5250 50  0001 C CNN
 	1    8150 5300
 	1    0    0    -1  
 $EndComp
-NoConn ~ 4200 1550
 Wire Wire Line
 	10050 1450 9950 1450
 Wire Wire Line
@@ -1009,7 +1007,7 @@ Text GLabel 4700 5450 3    50   Input ~ 10
 FM_MOD_SEL
 Wire Wire Line
 	5700 5450 5700 5350
-Text GLabel 5700 5450 3    50   Input ~ 10
+Text GLabel 4200 1450 1    50   Input ~ 10
 WIFI_EN
 Text Notes 800  5100 0    50   ~ 0
 UART1  GPS\nUART2  HMI\nUART3  ESP8266\nUART7  Debug
@@ -1035,7 +1033,7 @@ Wire Wire Line
 	5200 5350 5200 5950
 Wire Wire Line
 	5600 5450 5600 5350
-Text GLabel 5600 5450 3    50   Input ~ 10
+Text GLabel 4300 1450 1    50   Input ~ 10
 WIFI_RST
 Text Notes 800  5450 0    50   ~ 0
 SPI1  Display\nSPI2  ADF7021 data
@@ -1240,4 +1238,8 @@ Text GLabel 7150 3650 2    50   Output ~ 10
 ADF_MUXOUT
 Wire Wire Line
 	6900 3650 7150 3650
+Wire Wire Line
+	4300 1450 4300 1550
+Wire Wire Line
+	4200 1450 4200 1550
 $EndSCHEMATC
