@@ -1133,17 +1133,6 @@ F 3 "~" V 8250 1200 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J16
-U 1 1 5E506923
-P 8800 1200
-F 0 "J16" H 8880 1192 50  0000 L CNN
-F 1 "VIBRO" H 8880 1101 50  0000 L CNN
-F 2 "" H 8800 1200 50  0001 C CNN
-F 3 "~" H 8800 1200 50  0001 C CNN
-	1    8800 1200
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+3V3 #PWR0198
 U 1 1 5E507661
 P 8500 1050
@@ -1158,8 +1147,6 @@ Wire Wire Line
 	8600 1200 8500 1200
 Wire Wire Line
 	8500 1200 8500 1050
-Wire Wire Line
-	8600 1300 8500 1300
 Wire Wire Line
 	8500 1300 8500 1550
 Wire Wire Line
@@ -1242,4 +1229,28 @@ Wire Wire Line
 	4300 1450 4300 1550
 Wire Wire Line
 	4200 1450 4200 1550
+$Comp
+L Mainboard-rescue:TEST_1P-conn J9
+U 1 1 5E5B5309
+P 8600 1200
+F 0 "J9" V 8700 1300 50  0000 R CNN
+F 1 "VIB1" V 8700 1500 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 8800 1200 50  0001 C CNN
+F 3 "" H 8800 1200 50  0001 C CNN
+	1    8600 1200
+	0    1    -1   0   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn J11
+U 1 1 5E5B9EE9
+P 8600 1300
+F 0 "J11" V 8500 1400 50  0000 R CNN
+F 1 "VIB2" V 8500 1600 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 8800 1300 50  0001 C CNN
+F 3 "" H 8800 1300 50  0001 C CNN
+	1    8600 1300
+	0    1    -1   0   
+$EndComp
+Wire Wire Line
+	8500 1300 8600 1300
 $EndSCHEMATC

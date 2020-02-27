@@ -1010,7 +1010,7 @@ Wire Wire Line
 Text GLabel 4200 1450 1    50   Input ~ 10
 WIFI_EN
 Text Notes 800  5100 0    50   ~ 0
-UART1  GPS\nUART2  HMI\nUART3  ESP8266\nUART7  Debug
+UART1  GPS\nUART2  ESP8266\nUART3  HMI\nUART7  Debug
 Wire Notes Line
 	800  4750 2200 4750
 Wire Notes Line
