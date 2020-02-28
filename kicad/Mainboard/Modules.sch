@@ -446,4 +446,15 @@ Wire Wire Line
 Wire Wire Line
 	4500 2550 4900 2550
 Connection ~ 4900 2550
+$Comp
+L Device:Antenna_Dipole AE1
+U 1 1 5E591045
+P 8550 3550
+F 0 "AE1" H 8780 3464 50  0000 L CNN
+F 1 "Antenna_Dipole" H 8780 3373 50  0000 L CNN
+F 2 "RF_Antenna:Pulse_W3011" H 8550 3550 50  0001 C CNN
+F 3 "~" H 8550 3550 50  0001 C CNN
+	1    8550 3550
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
