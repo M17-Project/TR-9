@@ -704,13 +704,11 @@ R4
 Wire Wire Line
 	2750 3650 2900 3650
 Wire Wire Line
-	2750 3950 2900 3950
+	2750 3750 2900 3750
 Text GLabel 2900 3650 2    50   BiDi ~ 10
 R5
-Text GLabel 2900 3950 2    50   BiDi ~ 10
+Text GLabel 2900 3750 2    50   BiDi ~ 10
 R6
-NoConn ~ 2750 4250
-NoConn ~ 2750 4350
 NoConn ~ 1750 4250
 NoConn ~ 1750 4350
 NoConn ~ 1750 3650
@@ -854,7 +852,7 @@ U 1 1 5E23CEE8
 P 5900 6650
 F 0 "J4" H 5980 6642 50  0000 L CNN
 F 1 "RIBBON" H 5980 6551 50  0000 L CNN
-F 2 "" H 5900 6650 50  0001 C CNN
+F 2 "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal" H 5900 6650 50  0001 C CNN
 F 3 "~" H 5900 6650 50  0001 C CNN
 	1    5900 6650
 	1    0    0    -1  
@@ -1165,12 +1163,12 @@ Connection ~ 6500 1550
 Wire Wire Line
 	6500 1550 6350 1550
 Wire Wire Line
-	2900 4050 2750 4050
+	2900 3850 2750 3850
 Wire Wire Line
-	2900 4150 2750 4150
-Text GLabel 2900 4050 2    50   Input ~ 10
+	2900 3950 2750 3950
+Text GLabel 2900 3850 2    50   Input ~ 10
 F1
-Text GLabel 2900 4150 2    50   Input ~ 10
+Text GLabel 2900 3950 2    50   Input ~ 10
 F2
 Text GLabel 6850 2050 3    50   Input ~ 10
 F1
@@ -1405,6 +1403,14 @@ Connection ~ 3450 6250
 Wire Wire Line
 	3450 6950 3350 6950
 Connection ~ 3450 6950
-NoConn ~ 2750 3750
-NoConn ~ 2750 3850
+Wire Wire Line
+	2750 4150 2950 4150
+Wire Wire Line
+	2750 4250 2950 4250
+Text GLabel 2950 4150 2    50   BiDi ~ 10
+SWDIO
+Text GLabel 2950 4250 2    50   BiDi ~ 10
+SWCLK
+NoConn ~ 2750 4050
+NoConn ~ 2750 4350
 $EndSCHEMATC
