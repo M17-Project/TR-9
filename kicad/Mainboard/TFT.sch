@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -87,10 +86,8 @@ F 3 "" H 6650 4350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6450 4150 6750 4150
-Text GLabel 6850 3950 2    50   Input ~ 10
+Text GLabel 6750 3950 2    50   Input ~ 10
 UART3_RX
-Wire Wire Line
-	6450 3950 6850 3950
 $Comp
 L Mainboard-rescue:Conn_01x10-Connector_Generic J7
 U 1 1 5E1EAE64
@@ -178,4 +175,6 @@ Wire Wire Line
 Wire Wire Line
 	3900 3750 4000 3750
 Connection ~ 4000 3750
+Wire Wire Line
+	6450 3950 6750 3950
 $EndSCHEMATC
