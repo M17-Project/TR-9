@@ -2615,4 +2615,48 @@ Wire Wire Line
 Wire Wire Line
 	14150 4000 14250 4000
 Connection ~ 14150 4000
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP4
+U 1 1 5E801BA8
+P 11700 4100
+F 0 "TP4" H 11853 4201 50  0000 L CNN
+F 1 "TestPoint_Probe" H 11853 4110 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 11900 4100 50  0001 C CNN
+F 3 "~" H 11900 4100 50  0001 C CNN
+	1    11700 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP5
+U 1 1 5E80380D
+P 12100 4100
+F 0 "TP5" H 12253 4201 50  0000 L CNN
+F 1 "TestPoint_Probe" H 12253 4110 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 12300 4100 50  0001 C CNN
+F 3 "~" H 12300 4100 50  0001 C CNN
+	1    12100 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP6
+U 1 1 5E803CAD
+P 13100 3900
+F 0 "TP6" H 13253 4001 50  0000 L CNN
+F 1 "TestPoint_Probe" H 13253 3910 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 13300 3900 50  0001 C CNN
+F 3 "~" H 13300 3900 50  0001 C CNN
+	1    13100 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP7
+U 1 1 5E8041A2
+P 14550 4000
+F 0 "TP7" H 14703 4101 50  0000 L CNN
+F 1 "TestPoint_Probe" H 14703 4010 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 14750 4000 50  0001 C CNN
+F 3 "~" H 14750 4000 50  0001 C CNN
+	1    14550 4000
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC

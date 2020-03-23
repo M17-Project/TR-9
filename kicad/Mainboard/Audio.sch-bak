@@ -1432,7 +1432,7 @@ Connection ~ 1550 3000
 Wire Wire Line
 	1550 3000 1550 2950
 Wire Wire Line
-	1150 4700 1500 4700
+	1150 4700 1350 4700
 Wire Wire Line
 	1550 3850 1550 3500
 Wire Wire Line
@@ -1481,9 +1481,7 @@ F 3 "~" H 1900 6250 50  0001 C CNN
 	1    1900 6250
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	4100 6350 3850 6350
-Text GLabel 4100 6350 2    50   Output ~ 10
+Text GLabel 4150 6350 2    50   Output ~ 10
 ADC3_1
 Wire Wire Line
 	6300 6150 6300 6350
@@ -1656,7 +1654,7 @@ Wire Wire Line
 Wire Wire Line
 	2600 5550 2600 5700
 Wire Wire Line
-	1150 6250 1400 6250
+	1150 6250 1300 6250
 Wire Wire Line
 	1700 5950 1900 5950
 Wire Wire Line
@@ -1872,4 +1870,54 @@ Wire Wire Line
 	2650 1450 2700 1450
 Wire Wire Line
 	2700 1450 2700 1550
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP?
+U 1 1 5E819125
+P 1300 6250
+AR Path="/5DF0E505/5E819125" Ref="TP?"  Part="1" 
+AR Path="/5DFC2ACA/5E819125" Ref="TP8"  Part="1" 
+F 0 "TP8" H 1453 6351 50  0000 L CNN
+F 1 "TestPoint_Probe" H 1453 6260 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 1500 6250 50  0001 C CNN
+F 3 "~" H 1500 6250 50  0001 C CNN
+	1    1300 6250
+	0    -1   -1   0   
+$EndComp
+Connection ~ 1300 6250
+Wire Wire Line
+	1300 6250 1400 6250
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP?
+U 1 1 5E826F59
+P 4000 6350
+AR Path="/5DF0E505/5E826F59" Ref="TP?"  Part="1" 
+AR Path="/5DFC2ACA/5E826F59" Ref="TP10"  Part="1" 
+F 0 "TP10" H 4150 6650 50  0000 L CNN
+F 1 "TestPoint_Probe" H 4150 6550 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 4200 6350 50  0001 C CNN
+F 3 "~" H 4200 6350 50  0001 C CNN
+	1    4000 6350
+	1    0    0    -1  
+$EndComp
+Connection ~ 4000 6350
+Wire Wire Line
+	4000 6350 3850 6350
+Wire Wire Line
+	4000 6350 4150 6350
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP?
+U 1 1 5E8457FD
+P 1350 4700
+AR Path="/5DF0E505/5E8457FD" Ref="TP?"  Part="1" 
+AR Path="/5DFC2ACA/5E8457FD" Ref="TP9"  Part="1" 
+F 0 "TP9" H 1503 4801 50  0000 L CNN
+F 1 "TestPoint_Probe" H 1503 4710 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 1550 4700 50  0001 C CNN
+F 3 "~" H 1550 4700 50  0001 C CNN
+	1    1350 4700
+	0    -1   -1   0   
+$EndComp
+Connection ~ 1350 4700
+Wire Wire Line
+	1350 4700 1500 4700
 $EndSCHEMATC
