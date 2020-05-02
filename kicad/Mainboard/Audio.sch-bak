@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -1723,10 +1722,10 @@ Wire Notes Line
 Wire Wire Line
 	3250 6100 3650 6100
 $Comp
-L Mainboard-rescue:C_Small-Device C?
+L Mainboard-rescue:C_Small-Device C72
 U 1 1 5E81740F
 P 2750 6400
-F 0 "C?" V 2521 6400 50  0000 C CNN
+F 0 "C72" V 2521 6400 50  0000 C CNN
 F 1 "1n5" V 2612 6400 50  0000 C CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 2750 6400 50  0001 C CNN
 F 3 "~" H 2750 6400 50  0001 C CNN
@@ -1734,10 +1733,10 @@ F 3 "~" H 2750 6400 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Mainboard-rescue:R_Small-device R?
+L Mainboard-rescue:R_Small-device R19
 U 1 1 5E84B70D
 P 3000 6100
-F 0 "R?" H 3059 6146 50  0000 L CNN
+F 0 "R19" H 3059 6146 50  0000 L CNN
 F 1 "5k6" H 3059 6055 50  0000 L CNN
 F 2 "Resistor_SMD:R_0603_1608Metric" H 3000 6100 50  0001 C CNN
 F 3 "~" H 3000 6100 50  0001 C CNN
