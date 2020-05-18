@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -490,7 +491,7 @@ Wire Wire Line
 	8350 2900 8150 2900
 Wire Wire Line
 	8150 2900 8150 4150
-Text GLabel 5350 5000 0    50   Input ~ 10
+Text GLabel 5700 5000 0    50   Input ~ 10
 RX
 Text GLabel 14950 4000 2    50   Input ~ 10
 PA_BIAS
@@ -541,7 +542,6 @@ F 3 "~" H 8800 4150 50  0001 C CNN
 	1    8800 4150
 	0    -1   -1   0   
 $EndComp
-Connection ~ 8150 4150
 Wire Wire Line
 	9750 4150 9750 2700
 Connection ~ 9750 2700
@@ -640,27 +640,25 @@ $EndComp
 $Comp
 L Mainboard-rescue:C_Small-Device C60
 U 1 1 5E09CAD6
-P 8150 4850
-F 0 "C60" H 8058 4804 50  0000 R CNN
-F 1 "6p2" H 8058 4895 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 8150 4850 50  0001 C CNN
-F 3 "~" H 8150 4850 50  0001 C CNN
-	1    8150 4850
+P 8150 5250
+F 0 "C60" H 8058 5204 50  0000 R CNN
+F 1 "6p2" H 8058 5295 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8150 5250 50  0001 C CNN
+F 3 "~" H 8150 5250 50  0001 C CNN
+	1    8150 5250
 	1    0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR098
 U 1 1 5E0A2231
-P 8150 5150
-F 0 "#PWR098" H 8150 4900 50  0001 C CNN
-F 1 "GND" H 8155 4977 50  0000 C CNN
-F 2 "" H 8150 5150 50  0001 C CNN
-F 3 "" H 8150 5150 50  0001 C CNN
-	1    8150 5150
+P 8150 5550
+F 0 "#PWR098" H 8150 5300 50  0001 C CNN
+F 1 "GND" H 8155 5377 50  0000 C CNN
+F 2 "" H 8150 5550 50  0001 C CNN
+F 3 "" H 8150 5550 50  0001 C CNN
+	1    8150 5550
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8150 4150 8150 4600
 $Comp
 L Mainboard-rescue:C_Small-Device C62
 U 1 1 5E0ABA80
@@ -2721,11 +2719,9 @@ F 3 "" H 7000 5550 50  0001 C CNN
 	1    7000 5550
 	1    0    0    -1  
 $EndComp
+Connection ~ 8150 5000
 Wire Wire Line
-	7950 4600 8150 4600
-Connection ~ 8150 4600
-Wire Wire Line
-	8150 4600 8150 4750
+	8150 5000 8150 5150
 $Comp
 L power:+3.3V #PWR0176
 U 1 1 5ECF6899
@@ -2740,12 +2736,12 @@ $EndComp
 $Comp
 L Mainboard-rescue:C_Small-Device C108
 U 1 1 5ED2084B
-P 6650 4500
-F 0 "C108" H 6558 4454 50  0000 R CNN
-F 1 "?" H 6558 4545 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 6650 4500 50  0001 C CNN
-F 3 "~" H 6650 4500 50  0001 C CNN
-	1    6650 4500
+P 6700 4500
+F 0 "C108" H 6608 4454 50  0000 R CNN
+F 1 "22n" H 6608 4545 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6700 4500 50  0001 C CNN
+F 3 "~" H 6700 4500 50  0001 C CNN
+	1    6700 4500
 	0    -1   1    0   
 $EndComp
 Connection ~ 6300 4500
@@ -2761,11 +2757,9 @@ F 3 "" H 7000 4500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	5350 5000 5900 5000
+	5700 5000 5900 5000
 Wire Wire Line
-	6750 4500 7000 4500
-Wire Wire Line
-	6300 4500 6550 4500
+	6800 4500 7000 4500
 Wire Wire Line
 	6300 4350 6300 4500
 Wire Wire Line
@@ -2785,7 +2779,7 @@ Connection ~ 7550 5000
 Wire Wire Line
 	7550 5000 7700 5000
 Wire Wire Line
-	8150 4950 8150 5150
+	8150 5350 8150 5550
 Wire Wire Line
 	7550 5300 7550 5450
 Wire Wire Line
@@ -2804,21 +2798,6 @@ Wire Wire Line
 Wire Wire Line
 	6300 3850 6600 3850
 $Comp
-L Mainboard-rescue:R_Small-Device R20
-U 1 1 5ECF3BC5
-P 5850 4150
-F 0 "R20" V 5654 4150 50  0000 C CNN
-F 1 "?" V 5745 4150 50  0000 C CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" H 5850 4150 50  0001 C CNN
-F 3 "~" H 5850 4150 50  0001 C CNN
-	1    5850 4150
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	5950 4150 6000 4150
-Wire Wire Line
-	5750 4150 5700 4150
-$Comp
 L Device:Q_PMOS_GDS Q7
 U 1 1 5ED3A378
 P 6200 4150
@@ -2827,10 +2806,19 @@ F 1 "FDV304P" H 6405 4105 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 6400 4250 50  0001 C CNN
 F 3 "~" H 6200 4150 50  0001 C CNN
 	1    6200 4150
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 Text GLabel 5700 4150 0    50   Input ~ 10
-LNA_On
+LNA_EN
 Text GLabel 7750 2550 0    50   Input ~ 10
 LNA_On
+Wire Wire Line
+	5700 4150 6000 4150
+Wire Wire Line
+	6300 4500 6600 4500
+Wire Wire Line
+	8150 4150 8150 5000
+Connection ~ 8150 4150
+Wire Wire Line
+	7900 5000 8150 5000
 $EndSCHEMATC

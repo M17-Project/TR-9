@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -996,7 +997,6 @@ Wire Wire Line
 Wire Wire Line
 	5300 1450 5300 1550
 NoConn ~ 6900 3350
-NoConn ~ 6900 3450
 Wire Wire Line
 	4600 5450 4600 5350
 Wire Wire Line
@@ -1253,4 +1253,8 @@ F 3 "" H 8800 1300 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	8500 1300 8600 1300
+Text GLabel 7200 3450 2    50   Input ~ 10
+LNA_On
+Wire Wire Line
+	7200 3450 6900 3450
 $EndSCHEMATC
