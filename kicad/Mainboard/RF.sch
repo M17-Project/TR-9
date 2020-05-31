@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -2808,12 +2807,8 @@ F 3 "~" H 6200 4150 50  0001 C CNN
 	1    6200 4150
 	1    0    0    1   
 $EndComp
-Text GLabel 5700 4150 0    50   Input ~ 10
-LNA_EN
-Text GLabel 7750 2550 0    50   Input ~ 10
+Text GLabel 5050 4150 0    50   Input ~ 10
 LNA_On
-Wire Wire Line
-	5700 4150 6000 4150
 Wire Wire Line
 	6300 4500 6600 4500
 Wire Wire Line
@@ -2821,4 +2816,19 @@ Wire Wire Line
 Connection ~ 8150 4150
 Wire Wire Line
 	7900 5000 8150 5000
+$Comp
+L Mainboard-rescue:R_Small-Device R20
+U 1 1 5EE52FB1
+P 5400 4150
+F 0 "R20" V 5204 4150 50  0000 C CNN
+F 1 "?" V 5295 4150 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 5400 4150 50  0001 C CNN
+F 3 "~" H 5400 4150 50  0001 C CNN
+	1    5400 4150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	5500 4150 6000 4150
+Wire Wire Line
+	5300 4150 5050 4150
 $EndSCHEMATC

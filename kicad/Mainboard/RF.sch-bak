@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -2809,8 +2808,6 @@ F 3 "~" H 6200 4150 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 Text GLabel 5700 4150 0    50   Input ~ 10
-LNA_EN
-Text GLabel 7750 2550 0    50   Input ~ 10
 LNA_On
 Wire Wire Line
 	5700 4150 6000 4150
@@ -2821,4 +2818,15 @@ Wire Wire Line
 Connection ~ 8150 4150
 Wire Wire Line
 	7900 5000 8150 5000
+$Comp
+L Mainboard-rescue:C_Small-Device C109
+U 1 1 5EC68B05
+P 8750 5250
+F 0 "C109" H 8658 5204 50  0000 R CNN
+F 1 "6p2" H 8658 5295 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8750 5250 50  0001 C CNN
+F 3 "~" H 8750 5250 50  0001 C CNN
+	1    8750 5250
+	1    0    0    1   
+$EndComp
 $EndSCHEMATC

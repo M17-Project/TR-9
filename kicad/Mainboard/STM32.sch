@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:Mainboard-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -301,8 +300,8 @@ $Comp
 L Mainboard-rescue:TEST_1P-conn J1
 U 1 1 5DE542F9
 P 5100 5950
-F 0 "J1" V 5200 6100 50  0000 R CNN
-F 1 "TP1" V 5200 6250 50  0000 R CNN
+F 0 "J1" V 5100 6200 50  0000 R CNN
+F 1 "TP1" V 5100 6400 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5300 5950 50  0001 C CNN
 F 3 "" H 5300 5950 50  0001 C CNN
 	1    5100 5950
@@ -312,8 +311,8 @@ $Comp
 L Mainboard-rescue:TEST_1P-conn J2
 U 1 1 5DE55232
 P 5200 5950
-F 0 "J2" V 5300 6100 50  0000 R CNN
-F 1 "TP2" V 5300 6250 50  0000 R CNN
+F 0 "J2" V 5200 6200 50  0000 R CNN
+F 1 "TP2" V 5200 6400 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5400 5950 50  0001 C CNN
 F 3 "" H 5400 5950 50  0001 C CNN
 	1    5200 5950
@@ -373,9 +372,6 @@ Wire Wire Line
 	3800 5350 3800 5750
 NoConn ~ 4500 5350
 NoConn ~ 4800 5350
-NoConn ~ 5300 5350
-NoConn ~ 5400 5350
-NoConn ~ 5500 5350
 Wire Wire Line
 	6900 2350 7000 2350
 Wire Wire Line
@@ -1031,8 +1027,6 @@ Wire Wire Line
 	5100 5350 5100 5950
 Wire Wire Line
 	5200 5350 5200 5950
-Wire Wire Line
-	5600 5450 5600 5350
 Text GLabel 4300 1450 1    50   Input ~ 10
 WIFI_RST
 Text Notes 800  5450 0    50   ~ 0
@@ -1252,9 +1246,61 @@ $EndComp
 Wire Wire Line
 	8500 1300 8600 1300
 Text GLabel 7100 3450 2    50   Input ~ 10
-LNA_EN
+LNA_On
 Wire Wire Line
 	7100 3450 6900 3450
 Wire Wire Line
 	6900 3650 7100 3650
+$Comp
+L Mainboard-rescue:TEST_1P-conn J16
+U 1 1 5EDA6785
+P 5300 5950
+F 0 "J16" V 5300 6250 50  0000 R CNN
+F 1 "TP2" V 5300 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5500 5950 50  0001 C CNN
+F 3 "" H 5500 5950 50  0001 C CNN
+	1    5300 5950
+	1    0    0    1   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn J17
+U 1 1 5EDA8668
+P 5400 5950
+F 0 "J17" V 5400 6250 50  0000 R CNN
+F 1 "TP2" V 5400 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5600 5950 50  0001 C CNN
+F 3 "" H 5600 5950 50  0001 C CNN
+	1    5400 5950
+	1    0    0    1   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn J18
+U 1 1 5EDA889B
+P 5500 5950
+F 0 "J18" V 5500 6250 50  0000 R CNN
+F 1 "TP2" V 5500 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5700 5950 50  0001 C CNN
+F 3 "" H 5700 5950 50  0001 C CNN
+	1    5500 5950
+	1    0    0    1   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn J19
+U 1 1 5EDA8A58
+P 5600 5950
+F 0 "J19" V 5600 6250 50  0000 R CNN
+F 1 "TP2" V 5600 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5800 5950 50  0001 C CNN
+F 3 "" H 5800 5950 50  0001 C CNN
+	1    5600 5950
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	5300 5350 5300 5950
+Wire Wire Line
+	5400 5950 5400 5350
+Wire Wire Line
+	5500 5350 5500 5950
+Wire Wire Line
+	5600 5350 5600 5950
 $EndSCHEMATC
