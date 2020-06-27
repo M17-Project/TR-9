@@ -1762,4 +1762,48 @@ Wire Wire Line
 Wire Wire Line
 	3250 6100 3250 6300
 Connection ~ 3250 6100
+$Comp
+L Connector:TestPoint JC2
+U 1 1 5EFA4AA6
+P 1300 2700
+F 0 "JC2" V 1495 2772 50  0000 C CNN
+F 1 "Batt" V 1404 2772 50  0000 C CNN
+F 2 "TR-9:Pad1x3" H 1500 2700 50  0001 C CNN
+F 3 "~" H 1500 2700 50  0001 C CNN
+	1    1300 2700
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1550 2700 1300 2700
+$Comp
+L Connector:TestPoint JC1
+U 1 1 5EFB5A08
+P 4700 6150
+F 0 "JC1" V 4600 6450 50  0000 C CNN
+F 1 "Batt" V 4600 6200 50  0000 C CNN
+F 2 "TR-9:Pad1x3" H 4900 6150 50  0001 C CNN
+F 3 "~" H 4900 6150 50  0001 C CNN
+	1    4700 6150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector:TestPoint JC4
+U 1 1 5F06EDAE
+P 4700 6350
+F 0 "JC4" V 4600 6650 50  0000 C CNN
+F 1 "Batt" V 4600 6450 50  0000 C CNN
+F 2 "TR-9:Pad1x3" H 4900 6350 50  0001 C CNN
+F 3 "~" H 4900 6350 50  0001 C CNN
+	1    4700 6350
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4700 6150 4850 6150
+Wire Wire Line
+	4700 6350 4850 6350
+Wire Wire Line
+	4850 6350 4850 6150
+Connection ~ 4850 6150
+Wire Wire Line
+	4850 6150 5200 6150
 $EndSCHEMATC

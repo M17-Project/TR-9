@@ -297,22 +297,22 @@ Wire Wire Line
 Wire Wire Line
 	5900 5350 5900 5450
 $Comp
-L Mainboard-rescue:TEST_1P-conn J1
+L Mainboard-rescue:TEST_1P-conn N6
 U 1 1 5DE542F9
 P 5100 5950
-F 0 "J1" V 5100 6200 50  0000 R CNN
-F 1 "TP1" V 5100 6400 50  0000 R CNN
+F 0 "N6" V 5100 6250 50  0000 R CNN
+F 1 "TP1" V 5100 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5300 5950 50  0001 C CNN
 F 3 "" H 5300 5950 50  0001 C CNN
 	1    5100 5950
 	-1   0    0    1   
 $EndComp
 $Comp
-L Mainboard-rescue:TEST_1P-conn J2
+L Mainboard-rescue:TEST_1P-conn N5
 U 1 1 5DE55232
 P 5200 5950
-F 0 "J2" V 5200 6200 50  0000 R CNN
-F 1 "TP2" V 5200 6400 50  0000 R CNN
+F 0 "N5" V 5200 6250 50  0000 R CNN
+F 1 "TP2" V 5200 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5400 5950 50  0001 C CNN
 F 3 "" H 5400 5950 50  0001 C CNN
 	1    5200 5950
@@ -370,8 +370,6 @@ F 3 "" H 3800 5750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3800 5350 3800 5750
-NoConn ~ 4500 5350
-NoConn ~ 4800 5350
 Wire Wire Line
 	6900 2350 7000 2350
 Wire Wire Line
@@ -971,7 +969,6 @@ Wire Notes Line
 	800  4550 800  4300
 NoConn ~ 4200 5350
 NoConn ~ 4300 5350
-NoConn ~ 4400 5350
 Wire Wire Line
 	4800 1450 4800 1550
 Wire Wire Line
@@ -1252,10 +1249,10 @@ Wire Wire Line
 Wire Wire Line
 	6900 3650 7100 3650
 $Comp
-L Mainboard-rescue:TEST_1P-conn J16
+L Mainboard-rescue:TEST_1P-conn N4
 U 1 1 5EDA6785
 P 5300 5950
-F 0 "J16" V 5300 6250 50  0000 R CNN
+F 0 "N4" V 5300 6250 50  0000 R CNN
 F 1 "TP2" V 5300 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5500 5950 50  0001 C CNN
 F 3 "" H 5500 5950 50  0001 C CNN
@@ -1263,10 +1260,10 @@ F 3 "" H 5500 5950 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 $Comp
-L Mainboard-rescue:TEST_1P-conn J17
+L Mainboard-rescue:TEST_1P-conn N3
 U 1 1 5EDA8668
 P 5400 5950
-F 0 "J17" V 5400 6250 50  0000 R CNN
+F 0 "N3" V 5400 6250 50  0000 R CNN
 F 1 "TP2" V 5400 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5600 5950 50  0001 C CNN
 F 3 "" H 5600 5950 50  0001 C CNN
@@ -1274,10 +1271,10 @@ F 3 "" H 5600 5950 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 $Comp
-L Mainboard-rescue:TEST_1P-conn J18
+L Mainboard-rescue:TEST_1P-conn N2
 U 1 1 5EDA889B
 P 5500 5950
-F 0 "J18" V 5500 6250 50  0000 R CNN
+F 0 "N2" V 5500 6250 50  0000 R CNN
 F 1 "TP2" V 5500 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5700 5950 50  0001 C CNN
 F 3 "" H 5700 5950 50  0001 C CNN
@@ -1285,10 +1282,10 @@ F 3 "" H 5700 5950 50  0001 C CNN
 	1    0    0    1   
 $EndComp
 $Comp
-L Mainboard-rescue:TEST_1P-conn J19
+L Mainboard-rescue:TEST_1P-conn N1
 U 1 1 5EDA8A58
 P 5600 5950
-F 0 "J19" V 5600 6250 50  0000 R CNN
+F 0 "N1" V 5600 6250 50  0000 R CNN
 F 1 "TP2" V 5600 6450 50  0000 R CNN
 F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5800 5950 50  0001 C CNN
 F 3 "" H 5800 5950 50  0001 C CNN
@@ -1303,4 +1300,43 @@ Wire Wire Line
 	5500 5350 5500 5950
 Wire Wire Line
 	5600 5350 5600 5950
+$Comp
+L Mainboard-rescue:TEST_1P-conn N7
+U 1 1 5EE3107D
+P 4800 5950
+F 0 "N7" V 4800 6250 50  0000 R CNN
+F 1 "TP2" V 4800 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 5000 5950 50  0001 C CNN
+F 3 "" H 5000 5950 50  0001 C CNN
+	1    4800 5950
+	1    0    0    1   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn N8
+U 1 1 5EE31358
+P 4500 5950
+F 0 "N8" V 4500 6250 50  0000 R CNN
+F 1 "TP2" V 4500 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 4700 5950 50  0001 C CNN
+F 3 "" H 4700 5950 50  0001 C CNN
+	1    4500 5950
+	1    0    0    1   
+$EndComp
+$Comp
+L Mainboard-rescue:TEST_1P-conn N9
+U 1 1 5EE317B2
+P 4400 5950
+F 0 "N9" V 4400 6250 50  0000 R CNN
+F 1 "TP2" V 4400 6450 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 4600 5950 50  0001 C CNN
+F 3 "" H 4600 5950 50  0001 C CNN
+	1    4400 5950
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	4800 5350 4800 5950
+Wire Wire Line
+	4500 5350 4500 5950
+Wire Wire Line
+	4400 5350 4400 5950
 $EndSCHEMATC
