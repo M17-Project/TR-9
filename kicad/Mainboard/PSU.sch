@@ -287,17 +287,6 @@ F 3 "~" H 4000 6150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mainboard-rescue:MountingHole_Pad-mechanical H4
-U 1 1 5DEEC94F
-P 4250 6150
-F 0 "H4" V 4200 6350 50  0000 L CNN
-F 1 "MountingHole_Pad" V 4300 6350 50  0000 L CNN
-F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 4250 6150 50  0001 C CNN
-F 3 "~" H 4250 6150 50  0001 C CNN
-	1    4250 6150
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR031
 U 1 1 5DEECC7E
 P 3500 6350
@@ -330,19 +319,6 @@ F 3 "" H 4000 6350 50  0001 C CNN
 	1    4000 6350
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR036
-U 1 1 5DEED62E
-P 4250 6350
-F 0 "#PWR036" H 4250 6100 50  0001 C CNN
-F 1 "GND" H 4255 6177 50  0000 C CNN
-F 2 "" H 4250 6350 50  0001 C CNN
-F 3 "" H 4250 6350 50  0001 C CNN
-	1    4250 6350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4250 6250 4250 6350
 Wire Wire Line
 	4000 6250 4000 6350
 Wire Wire Line
@@ -587,28 +563,28 @@ F 3 "" H 5900 4350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5900 4350 5900 4150
-$Comp
-L Mainboard-rescue:MountingHole_Pad-mechanical H5
-U 1 1 5E5173B7
-P 4500 6150
-F 0 "H5" V 4450 6350 50  0000 L CNN
-F 1 "MountingHole_Pad" V 4550 6350 50  0000 L CNN
-F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 4500 6150 50  0001 C CNN
-F 3 "~" H 4500 6150 50  0001 C CNN
-	1    4500 6150
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR0206
-U 1 1 5E5178E2
-P 4500 6350
-F 0 "#PWR0206" H 4500 6100 50  0001 C CNN
-F 1 "GND" H 4505 6177 50  0000 C CNN
-F 2 "" H 4500 6350 50  0001 C CNN
-F 3 "" H 4500 6350 50  0001 C CNN
-	1    4500 6350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	4500 6250 4500 6350
+	4250 6250 4250 6350
+$Comp
+L power:GND #PWR036
+U 1 1 5DEED62E
+P 4250 6350
+F 0 "#PWR036" H 4250 6100 50  0001 C CNN
+F 1 "GND" H 4255 6177 50  0000 C CNN
+F 2 "" H 4250 6350 50  0001 C CNN
+F 3 "" H 4250 6350 50  0001 C CNN
+	1    4250 6350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:MountingHole_Pad-mechanical H4
+U 1 1 5DEEC94F
+P 4250 6150
+F 0 "H4" V 4200 6350 50  0000 L CNN
+F 1 "MountingHole_Pad" V 4300 6350 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 4250 6150 50  0001 C CNN
+F 3 "~" H 4250 6150 50  0001 C CNN
+	1    4250 6150
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

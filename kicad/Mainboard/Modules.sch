@@ -109,4 +109,14 @@ Wire Wire Line
 	5800 4750 5800 4800
 Wire Wire Line
 	5800 4800 6000 4800
+Text Notes 5550 5250 0    50   ~ 0
+This is a place for ESP8266 module
+Wire Notes Line
+	5400 5100 5400 5350
+Wire Notes Line
+	7100 5100 7100 5350
+Wire Notes Line
+	7100 5100 5400 5100
+Wire Notes Line
+	5400 5350 7100 5350
 $EndSCHEMATC
