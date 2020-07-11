@@ -1588,7 +1588,7 @@ Wire Wire Line
 	3400 7750 3400 7850
 Connection ~ 3400 7850
 Wire Wire Line
-	3100 7750 3100 9050
+	3100 7750 3100 8500
 Connection ~ 3100 9050
 Wire Wire Line
 	4550 7150 4650 7150
@@ -3043,4 +3043,37 @@ Wire Wire Line
 Connection ~ 8750 3250
 Wire Wire Line
 	8750 3250 8750 3450
+$Comp
+L Connector:TestPoint JC?
+U 1 1 5F113BE5
+P 3350 7850
+AR Path="/5DFC2ACA/5F113BE5" Ref="JC?"  Part="1" 
+AR Path="/5DF0E505/5F113BE5" Ref="JC15"  Part="1" 
+F 0 "JC15" V 3545 7922 50  0000 C CNN
+F 1 "3,3V" V 3454 7922 50  0000 C CNN
+F 2 "TestPoint:TestPoint_Pad_1.0x1.0mm" H 3550 7850 50  0001 C CNN
+F 3 "~" H 3550 7850 50  0001 C CNN
+	1    3350 7850
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3350 7850 3400 7850
+$Comp
+L Connector:TestPoint JC?
+U 1 1 5F195F19
+P 3000 8500
+AR Path="/5DFC2ACA/5F195F19" Ref="JC?"  Part="1" 
+AR Path="/5DF0E505/5F195F19" Ref="JC16"  Part="1" 
+F 0 "JC16" V 3195 8572 50  0000 C CNN
+F 1 "3,3V" V 3104 8572 50  0000 C CNN
+F 2 "TestPoint:TestPoint_Pad_1.0x1.0mm" H 3200 8500 50  0001 C CNN
+F 3 "~" H 3200 8500 50  0001 C CNN
+	1    3000 8500
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3000 8500 3100 8500
+Connection ~ 3100 8500
+Wire Wire Line
+	3100 8500 3100 9050
 $EndSCHEMATC
