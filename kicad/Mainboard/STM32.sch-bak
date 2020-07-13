@@ -162,7 +162,6 @@ F 3 "" H 950 3650 50  0001 C CNN
 	1    950  3650
 	1    0    0    -1  
 $EndComp
-NoConn ~ 2050 3150
 $Comp
 L TR-9:STM32F777VIT U1
 U 1 1 5DE3C5E6
@@ -247,7 +246,6 @@ NoConn ~ 3100 2950
 NoConn ~ 3100 3050
 NoConn ~ 3100 3450
 NoConn ~ 3100 3650
-NoConn ~ 3100 3750
 NoConn ~ 3100 3950
 NoConn ~ 3100 4550
 $Comp
@@ -1339,4 +1337,12 @@ Wire Wire Line
 	4500 5350 4500 5950
 Wire Wire Line
 	4400 5350 4400 5950
+Text GLabel 2800 3750 0    50   Input ~ 10
+OscillatorON
+Wire Wire Line
+	3100 3750 2800 3750
+Text GLabel 2150 3150 2    50   Input ~ 10
+OscillatorON
+Wire Wire Line
+	2150 3150 2050 3150
 $EndSCHEMATC
