@@ -55,4 +55,16 @@ U 5E25615D
 F0 "Modules" 50
 F1 "Modules.sch" 50
 $EndSheet
+Wire Notes Line width 12
+	750  1500 2100 1500
+Wire Notes Line width 12
+	2100 3000 750  3000
+Text Notes 800  1650 0    50   ~ 0
+Jumping Cable (JC) connections:\n
+Text Notes 1100 2900 0    50   ~ 0
+      top\n\n- JC1 to JC3\n- JC4 to JC2\n- JC5 to JC6\n- JC15 to JC16\n\n\n      bottom\n\n- JC11 to JC12\n- JC13 to JC14\n- JC9 to JC10\n- JC7 to JC8
+Wire Notes Line width 12
+	2100 1500 2100 3000
+Wire Notes Line width 12
+	750  1500 750  3000
 $EndSCHEMATC
