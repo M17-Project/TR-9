@@ -1,4 +1,4 @@
-18379390582542194
+18396826956023194
 AnalogRF
 HMC595
 
@@ -75716,19 +75716,19 @@ AFT05MS004NT1
 SOT-89 with different pinout
 
 0
-6
+13
 3
 TR-9
 BGA6589
 SOT-89 with different pinout
 
 0
-6
+13
 3
 TR-9
 ECS-3225-MV-160-CN-TR
 
-SMD SMT crystal
+
 0
 4
 4
@@ -75739,6 +75739,83 @@ SMD SMT crystal
 0
 4
 4
+TR-9
+HMC546MS8GETR
+MSOP, 8 Pin (http://ww1.microchip.com/downloads/en/DeviceDoc/mic5355_6.pdf#page=15), generated with kicad-footprint-generator ipc_gullwing_generator.py
+MSOP SO
+0
+16
+9
+TR-9
+MIC_EXT
+SJ-43515RS-SMT
+Undefined or Miscellaneous
+0
+6
+5
+TR-9
+PMEG4005ET.215
+
+
+0
+3
+3
+TR-9
+Pad1x3
+
+
+0
+1
+1
+TR-9
+RFECA3216060A1T
+
+
+0
+5
+4
+TR-9
+RFECA3216060A1T_shifted
+
+
+0
+5
+4
+TR-9
+RF_Coil
+
+
+0
+2
+2
+TR-9
+RF_Coil_v2
+
+
+0
+2
+2
+TR-9
+RF_Coil_v2_mirrored
+
+
+0
+2
+2
+TR-9
+SPK_EXT
+SJ-2524-SMT-TR
+Connector
+0
+6
+5
+TR-9
+microSD
+Micro SD, SMD, ADAM TECH MCSP-Q1-08-A-SG-T/R , reverse engineered by Nikoloz SO3ALG
+Micro SD
+0
+13
+10
 TerminalBlock
 TerminalBlock_Altech_AK300-2_P5.00mm
 Altech AK300 terminal block, pitch 5.0mm, 45 degree angled, see http://www.mouser.com/ds/2/16/PCBMETRC-24178.pdf

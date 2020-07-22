@@ -1806,4 +1806,57 @@ Wire Wire Line
 Connection ~ 4850 6150
 Wire Wire Line
 	4850 6150 5200 6150
+$Comp
+L Mainboard-rescue:C_Small-device C99
+U 1 1 5F4136AC
+P 6950 1300
+F 0 "C99" H 7042 1346 50  0000 L CNN
+F 1 "1u" H 7042 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6950 1300 50  0001 C CNN
+F 3 "~" H 6950 1300 50  0001 C CNN
+	1    6950 1300
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Mainboard-rescue:C_Small-device C100
+U 1 1 5F4136B2
+P 7300 1300
+F 0 "C100" H 7392 1346 50  0000 L CNN
+F 1 "100n" H 7392 1255 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7300 1300 50  0001 C CNN
+F 3 "~" H 7300 1300 50  0001 C CNN
+	1    7300 1300
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	7300 1400 7300 1500
+Wire Wire Line
+	6950 1500 6950 1400
+Wire Wire Line
+	7300 1500 7150 1500
+Wire Wire Line
+	6950 1200 7150 1200
+Wire Wire Line
+	7650 1100 7150 1100
+Wire Wire Line
+	7150 1100 7150 1200
+Connection ~ 7150 1200
+Wire Wire Line
+	7150 1200 7300 1200
+$Comp
+L power:GND #PWR0173
+U 1 1 5F444F07
+P 7150 1650
+F 0 "#PWR0173" H 7150 1400 50  0001 C CNN
+F 1 "GND" H 7155 1477 50  0000 C CNN
+F 2 "" H 7150 1650 50  0001 C CNN
+F 3 "" H 7150 1650 50  0001 C CNN
+	1    7150 1650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7150 1650 7150 1500
+Connection ~ 7150 1500
+Wire Wire Line
+	7150 1500 6950 1500
 $EndSCHEMATC

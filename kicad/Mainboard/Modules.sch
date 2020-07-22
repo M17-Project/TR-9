@@ -119,52 +119,10 @@ Wire Notes Line
 	7100 5100 5400 5100
 Wire Notes Line
 	5400 5350 7100 5350
-$Comp
-L Jumper:SolderJumper_3_Open JP2
-U 1 1 5F117DC1
-P 7700 3600
-F 0 "JP2" V 7654 3668 50  0000 L CNN
-F 1 "GPIO2" V 7745 3668 50  0000 L CNN
-F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm" H 7700 3600 50  0001 C CNN
-F 3 "~" H 7700 3600 50  0001 C CNN
-	1    7700 3600
-	0    1    1    0   
-$EndComp
-$Comp
-L Jumper:SolderJumper_3_Open JP1
-U 1 1 5F119F3E
-P 7150 3600
-F 0 "JP1" V 7104 3668 50  0000 L CNN
-F 1 "GPIO0" V 7195 3668 50  0000 L CNN
-F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm" H 7150 3600 50  0001 C CNN
-F 3 "~" H 7150 3600 50  0001 C CNN
-	1    7150 3600
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	7000 3600 6900 3600
-Wire Wire Line
-	6900 3600 6900 4250
-Wire Wire Line
-	6900 4250 6700 4250
-Wire Wire Line
-	7550 3600 7450 3600
-Wire Wire Line
-	7450 3600 7450 4350
-Wire Wire Line
-	7450 4350 6700 4350
-Wire Wire Line
-	7700 3800 7700 4000
 Wire Wire Line
 	7700 4000 7650 4000
 Wire Wire Line
-	7150 4000 7150 3800
-Wire Wire Line
-	7700 3400 7700 3300
-Wire Wire Line
 	7700 3300 7400 3300
-Wire Wire Line
-	7150 3300 7150 3400
 $Comp
 L power:+3.3V #PWR0171
 U 1 1 5F11BC56
@@ -197,4 +155,46 @@ Wire Wire Line
 Connection ~ 7650 4000
 Wire Wire Line
 	7650 4000 7150 4000
+Wire Wire Line
+	7700 3800 7700 4000
+Wire Wire Line
+	7700 3400 7700 3300
+Wire Wire Line
+	7450 4350 6700 4350
+Wire Wire Line
+	7550 3600 7450 3600
+Wire Wire Line
+	7450 3600 7450 4350
+Wire Wire Line
+	7150 3300 7150 3400
+Wire Wire Line
+	7150 4000 7150 3800
+Wire Wire Line
+	6900 4250 6700 4250
+Wire Wire Line
+	7000 3600 6900 3600
+Wire Wire Line
+	6900 3600 6900 4250
+$Comp
+L Jumper:SolderJumper_3_Open JP2
+U 1 1 5F117DC1
+P 7700 3600
+F 0 "JP2" V 7654 3668 50  0000 L CNN
+F 1 "GPIO2" V 7745 3668 50  0000 L CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm" H 7700 3600 50  0001 C CNN
+F 3 "~" H 7700 3600 50  0001 C CNN
+	1    7700 3600
+	0    1    1    0   
+$EndComp
+$Comp
+L Jumper:SolderJumper_3_Open JP1
+U 1 1 5F119F3E
+P 7150 3600
+F 0 "JP1" V 7104 3668 50  0000 L CNN
+F 1 "GPIO0" V 7195 3668 50  0000 L CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm" H 7150 3600 50  0001 C CNN
+F 3 "~" H 7150 3600 50  0001 C CNN
+	1    7150 3600
+	0    1    1    0   
+$EndComp
 $EndSCHEMATC

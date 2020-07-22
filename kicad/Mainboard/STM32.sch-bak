@@ -1338,11 +1338,11 @@ Wire Wire Line
 Wire Wire Line
 	4400 5350 4400 5950
 Text GLabel 2800 3750 0    50   Input ~ 10
-OscillatorON
+XO_EN
 Wire Wire Line
 	3100 3750 2800 3750
 Text GLabel 2150 3150 2    50   Input ~ 10
-OscillatorON
+XO_EN
 Wire Wire Line
 	2150 3150 2050 3150
 $EndSCHEMATC
