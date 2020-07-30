@@ -1219,7 +1219,7 @@ F 1 "SW_Push" V 8695 1348 50  0000 L CNN
 F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 8650 1400 50  0001 C CNN
 F 3 "~" H 8650 1400 50  0001 C CNN
 	1    8650 1200
-	1    0    0    -1  
+	-1   0    0    -1  
 $EndComp
 $Comp
 L Switch:SW_Push SW14
@@ -1230,7 +1230,7 @@ F 1 "SW_Push" V 9745 1348 50  0000 L CNN
 F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 9700 1400 50  0001 C CNN
 F 3 "~" H 9700 1400 50  0001 C CNN
 	1    9700 1200
-	1    0    0    -1  
+	-1   0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR023
@@ -1442,4 +1442,124 @@ Wire Wire Line
 Wire Wire Line
 	4300 3750 4300 3650
 Connection ~ 4200 3750
+$Comp
+L Device:LED D1
+U 1 1 5F2DC0D1
+P 2300 1450
+F 0 "D1" V 2339 1332 50  0000 R CNN
+F 1 "LED" V 2248 1332 50  0000 R CNN
+F 2 "Diode_SMD:D_0603_1608Metric" H 2300 1450 50  0001 C CNN
+F 3 "~" H 2300 1450 50  0001 C CNN
+	1    2300 1450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 5F2E1112
+P 2800 1450
+F 0 "D2" V 2839 1332 50  0000 R CNN
+F 1 "LED" V 2748 1332 50  0000 R CNN
+F 2 "Diode_SMD:D_0603_1608Metric" H 2800 1450 50  0001 C CNN
+F 3 "~" H 2800 1450 50  0001 C CNN
+	1    2800 1450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2800 1300 2800 1100
+Wire Wire Line
+	2800 1050 2550 1050
+Wire Wire Line
+	2300 1050 2300 1100
+$Comp
+L Connector:TestPoint TP2
+U 1 1 5F3017E8
+P 2550 950
+F 0 "TP2" H 2608 1068 50  0000 L CNN
+F 1 "TestPoint" H 2608 977 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 2750 950 50  0001 C CNN
+F 3 "~" H 2750 950 50  0001 C CNN
+	1    2550 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 950  2550 1050
+Connection ~ 2550 1050
+Wire Wire Line
+	2550 1050 2300 1050
+$Comp
+L Connector:TestPoint TP3
+U 1 1 5F3133F8
+P 2800 1750
+F 0 "TP3" H 2742 1776 50  0000 R CNN
+F 1 "TestPoint" H 2742 1867 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 3000 1750 50  0001 C CNN
+F 3 "~" H 3000 1750 50  0001 C CNN
+	1    2800 1750
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:TestPoint TP1
+U 1 1 5F313DFF
+P 2300 1750
+F 0 "TP1" H 2242 1776 50  0000 R CNN
+F 1 "TestPoint" H 2242 1867 50  0000 R CNN
+F 2 "TestPoint:TestPoint_Pad_2.0x2.0mm" H 2500 1750 50  0001 C CNN
+F 3 "~" H 2500 1750 50  0001 C CNN
+	1    2300 1750
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2800 1750 2800 1700
+Wire Wire Line
+	2300 1750 2300 1700
+$Comp
+L Device:C C10
+U 1 1 5F36D618
+P 2050 1450
+F 0 "C10" H 1850 1500 50  0000 L CNN
+F 1 "100n" H 1800 1400 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2088 1300 50  0001 C CNN
+F 3 "~" H 2050 1450 50  0001 C CNN
+	1    2050 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C11
+U 1 1 5F36ECB9
+P 3500 1450
+F 0 "C11" H 3300 1500 50  0000 L CNN
+F 1 "100n" H 3150 1400 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3538 1300 50  0001 C CNN
+F 3 "~" H 3500 1450 50  0001 C CNN
+	1    3500 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 1300 3500 1100
+Wire Wire Line
+	3500 1100 2800 1100
+Connection ~ 2800 1100
+Wire Wire Line
+	2800 1100 2800 1050
+Wire Wire Line
+	3500 1600 3500 1700
+Wire Wire Line
+	3500 1700 2800 1700
+Connection ~ 2800 1700
+Wire Wire Line
+	2800 1700 2800 1600
+Wire Wire Line
+	2050 1600 2050 1700
+Wire Wire Line
+	2050 1700 2300 1700
+Connection ~ 2300 1700
+Wire Wire Line
+	2300 1700 2300 1600
+Wire Wire Line
+	2050 1100 2300 1100
+Wire Wire Line
+	2050 1100 2050 1300
+Connection ~ 2300 1100
+Wire Wire Line
+	2300 1100 2300 1300
 $EndSCHEMATC
