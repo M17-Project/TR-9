@@ -1166,7 +1166,7 @@ $EndComp
 Wire Wire Line
 	8600 1200 8500 1200
 Wire Wire Line
-	8500 1200 8500 1050
+	8500 1200 8500 1100
 Wire Wire Line
 	8500 1300 8500 1550
 Wire Wire Line
@@ -1381,4 +1381,63 @@ Text GLabel 2150 3150 2    50   Input ~ 10
 XO_EN
 Wire Wire Line
 	2150 3150 2050 3150
+$Comp
+L Mainboard-rescue:C_Small-device C?
+U 1 1 5F24F494
+P 7600 1200
+AR Path="/5DEDCA32/5F24F494" Ref="C?"  Part="1" 
+AR Path="/5DE274F4/5F24F494" Ref="C104"  Part="1" 
+F 0 "C104" H 7350 1150 50  0000 L CNN
+F 1 "22u/TA" H 7300 1050 50  0000 L CNN
+F 2 "Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A" H 7600 1200 50  0001 C CNN
+F 3 "~" H 7600 1200 50  0001 C CNN
+F 4 "TAJA226K006RNJV" H 7600 1200 50  0001 C CNN "Partno"
+F 5 "10" H 7600 1200 50  0001 C CNN "Tolerance"
+F 6 "10" H 7600 1200 50  0001 C CNN "Voltage"
+F 7 "TANTAL" H 7600 1200 50  0001 C CNN "TempCoef"
+	1    7600 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8500 1100 7600 1100
+Connection ~ 8500 1100
+Wire Wire Line
+	8500 1100 8500 1050
+$Comp
+L power:GND #PWR0174
+U 1 1 5F25F4B7
+P 7600 1450
+F 0 "#PWR0174" H 7600 1200 50  0001 C CNN
+F 1 "GND" H 7605 1277 50  0000 C CNN
+F 2 "" H 7600 1450 50  0001 C CNN
+F 3 "" H 7600 1450 50  0001 C CNN
+	1    7600 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 1300 7600 1400
+$Comp
+L Mainboard-rescue:C_Small-device C105
+U 1 1 5F26DD54
+P 7200 1200
+F 0 "C105" V 7000 1100 50  0000 L CNN
+F 1 "100n" V 7100 1100 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 7200 1200 50  0001 C CNN
+F 3 "~" H 7200 1200 50  0001 C CNN
+F 4 "50" H 7200 1200 50  0001 C CNN "Voltage"
+F 5 "10" H 7200 1200 50  0001 C CNN "Tolerance"
+F 6 "X7R" H 7200 1200 50  0001 C CNN "TempCoef"
+	1    7200 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7600 1100 7200 1100
+Connection ~ 7600 1100
+Wire Wire Line
+	7200 1300 7200 1400
+Wire Wire Line
+	7200 1400 7600 1400
+Connection ~ 7600 1400
+Wire Wire Line
+	7600 1400 7600 1450
 $EndSCHEMATC

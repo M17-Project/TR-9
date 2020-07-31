@@ -186,6 +186,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 6550 1900 50  0001 C CNN
 F 3 "~" H 6550 1900 50  0001 C CNN
 F 4 "50" H 6550 1900 50  0001 C CNN "Voltage"
 F 5 "C0G" H 6550 1900 50  0001 C CNN "TempCoef"
+F 6 "5" H 6550 1900 50  0001 C CNN "Tolerance"
 	1    6550 1900
 	0    1    1    0   
 $EndComp
@@ -218,6 +219,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 6550 1550 50  0001 C CNN
 F 3 "~" H 6550 1550 50  0001 C CNN
 F 4 "50" H 6550 1550 50  0001 C CNN "Voltage"
 F 5 "C0G" H 6550 1550 50  0001 C CNN "TempCoef"
+F 6 "5" H 6550 1550 50  0001 C CNN "Tolerance"
 	1    6550 1550
 	0    1    1    0   
 $EndComp
@@ -429,6 +431,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 7800 2500 50  0001 C CNN
 F 3 "~" H 7800 2500 50  0001 C CNN
 F 4 "50" H 7800 2500 50  0001 C CNN "Voltage"
 F 5 "C0G" H 7800 2500 50  0001 C CNN "TempCoef"
+F 6 "5" H 7800 2500 50  0001 C CNN "Tolerance"
 	1    7800 2500
 	0    1    1    0   
 $EndComp
@@ -518,6 +521,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 7800 5000 50  0001 C CNN
 F 3 "~" H 7800 5000 50  0001 C CNN
 F 4 "50" H 7800 5000 50  0001 C CNN "Voltage"
 F 5 "C0G" H 7800 5000 50  0001 C CNN "TempCoef"
+F 6 "5" H 7800 5000 50  0001 C CNN "Tolerance"
 	1    7800 5000
 	0    1    1    0   
 $EndComp
@@ -547,6 +551,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 9950 2700 50  0001 C CNN
 F 3 "~" H 9950 2700 50  0001 C CNN
 F 4 "50" H 9950 2700 50  0001 C CNN "Voltage"
 F 5 "C0G" H 9950 2700 50  0001 C CNN "TempCoef"
+F 6 "5" H 9950 2700 50  0001 C CNN "Tolerance"
 	1    9950 2700
 	0    1    1    0   
 $EndComp
@@ -858,6 +863,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 11700 4300 50  0001 C CNN
 F 3 "~" H 11700 4300 50  0001 C CNN
 F 4 "50" H 11700 4300 50  0001 C CNN "Voltage"
 F 5 "X7R" H 11700 4300 50  0001 C CNN "TempCoef"
+F 6 "10" H 11700 4300 50  0001 C CNN "Tolerance"
 	1    11700 4300
 	1    0    0    -1  
 $EndComp
@@ -934,6 +940,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 12450 4300 50  0001 C CNN
 F 3 "~" H 12450 4300 50  0001 C CNN
 F 4 "50" H 12450 4300 50  0001 C CNN "Voltage"
 F 5 "X7R" H 12450 4300 50  0001 C CNN "TempCoef"
+F 6 "10" H 12450 4300 50  0001 C CNN "Tolerance"
 	1    12450 4300
 	1    0    0    -1  
 $EndComp
@@ -1756,6 +1763,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 5050 6100 50  0001 C CNN
 F 3 "~" H 5050 6100 50  0001 C CNN
 F 4 "50" H 5050 6100 50  0001 C CNN "Voltage"
 F 5 "X7R" H 5050 6100 50  0001 C CNN "TempCoef"
+F 6 "10" H 5050 6100 50  0001 C CNN "Tolerance"
 	1    5050 6100
 	1    0    0    -1  
 $EndComp
@@ -1907,6 +1915,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 6600 7250 50  0001 C CNN
 F 3 "~" H 6600 7250 50  0001 C CNN
 F 4 "50" H 6600 7250 50  0001 C CNN "Voltage"
 F 5 "C0G" H 6600 7250 50  0001 C CNN "TempCoef"
+F 6 "5" H 6600 7250 50  0001 C CNN "Tolerance"
 	1    6600 7250
 	0    -1   1    0   
 $EndComp
@@ -2109,6 +2118,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 4400 2250 50  0001 C CNN
 F 3 "~" H 4400 2250 50  0001 C CNN
 F 4 "50" H 4400 2250 50  0001 C CNN "Voltage"
 F 5 "C0G" H 4400 2250 50  0001 C CNN "TempCoef"
+F 6 "5" H 4400 2250 50  0001 C CNN "Tolerance"
 	1    4400 2250
 	0    1    1    0   
 $EndComp
@@ -2122,6 +2132,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 4400 1900 50  0001 C CNN
 F 3 "~" H 4400 1900 50  0001 C CNN
 F 4 "50" H 4400 1900 50  0001 C CNN "Voltage"
 F 5 "X7R" H 4400 1900 50  0001 C CNN "TempCoef"
+F 6 "10" H 4400 1900 50  0001 C CNN "Tolerance"
 	1    4400 1900
 	0    1    1    0   
 $EndComp
@@ -2681,9 +2692,10 @@ L Device:R_Pack04 RN2
 U 1 1 5E711FA8
 P 6650 8350
 F 0 "RN2" V 6233 8350 50  0000 C CNN
-F 1 "R_Pack04" V 6324 8350 50  0000 C CNN
+F 1 "4 x 1k ISOLATED" V 6324 8350 50  0000 C CNN
 F 2 "Resistor_SMD:R_Array_Concave_4x0603" V 6925 8350 50  0001 C CNN
 F 3 "~" H 6650 8350 50  0001 C CNN
+F 4 "5" H 6650 8350 50  0001 C CNN "Tolerance"
 	1    6650 8350
 	0    1    1    0   
 $EndComp
@@ -2712,9 +2724,10 @@ L Device:R_Pack04 RN1
 U 1 1 5E8F8B20
 P 6600 9250
 F 0 "RN1" V 6800 9250 50  0000 C CNN
-F 1 "R_Pack04" V 6900 9250 50  0000 C CNN
+F 1 "4 x 1k ISOLATED" V 6900 9250 50  0000 C CNN
 F 2 "Resistor_SMD:R_Array_Concave_4x0603" V 6875 9250 50  0001 C CNN
 F 3 "~" H 6600 9250 50  0001 C CNN
+F 4 "5" H 6600 9250 50  0001 C CNN "Tolerance"
 	1    6600 9250
 	0    1    1    0   
 $EndComp

@@ -34,6 +34,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 5150 2100 50  0001 C CNN
 F 3 "~" H 5150 2100 50  0001 C CNN
 F 4 "50" H 5150 2100 50  0001 C CNN "Voltage"
 F 5 "X7R" H 5150 2100 50  0001 C CNN "TempCoef"
+F 6 "10" H 5150 2100 50  0001 C CNN "Tolerance"
 	1    5150 2100
 	1    0    0    -1  
 $EndComp
@@ -118,6 +119,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 5750 1150 50  0001 C CNN
 F 3 "~" H 5750 1150 50  0001 C CNN
 F 4 "50" H 5750 1150 50  0001 C CNN "Voltage"
 F 5 "X7R" H 5750 1150 50  0001 C CNN "TempCoef"
+F 6 "10" H 5750 1150 50  0001 C CNN "Tolerance"
 	1    5750 1150
 	0    1    1    0   
 $EndComp
@@ -238,6 +240,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 4950 3400 50  0001 C CNN
 F 3 "~" H 4950 3400 50  0001 C CNN
 F 4 "50" H 4950 3400 50  0001 C CNN "Voltage"
 F 5 "X7R" H 4950 3400 50  0001 C CNN "TempCoef"
+F 6 "10" H 4950 3400 50  0001 C CNN "Tolerance"
 	1    4950 3400
 	1    0    0    -1  
 $EndComp
@@ -338,6 +341,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 8200 3650 50  0001 C CNN
 F 3 "~" H 8200 3650 50  0001 C CNN
 F 4 "50" H 8200 3650 50  0001 C CNN "Voltage"
 F 5 "X7R" H 8200 3650 50  0001 C CNN "TempCoef"
+F 6 "10" H 8200 3650 50  0001 C CNN "Tolerance"
 	1    8200 3650
 	1    0    0    1   
 $EndComp
@@ -967,6 +971,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 8400 5200 50  0001 C CNN
 F 3 "~" H 8400 5200 50  0001 C CNN
 F 4 "50" H 8400 5200 50  0001 C CNN "Voltage"
 F 5 "X7R" H 8400 5200 50  0001 C CNN "TempCoef"
+F 6 "10" H 8400 5200 50  0001 C CNN "Tolerance"
 	1    8400 5200
 	1    0    0    1   
 $EndComp
@@ -1100,6 +1105,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 6850 4700 50  0001 C CNN
 F 3 "~" H 6850 4700 50  0001 C CNN
 F 4 "50" H 6850 4700 50  0001 C CNN "Voltage"
 F 5 "X7R" H 6850 4700 50  0001 C CNN "TempCoef"
+F 6 "10" H 6850 4700 50  0001 C CNN "Tolerance"
 	1    6850 4700
 	0    -1   -1   0   
 $EndComp
@@ -1506,6 +1512,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 3250 6400 50  0001 C CNN
 F 3 "~" H 3250 6400 50  0001 C CNN
 F 4 "50" H 3250 6400 50  0001 C CNN "Voltage"
 F 5 "X7R" H 3250 6400 50  0001 C CNN "TempCoef"
+F 6 "10" H 3250 6400 50  0001 C CNN "Tolerance"
 	1    3250 6400
 	-1   0    0    1   
 $EndComp
@@ -1524,6 +1531,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 2250 6400 50  0001 C CNN
 F 3 "~" H 2250 6400 50  0001 C CNN
 F 4 "50" H 2250 6400 50  0001 C CNN "Voltage"
 F 5 "X7R" H 2250 6400 50  0001 C CNN "TempCoef"
+F 6 "10" H 2250 6400 50  0001 C CNN "Tolerance"
 	1    2250 6400
 	-1   0    0    1   
 $EndComp
@@ -1810,7 +1818,7 @@ Wire Notes Line
 Wire Notes Line
 	3950 7000 3950 7250
 Wire Wire Line
-	3250 6100 3650 6100
+	3250 6100 3500 6100
 $Comp
 L Mainboard-rescue:C_Small-Device C72
 U 1 1 5E81740F
@@ -1821,6 +1829,7 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 2750 6400 50  0001 C CNN
 F 3 "~" H 2750 6400 50  0001 C CNN
 F 4 "50" H 2750 6400 50  0001 C CNN "Voltage"
 F 5 "X7R" H 2750 6400 50  0001 C CNN "TempCoef"
+F 6 "10" H 2750 6400 50  0001 C CNN "Tolerance"
 	1    2750 6400
 	-1   0    0    1   
 $EndComp
@@ -1969,7 +1978,24 @@ F 2 "Capacitor_SMD:C_0603_1608Metric" H 4500 3250 50  0001 C CNN
 F 3 "~" H 4500 3250 50  0001 C CNN
 F 4 "50" H 4500 3250 50  0001 C CNN "Voltage"
 F 5 "X7R" H 4500 3250 50  0001 C CNN "TempCoef"
+F 6 "10" H 4500 3250 50  0001 C CNN "Tolerance"
 	1    4500 3250
 	0    1    1    0   
 $EndComp
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP?
+U 1 1 5F2AA401
+P 3500 6100
+AR Path="/5DF0E505/5F2AA401" Ref="TP?"  Part="1" 
+AR Path="/5DFC2ACA/5F2AA401" Ref="TP10"  Part="1" 
+F 0 "TP10" H 3653 6201 50  0000 L CNN
+F 1 "TestPoint_Probe" H 3653 6110 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 3700 6100 50  0001 C CNN
+F 3 "~" H 3700 6100 50  0001 C CNN
+	1    3500 6100
+	0    -1   -1   0   
+$EndComp
+Connection ~ 3500 6100
+Wire Wire Line
+	3500 6100 3650 6100
 $EndSCHEMATC
