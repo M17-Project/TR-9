@@ -210,7 +210,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 1);
+	  HAL_Delay(100);
+	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 0);
+	  HAL_Delay(900);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -957,14 +960,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, TRX_SW_Pin|TP1_Pin|TP2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, TRX_SW_Pin|N6_Pin|N5_Pin|N4_Pin 
+                          |N3_Pin|N2_Pin|N1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, XO_EN_Pin|VIBRATE_Pin|N9_Pin|N8_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|SPI1_CS_Pin|WIFI_RST_Pin 
-                          |WIFI_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|SPI1_CS_Pin|WIFI_RST_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, N7_Pin|WIFI_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, ADF_CE_Pin|LED_GRN_Pin|LED_RED_Pin, GPIO_PIN_SET);
@@ -978,23 +984,25 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPS_EN_GPIO_Port, GPS_EN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : TRX_SW_Pin TP1_Pin TP2_Pin */
-  GPIO_InitStruct.Pin = TRX_SW_Pin|TP1_Pin|TP2_Pin;
+  /*Configure GPIO pins : TRX_SW_Pin N6_Pin N5_Pin N4_Pin 
+                           N3_Pin N2_Pin N1_Pin */
+  GPIO_InitStruct.Pin = TRX_SW_Pin|N6_Pin|N5_Pin|N4_Pin 
+                          |N3_Pin|N2_Pin|N1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : VIBRATE_Pin */
-  GPIO_InitStruct.Pin = VIBRATE_Pin;
+  /*Configure GPIO pins : XO_EN_Pin VIBRATE_Pin N9_Pin N8_Pin */
+  GPIO_InitStruct.Pin = XO_EN_Pin|VIBRATE_Pin|N9_Pin|N8_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(VIBRATE_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : SPK_AMP_SEL_Pin FM_MOD_SEL_Pin SPI1_CS_Pin WIFI_RST_Pin 
+  /*Configure GPIO pins : SPK_AMP_SEL_Pin FM_MOD_SEL_Pin N7_Pin WIFI_RST_Pin 
                            WIFI_EN_Pin */
-  GPIO_InitStruct.Pin = SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|SPI1_CS_Pin|WIFI_RST_Pin 
+  GPIO_InitStruct.Pin = SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|N7_Pin|WIFI_RST_Pin 
                           |WIFI_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -1042,6 +1050,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPS_EN_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SPI1_CS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PTT_INT_Pin */
   GPIO_InitStruct.Pin = PTT_INT_Pin;
