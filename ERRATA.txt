@@ -1,0 +1,2 @@
+Important note:
+Capacitor C47 on the mainboard is placed incorrectly in the schematic, so the silkscreen is also incorrectly showing its polarity. Please mount the capacitor the other way round with respect to the silkscreen (negative terminal to ground).
