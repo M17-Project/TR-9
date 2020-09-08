@@ -1,5 +1,5 @@
 # TR-9
-**Gerber files are ready for download!**  
+**Read ERRATA.txt before building the mainboard!**  
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
 
 # Hardware  
