@@ -1,2 +1,7 @@
-Important note:
-Capacitor C47 on the mainboard is placed incorrectly in the schematic, so the silkscreen is also incorrectly showing its polarity. Please mount the capacitor the other way round with respect to the silkscreen (negative terminal to ground).
+Important notes:
+#1: Capacitor C47 on the mainboard is placed incorrectly in the schematic, so the silkscreen is also incorrectly showing its polarity. Please mount the capacitor the other way round with respect to the silkscreen (negative terminal to ground).
+#2: Capacitors C76, C79 are marked as 50V, X7R type dielectric, when it should be 10V, X5R/X7R.
+#3: R20 can be anything between 47R to 1k.
+#4: All ferrite beads (including L1) are Fair-Rite 2506032217Y2.
+#5: Volume pot is 50k/log Alps RK0971111Z32 with an SPST.
+#6: All tact buttons on the side (including PTT) can be of the same type.
