@@ -105,6 +105,13 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+//ESP commands and rcv buffer
+volatile uint8_t esp_cmd[100];
+volatile uint8_t esp_rcv[100];
+volatile uint8_t esp_cnt=0;
+
+//FatFS file
+FIL	myFile;
 
 /* USER CODE END PV */
 
@@ -145,7 +152,47 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void TFT_SetBrght(uint8_t brght)
+{
+	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
+	if(brght<255)
+		htim3.Instance->CCR2=(uint16_t)(brght*999.0/255.0);
+	else
+		htim3.Instance->CCR2=(uint16_t)999;
+}
+
+void ESP_Enable(uint8_t ena)
+{
+	if(ena)
+		HAL_GPIO_WritePin(WIFI_EN_GPIO_Port, WIFI_EN_Pin, 1);
+	else
+		HAL_GPIO_WritePin(WIFI_EN_GPIO_Port, WIFI_EN_Pin, 0);
+}
+
+void ESP_ConnectAP(uint8_t *ap_name, uint8_t *pwd)
+{
+	sprintf(esp_cmd, "AT+CWJAP=\"%s\",\"%s\"\r\n", ap_name, pwd);
+	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance==USART2)
+	{
+		esp_cnt++;
+		HAL_UART_Receive_IT(&huart2, &esp_rcv[esp_cnt], 1);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin==PTT_INT_Pin)
+	{
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -203,6 +250,48 @@ int main(void)
   MX_UART7_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+  TFT_SetBrght(100);
+
+  HAL_Delay(100);
+
+  if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
+  {
+	  //TFT_Clear(CL_BLACK);
+  	  //TFT_PutStrCenteredBold(160/2-8, "CARD ERROR", 1, CL_RED);
+  	  TFT_SetBrght(255);
+
+  	  while(1)
+  	  {
+  		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+  		  HAL_Delay(250);
+  	  }
+  }
+
+  huart2.Init.Mode = UART_MODE_TX;
+  HAL_UART_Init(&huart2);
+
+  ESP_Enable(1);
+
+  HAL_Delay(2000);
+  sprintf(esp_cmd, "ATE0\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  HAL_Delay(100);
+
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  HAL_UART_Init(&huart2);
+
+  HAL_UART_Receive_IT(&huart2, esp_rcv, 1);
+
+  HAL_Delay(2000);
+  ESP_ConnectAP("123123", "123123");
+
+  //sprintf(esp_cmd, "AT+CIPMUX=1\r\n");
+  //HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
+
+  //HAL_Delay(200);
+
+  //sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"192.168.1.189\",17000\r\n");
+  //HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
 
   /* USER CODE END 2 */
 
@@ -210,10 +299,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 1);
-	  HAL_Delay(100);
-	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 0);
-	  HAL_Delay(900);
+	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 0);
+	  HAL_Delay(50);
+	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 1);
+	  HAL_Delay(950);
+	  /*HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	  HAL_Delay(50);
+	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+	  HAL_Delay(450);*/
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -243,7 +336,7 @@ void SystemClock_Config(void)
     /**Initializes the CPU, AHB and APB busses clocks 
     */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -616,9 +709,9 @@ static void MX_TIM3_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 215;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 0;
+  htim3.Init.Period = 999;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -964,7 +1057,10 @@ static void MX_GPIO_Init(void)
                           |N3_Pin|N2_Pin|N1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, XO_EN_Pin|VIBRATE_Pin|N9_Pin|N8_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, XO_EN_Pin|LNA_EN_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, VIBRATE_Pin|N9_Pin|N8_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|SPI1_CS_Pin|WIFI_RST_Pin, GPIO_PIN_SET);
@@ -977,9 +1073,6 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, ADF_SLE_Pin|ADF_SDATA_Pin|ADF_SCLK_Pin|TFT_RST_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LNA_EN_GPIO_Port, LNA_EN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPS_EN_GPIO_Port, GPS_EN_Pin, GPIO_PIN_RESET);
@@ -1086,6 +1179,9 @@ void _Error_Handler(char *file, int line)
   /* User can add his own implementation to report the HAL error return state */
   while(1)
   {
+	  //HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	  //HAL_Delay(200);
+
   }
   /* USER CODE END Error_Handler_Debug */
 }
