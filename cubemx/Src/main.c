@@ -286,7 +286,7 @@ void TFT_Init(void)
 	      0x0E,
 	    ST7735_INVOFF , 0      ,  // 13: Don't invert display, no args, no delay
 	    ST7735_MADCTL , 1      ,  // 14: Memory access control (directions), 1 arg:
-	      0xC0,                   //     row addr/col addr, bottom to top refresh
+	      0xC8,                   //     row addr/col addr, bottom to top refresh
 	    ST7735_COLMOD , 1      ,  // 15: set color mode, 1 arg, no delay:
 	      0x05 },                 //     16-bit color
 
@@ -379,10 +379,10 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 	//GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
 
 	//while(!(SPI1->SR & SPI_SR_TXE));
-	SPI1->DR=(1<<8)|color>>8;
+	SPI1->DR=(1<<8)|(color>>8);
 	while(SPI1->SR & SPI_SR_BSY);
 	//while(!(SPI1->SR & SPI_SR_TXE));
-	SPI1->DR=(1<<8)|color;
+	SPI1->DR=(1<<8)|(color);
 	while(SPI1->SR & SPI_SR_BSY);
 
 	GPIOB->BSRR=(uint32_t)(1<<4);	//SPI1_CS HIGH
@@ -415,12 +415,99 @@ uint8_t TFT_DisplaySplash(uint8_t *img_path)
 	{
 		for(uint8_t y=0; y<128; y++)
 		{
-			pix=TFT_RGBtoCol(raw_image[((uint32_t)y*128+x)*3+2], raw_image[((uint32_t)y*128+x)*3+1], raw_image[((uint32_t)y*128+x)*3]);
+			pix=TFT_RGBtoCol(raw_image[((uint32_t)y*128+x)*3], raw_image[((uint32_t)y*128+x)*3+1], raw_image[((uint32_t)y*128+x)*3+2]);
 			TFT_PutPixel(x, y, pix);
 		}
 	}
 
 	return 0;
+}
+
+void TFT_PutStr(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	if(font==1)//monospaced, 16px height, 9px width
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]==' ')
+			{
+				x+=2;
+			}
+			else
+			{
+				uint8_t c=str[i];
+				uint8_t width=fonts_glyph_dsc[c-'!'].w_px;
+				uint16_t start=fonts_glyph_dsc[c-'!'].glyph_index;
+				uint8_t b_width=(width-1)/8+1;
+
+				for(uint8_t row=0; row<16; row++)
+				{
+					for(uint8_t byte=0; byte<b_width; byte++)
+					{
+						for(uint8_t pix=0; pix<8; pix++)
+						{
+							if(font_1[start+byte+row*b_width]&(1<<(7-pix)))
+								TFT_PutPixel(x+pix + byte*8, y+row, color);
+						}
+					}
+				}
+
+				x+=width+2;
+			}
+		}
+	}
+}
+
+void TFT_PutStrBold(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	TFT_PutStr(x, y, str, font, color);
+	TFT_PutStr(x+1, y, str, font, color);
+}
+
+void TFT_PutStrCentered(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	uint8_t x=0;
+	uint8_t width=0;
+
+	if(font==1)
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]!=' ')
+				width+=fonts_glyph_dsc[str[i]-'!'].w_px+2;
+			else
+				width+=2;
+		}
+
+		//x=(127-strlen(str)*9)/2;
+		x=(127-width)/2;
+	}
+
+	TFT_PutStr(x, y, str, font, color);
+}
+
+//TODO: not very efficient, but works
+void TFT_PutStrCenteredBold(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	uint8_t x=0;
+	uint8_t width=0;
+
+	if(font==1)
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]!=' ')
+				width+=fonts_glyph_dsc[str[i]-'!'].w_px+2;
+			else
+				width+=2;
+		}
+
+		//x=(127-strlen(str)*9)/2;
+		x=(127-width)/2;
+	}
+
+	TFT_PutStr(x, y, str, font, color);
+	TFT_PutStr(x+1, y, str, font, color);
 }
 
 //-------------------------------------ESP-------------------------------------
@@ -706,8 +793,8 @@ int main(void)
   if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
   {
 	  TFT_Clear(CL_BLACK);
-  	  //TFT_PutStrCenteredBold(160/2-8, "CARD ERROR", 1, CL_RED);
-  	  TFT_SetBrght(255);
+  	  TFT_PutStrCenteredBold(128/2-8, "CARD ERROR", 1, CL_RED);
+  	  TFT_SetBrght(50);
 
   	  while(1)
   	  {
@@ -717,14 +804,18 @@ int main(void)
   }
 
   chip_rev=ADF_GetChipVersion();
-  /*if(chip_rev!=0x2104)	//not OK?
+  if(chip_rev!=0x2104)	//not OK?
   {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(128/2-8, "ADF7021 ERROR", 1, CL_RED);
+	  TFT_SetBrght(50);
+
 	  while(1)
 	  {
 		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 		  HAL_Delay(100);
 	  }
-  }*/
+  }
 
   //HAL_Delay(500);
   //TFT_Clear(CL_BLACK);
