@@ -590,44 +590,44 @@ uint16_t ADF_GetChipVersion(void)
 	for(uint8_t i=0; i<9; i++)
 	{
 		HAL_GPIO_WritePin(ADF_SDATA_GPIO_Port, ADF_SDATA_Pin, (val>>(8-i))&1);
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 	}
 
 	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 1);
-	for(uint16_t i=0; i<100; i++)
+	for(uint16_t i=0; i<1000; i++)
 		asm("NOP");
 
 	//readback
 	for(uint8_t i=0; i<16+1; i++)
 	{
 		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 
 		if(i)
 		{
-			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>7)&1)<<(16-i));
+			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>11)&1)<<(16-i));
 		}
 
-		for(uint16_t i=0; i<100; i++)
+		for(uint16_t i=0; i<1000; i++)
 			asm("NOP");
 	}
 
 	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
-	for(uint16_t i=0; i<100; i++)
+	for(uint16_t i=0; i<1000; i++)
 		asm("NOP");
 	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
-	for(uint16_t i=0; i<100; i++)
+	for(uint16_t i=0; i<1000; i++)
 		asm("NOP");
 	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
 
@@ -674,7 +674,7 @@ float ADF_GetRSSI(void)
 
 		if(i)
 		{
-			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>7)&1)<<(16-i));
+			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>11)&1)<<(16-i));
 		}
 
 		for(uint16_t i=0; i<100; i++)
