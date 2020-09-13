@@ -52,6 +52,7 @@
 #include "fatfs.h"
 
 /* USER CODE BEGIN Includes */
+#include <string.h>
 #include "TFT_ST7735.h"
 
 //macros
@@ -140,6 +141,22 @@ struct font_1_glyph_dsc
 };
 
 #include "font_1.h"
+
+//M17 over IP
+const uint32_t M17_STREAM_PREFIX = 0x4D313720;	//this is equal to "M17 "
+
+struct moip_packet
+{
+	uint8_t dst[10];
+	uint8_t src[10];
+	uint16_t type;
+	uint8_t nonce[14];
+	uint16_t fn;
+	uint8_t payload[16];
+	uint16_t crc_udp;
+} packet;
+
+uint8_t udp_frame[54];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -184,6 +201,128 @@ void Vibrator(uint8_t state)
 {
 	//1: on, 0:off
 	HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, state);
+}
+
+void ypcmem(uint8_t *dst, uint8_t *src, uint16_t nBytes)
+{
+	for(uint16_t i=0; i<nBytes; i++)
+		dst[i]=src[nBytes-i-1];
+}
+
+//uncomment these 2 funcs below if you are not using hardware CRC calculation unit
+/*
+void CRC_Init(uint16_t *crc_table, uint16_t poly)
+{
+	uint16_t remainder;
+
+	for(uint16_t dividend=0; dividend<256; dividend++)
+	{
+		remainder=dividend<<8;
+
+		for(uint8_t bit=8; bit>0; bit--)
+		{
+			if(remainder&(1<<15))
+				remainder=(remainder<<1)^poly;
+			else
+				remainder=(remainder<<1);
+		}
+
+		crc_table[dividend]=remainder;
+	}
+}
+
+uint16_t CRC_M17(uint16_t* crc_table, const uint8_t* message, uint16_t nBytes)
+{
+	uint8_t data;
+	uint16_t remainder=0xFFFF;
+
+	for(uint16_t byte=0; byte<nBytes; byte++)
+	{
+		data=message[byte]^(remainder>>8);
+		remainder=crc_table[data]^(remainder<<8);
+	}
+
+	return(remainder);
+}
+*/
+
+//-------------------------------------M17-------------------------------------
+uint64_t Encode_Callsign(const char *callsign)
+{
+	uint64_t encoded=0;
+
+	for(const char *p = (callsign + strlen(callsign) - 1); p >= callsign; p--)
+	{
+		encoded *= 40;
+		// If speed is more important than code space, you can replace this with a lookup into a 256 byte array.
+		if (*p >= 'A' && *p <= 'Z')  // 1-26
+			encoded += *p - 'A' + 1;
+		else if (*p >= '0' && *p <= '9')  // 27-36
+			encoded += *p - '0' + 27;
+		else if (*p == '-')  // 37
+			encoded += 37;
+		else if (*p == '/')  // 38
+			encoded += 38;
+		else if (*p == '.')  // 39
+			encoded += 39;
+		else
+			;
+	}
+
+	return encoded;
+}
+
+//Prepare an "M17 over IP" packet to be send
+//arg1: struct with packet data
+//arg2: output byte array
+//arg3: transmission end flag
+void M17_Framer(struct moip_packet* inp, uint8_t *out, uint8_t tr_end)
+{
+	//FIELD		BYTES
+	//prefix	4
+	//SID		2
+	//dst		10
+	//src		10
+	//type		2
+	//nonce		14
+	//fn		2
+	//payload	16
+	//crc_udp	2
+
+	static uint16_t sid=0xDEAD;
+	uint8_t src_enc[6];
+	uint8_t dst_enc[6];
+	uint16_t crc=0;
+
+	for(uint8_t i=0; i<6; i++)
+	{
+		src_enc[i]=Encode_Callsign(inp->src)>>(i*8);
+		dst_enc[i]=Encode_Callsign(inp->dst)>>(i*8);
+	}
+
+	if(tr_end)
+		inp->fn|=(1<<15);
+
+	ypcmem(&out[0], (uint8_t*)&M17_STREAM_PREFIX, 4);
+	ypcmem(&out[4], (uint8_t*)&sid, 2);
+	ypcmem(&out[6], dst_enc, 6);
+	ypcmem(&out[12], src_enc, 6);
+	ypcmem(&out[18], &(inp->type), 2);
+	ypcmem(&out[20], &(inp->nonce), 14);
+	ypcmem(&out[34], &(inp->fn), 2);
+	ypcmem(&out[36], &(inp->payload), 16);
+	crc=0xBEEF;//CRC_M17(crc_lut, out, 52); TODO: fix this
+	ypcmem(&out[52], (uint8_t*)crc, 2);
+	ypcmem(&(inp->crc_udp), (uint8_t*)crc, 2);
+
+	//rotate SID
+	if(sid&1)
+	{
+		sid>>=1;
+		sid|=(1<<15);
+	}
+	else
+		sid>>=1;
 }
 
 //--------------------------------------RF-------------------------------------
