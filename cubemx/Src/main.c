@@ -52,6 +52,21 @@
 #include "fatfs.h"
 
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include "TFT_ST7735.h"
+
+//macros
+#define RX_MODE					0
+#define TX_MODE					1
+
+#define LNA_ON					0
+#define LNA_OFF					1
+
+#define AUDIO_MUX_NONE			0b11		//both switches off
+#define AUDIO_MUX_MOD			0b10		//audio DAC -> analog FM modulator
+#define AUDIO_MUX_SPK			0b01		//audio DAC -> speaker
+
+#define FONT_MONOSPACED_16_9	1
 
 /* USER CODE END Includes */
 
@@ -105,7 +120,45 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+//ESP commands and rcv buffer
+volatile uint8_t esp_cmd[100];
+volatile uint8_t esp_rcv[100];
+volatile uint8_t esp_cnt=0;
 
+//FatFS file
+FIL	myFile;
+
+//ADF7021
+uint16_t chip_rev=0;
+
+//TFT
+uint8_t addr_col=0;							//current memory position
+uint8_t addr_row=0;
+
+//FONTS
+struct font_1_glyph_dsc
+{
+	uint8_t w_px;			//width, px
+	uint16_t glyph_index;
+};
+
+#include "font_1.h"
+
+//M17 over IP
+const uint32_t M17_STREAM_PREFIX = 0x4D313720;	//this is equal to "M17 "
+
+struct moip_packet
+{
+	uint8_t dst[10];
+	uint8_t src[10];
+	uint16_t type;
+	uint8_t nonce[14];
+	uint16_t fn;
+	uint8_t payload[16];
+	uint16_t crc_udp;
+} packet;
+
+uint8_t udp_frame[54];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -145,7 +198,737 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+//----------------------------------Misc Stuff---------------------------------
+void Vibrator(uint8_t state)
+{
+	//1: on, 0:off
+	HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, state);
+}
 
+void ypcmem(uint8_t *dst, uint8_t *src, uint16_t nBytes)
+{
+	for(uint16_t i=0; i<nBytes; i++)
+		dst[i]=src[nBytes-i-1];
+}
+
+//uncomment these 2 funcs below if you are not using hardware CRC calculation unit
+/*
+void CRC_Init(uint16_t *crc_table, uint16_t poly)
+{
+	uint16_t remainder;
+
+	for(uint16_t dividend=0; dividend<256; dividend++)
+	{
+		remainder=dividend<<8;
+
+		for(uint8_t bit=8; bit>0; bit--)
+		{
+			if(remainder&(1<<15))
+				remainder=(remainder<<1)^poly;
+			else
+				remainder=(remainder<<1);
+		}
+
+		crc_table[dividend]=remainder;
+	}
+}
+
+uint16_t CRC_M17(uint16_t* crc_table, const uint8_t* message, uint16_t nBytes)
+{
+	uint8_t data;
+	uint16_t remainder=0xFFFF;
+
+	for(uint16_t byte=0; byte<nBytes; byte++)
+	{
+		data=message[byte]^(remainder>>8);
+		remainder=crc_table[data]^(remainder<<8);
+	}
+
+	return(remainder);
+}
+*/
+
+//-------------------------------------M17-------------------------------------
+uint64_t Encode_Callsign(const char *callsign)
+{
+	uint64_t encoded=0;
+
+	for(const char *p = (callsign + strlen(callsign) - 1); p >= callsign; p--)
+	{
+		encoded *= 40;
+		// If speed is more important than code space, you can replace this with a lookup into a 256 byte array.
+		if (*p >= 'A' && *p <= 'Z')  // 1-26
+			encoded += *p - 'A' + 1;
+		else if (*p >= '0' && *p <= '9')  // 27-36
+			encoded += *p - '0' + 27;
+		else if (*p == '-')  // 37
+			encoded += 37;
+		else if (*p == '/')  // 38
+			encoded += 38;
+		else if (*p == '.')  // 39
+			encoded += 39;
+		else
+			;
+	}
+
+	return encoded;
+}
+
+//Prepare an "M17 over IP" packet to be send
+//arg1: struct with packet data
+//arg2: output byte array
+//arg3: transmission end flag
+void M17_Framer(struct moip_packet* inp, uint8_t *out, uint8_t tr_end)
+{
+	//FIELD		BYTES
+	//prefix	4
+	//SID		2
+	//dst		10
+	//src		10
+	//type		2
+	//nonce		14
+	//fn		2
+	//payload	16
+	//crc_udp	2
+
+	static uint16_t sid=0xDEAD;
+	uint8_t src_enc[6];
+	uint8_t dst_enc[6];
+	uint16_t crc=0;
+
+	for(uint8_t i=0; i<6; i++)
+	{
+		src_enc[i]=Encode_Callsign(inp->src)>>(i*8);
+		dst_enc[i]=Encode_Callsign(inp->dst)>>(i*8);
+	}
+
+	if(tr_end)
+		inp->fn|=(1<<15);
+
+	ypcmem(&out[0], (uint8_t*)&M17_STREAM_PREFIX, 4);
+	ypcmem(&out[4], (uint8_t*)&sid, 2);
+	ypcmem(&out[6], dst_enc, 6);
+	ypcmem(&out[12], src_enc, 6);
+	ypcmem(&out[18], &(inp->type), 2);
+	ypcmem(&out[20], &(inp->nonce), 14);
+	ypcmem(&out[34], &(inp->fn), 2);
+	ypcmem(&out[36], &(inp->payload), 16);
+	crc=0xBEEF;//CRC_M17(crc_lut, out, 52); TODO: fix this
+	ypcmem(&out[52], (uint8_t*)crc, 2);
+	ypcmem(&(inp->crc_udp), (uint8_t*)crc, 2);
+
+	//rotate SID
+	if(sid&1)
+	{
+		sid>>=1;
+		sid|=(1<<15);
+	}
+	else
+		sid>>=1;
+}
+
+//--------------------------------------RF-------------------------------------
+void RF_SetPWR(uint16_t val)
+{
+	//set DAC_OUT2
+	//TODO: fix this
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, val);
+}
+
+void LNA_Ctrl(uint8_t lna_state)
+{
+	//0: on, 1: off
+	HAL_GPIO_WritePin(LNA_EN_GPIO_Port, LNA_EN_Pin, lna_state);
+}
+
+void RF_Mode(uint8_t mode)
+{
+	//set TX or RX via GaAs switch
+	//RX: mode=0
+	//TX: mode=1
+	HAL_GPIO_WritePin(TRX_SW_GPIO_Port, TRX_SW_Pin, mode);
+}
+
+//------------------------------------AUDIO------------------------------------
+void AUDIO_Mux(uint8_t mux)
+{
+	//set SPK amp source
+	HAL_GPIO_WritePin(SPK_AMP_SEL_GPIO_Port, SPK_AMP_SEL_Pin, mux>>1);
+	HAL_GPIO_WritePin(FM_MOD_SEL_GPIO_Port, FM_MOD_SEL_Pin, mux&1);
+}
+
+//-------------------------------------TFT-------------------------------------
+void TFT_SetBrght(uint8_t brght)
+{
+	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+
+	if(brght<255)
+		htim3.Instance->CCR2=(uint16_t)(brght*999.0/255.0);
+	else
+		htim3.Instance->CCR2=(uint16_t)999;
+}
+
+void TFT_Reset(void)
+{
+	HAL_GPIO_WritePin(TFT_RST_GPIO_Port, TFT_RST_Pin, 1);
+	HAL_Delay(5);
+	HAL_GPIO_WritePin(TFT_RST_GPIO_Port, TFT_RST_Pin, 0);
+	HAL_Delay(20);
+	HAL_GPIO_WritePin(TFT_RST_GPIO_Port, TFT_RST_Pin, 1);
+	HAL_Delay(150);
+}
+
+void TFT_WriteCommand(uint8_t cmd)
+{
+	//A0 low
+	//HAL_GPIO_WritePin(TFT_A0_GPIO_Port, TFT_A0_Pin, 0);
+
+	//CS low
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
+
+	//send cmd
+	uint16_t spi_cmd=(uint16_t)cmd;
+	HAL_SPI_Transmit(&hspi1, &spi_cmd, 1, 10);
+
+	//CS high
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+}
+
+void TFT_WriteData(uint8_t cmd)
+{
+	//A0 high
+	//HAL_GPIO_WritePin(TFT_A0_GPIO_Port, TFT_A0_Pin, 1);
+
+	//CS low
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 0);
+
+	//send data
+	uint16_t spi_cmd=(uint16_t)cmd|(1<<8);
+	HAL_SPI_Transmit(&hspi1, &spi_cmd, 1, 10);
+
+	//CS high
+	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, 1);
+}
+
+void TFT_CommandList(const uint8_t* list)
+{
+	#define INIT_DELAY	(1<<7)
+
+	uint8_t  numCommands, numArgs;
+	uint8_t  ms;
+	uint16_t addr=0;
+
+	numCommands = list[addr++];					// Number of commands to follow
+	while(numCommands--)						// For each command...
+	{
+		TFT_WriteCommand(list[addr++]);			// Read, issue command
+		numArgs = list[addr++];					// Number of args to follow
+		ms = numArgs & INIT_DELAY;				// If 7th bit set, delay follows args
+		numArgs &= ~INIT_DELAY;					// Mask out delay bit
+
+		while(numArgs--)						// For each argument...
+		{
+			TFT_WriteData(list[addr++]);		// Read, issue argument
+		}
+
+		if(ms)
+		{
+			ms = list[addr++];     // Read post-command delay time (ms)
+			HAL_Delay( (ms==255 ? 500 : ms) );
+		}
+	}
+}
+
+void TFT_Init(void)
+{
+	//Initialization commands for ST7735 screens
+	static const uint8_t Rcmd1[] = {   // Init for 7735R, part 1 (red or green tab)
+	    15,                       // 15 commands in list:
+	    ST7735_SWRESET,   INIT_DELAY,  //  1: Software reset, 0 args, w/delay
+	      150,                    //     150 ms delay
+	    ST7735_SLPOUT ,   INIT_DELAY,  //  2: Out of sleep mode, 0 args, w/delay
+	      255,                    //     500 ms delay
+	    ST7735_FRMCTR1, 3      ,  //  3: Frame rate ctrl - normal mode, 3 args:
+	      0x00, 0x2c, 0x2d,       //     Rate = fosc/(1x2+40) * (LINE+2C+2D)
+	    ST7735_FRMCTR2, 3      ,  //  4: Frame rate control - idle mode, 3 args:
+	      0x00, 0x2c, 0x2d,       //     Rate = fosc/(1x2+40) * (LINE+2C+2D)
+	    ST7735_FRMCTR3, 6      ,  //  5: Frame rate ctrl - partial mode, 6 args:
+	      0x00, 0x2c, 0x2d,       //     Dot inversion mode
+	      0x00, 0x2c, 0x2d,       //     Line inversion mode
+	    ST7735_INVCTR , 1      ,  //  6: Display inversion ctrl, 1 arg, no delay:
+	      0x00,                   //     No inversion
+	    ST7735_PWCTR1 , 3      ,  //  7: Power control, 3 args, no delay:
+	      0xA2,
+	      0x02,                   //     -4.6V
+	      0x84,                   //     AUTO mode
+	    ST7735_PWCTR2 , 1      ,  //  8: Power control, 1 arg, no delay:
+	      0xC5,                   //     VGH25 = 2.4C VGSEL = -10 VGH = 3 * AVDD
+	    ST7735_PWCTR3 , 2      ,  //  9: Power control, 2 args, no delay:
+	      0x0A,                   //     Opamp current small
+	      0x00,                   //     Boost frequency
+	    ST7735_PWCTR4 , 2      ,  // 10: Power control, 2 args, no delay:
+	      0x8A,                   //     BCLK/2, Opamp current small & Medium low
+	      0x2A,
+	    ST7735_PWCTR5 , 2      ,  // 11: Power control, 2 args, no delay:
+	      0x8A, 0xEE,
+	    ST7735_VMCTR1 , 1      ,  // 12: Power control, 1 arg, no delay:
+	      0x0E,
+	    ST7735_INVOFF , 0      ,  // 13: Don't invert display, no args, no delay
+	    ST7735_MADCTL , 1      ,  // 14: Memory access control (directions), 1 arg:
+	      0xC8,                   //     row addr/col addr, bottom to top refresh
+	    ST7735_COLMOD , 1      ,  // 15: set color mode, 1 arg, no delay:
+	      0x05 },                 //     16-bit color
+
+	  Rcmd3[] = {                 // Init for 7735R, part 3 (red or green tab)
+	    4,                        //  4 commands in list:
+	    ST7735_GMCTRP1, 16      , //  1: Magical unicorn dust, 16 args, no delay:
+	      0x02, 0x1c, 0x07, 0x12,
+	      0x37, 0x32, 0x29, 0x2d,
+	      0x29, 0x25, 0x2B, 0x39,
+	      0x00, 0x01, 0x03, 0x10,
+	    ST7735_GMCTRN1, 16      , //  2: Sparkles and rainbows, 16 args, no delay:
+	      0x03, 0x1d, 0x07, 0x06,
+	      0x2E, 0x2C, 0x29, 0x2D,
+	      0x2E, 0x2E, 0x37, 0x3F,
+	      0x00, 0x00, 0x02, 0x10,
+	    ST7735_NORON  ,    INIT_DELAY, //  3: Normal display on, no args, w/delay
+	      10,                     //     10 ms delay
+	    ST7735_DISPON ,    INIT_DELAY, //  4: Main screen turn on, no args w/delay
+		100 }; //     100 ms delay
+
+	TFT_Reset();
+
+	TFT_CommandList(Rcmd1);
+	TFT_CommandList(Rcmd3);
+}
+
+uint16_t TFT_RGBtoCol(uint8_t r, uint8_t g, uint8_t b)
+{
+	r>>=3;	g>>=2;	b>>=3;
+
+	return (uint16_t)(r<<11 | g<<6 | b);
+}
+
+void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
+{
+	if((x>=128) || (y>=128))
+		return;
+
+	//more sparkles and rainbows
+	//nobody knows why this is needed
+	x=127-x ;x+=2;
+	y=127-y; y+=3;
+
+	GPIOB->BSRR=(uint32_t)(1<<(4+16));		//SP1_CS LOW
+
+	if(addr_col != x)
+	{
+		//GPIOC->BSRR=(uint32_t)(1<<(6+16));	//TFT_A0 LOW
+
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=0x002A;
+		while(SPI1->SR & SPI_SR_BSY);
+
+		addr_col = x;
+		//GPIOC->BSRR=(uint32_t)(1<<6);			//TFT_A0 HIGH
+
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=0x0100;
+		while(SPI1->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=(1<<8)|x;
+		while(SPI1->SR & SPI_SR_BSY);
+	}
+
+	if(addr_row != y)
+	{
+		//GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
+
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=0x002B;
+		while(SPI1->SR & SPI_SR_BSY);
+
+		addr_row = y;
+		//GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
+
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=0x0100;
+		while(SPI1->SR & SPI_SR_BSY);
+		//while(!(SPI1->SR & SPI_SR_TXE));
+		SPI1->DR=(1<<8)|y;
+		while(SPI1->SR & SPI_SR_BSY);
+	}
+
+	//GPIOC->BSRR=(uint32_t)(1<<(6+16)); //TFT_A0 LOW
+
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	SPI1->DR=0x002C;
+	while(SPI1->SR & SPI_SR_BSY);
+
+	//GPIOC->BSRR=(uint32_t)(1<<6); //TFT_A0 HIGH
+
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	SPI1->DR=(1<<8)|(color>>8);
+	while(SPI1->SR & SPI_SR_BSY);
+	//while(!(SPI1->SR & SPI_SR_TXE));
+	SPI1->DR=(1<<8)|(color);
+	while(SPI1->SR & SPI_SR_BSY);
+
+	GPIOB->BSRR=(uint32_t)(1<<4);	//SPI1_CS HIGH
+}
+
+void TFT_Clear(uint16_t color)
+{
+	for(uint8_t x=0; x<128; x++)
+		for(uint8_t y=0; y<128;y++)
+			TFT_PutPixel(x, y, color);
+}
+
+uint8_t TFT_DisplaySplash(uint8_t *img_path)
+{
+	uint8_t raw_image[128*128*3];
+	uint16_t index=0;
+	uint16_t pix;
+
+	if(f_open(&myFile, img_path, FA_OPEN_EXISTING | FA_READ) == FR_OK)
+	{
+		if(f_read(&myFile, raw_image, 128*128*3, NULL) == FR_OK)
+			f_close(&myFile);
+		else
+			return 1;
+	}
+	else
+		return 2;
+
+	for(uint8_t x=0; x<128; x++)
+	{
+		for(uint8_t y=0; y<128; y++)
+		{
+			pix=TFT_RGBtoCol(raw_image[((uint32_t)y*128+x)*3], raw_image[((uint32_t)y*128+x)*3+1], raw_image[((uint32_t)y*128+x)*3+2]);
+			TFT_PutPixel(x, y, pix);
+		}
+	}
+
+	return 0;
+}
+
+void TFT_PutStr(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	if(font==FONT_MONOSPACED_16_9)//monospaced, 16px height, 9px width
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]==' ')
+			{
+				x+=2;
+			}
+			else
+			{
+				uint8_t c=str[i];
+				uint8_t width=fonts_glyph_dsc[c-'!'].w_px;
+				uint16_t start=fonts_glyph_dsc[c-'!'].glyph_index;
+				uint8_t b_width=(width-1)/8+1;
+
+				for(uint8_t row=0; row<16; row++)
+				{
+					for(uint8_t byte=0; byte<b_width; byte++)
+					{
+						for(uint8_t pix=0; pix<8; pix++)
+						{
+							if(font_1[start+byte+row*b_width]&(1<<(7-pix)))
+								TFT_PutPixel(x+pix + byte*8, y+row, color);
+						}
+					}
+				}
+
+				x+=width+2;
+			}
+		}
+	}
+}
+
+void TFT_PutStrBold(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	TFT_PutStr(x, y, str, font, color);
+	TFT_PutStr(x+1, y, str, font, color);
+}
+
+void TFT_PutStrCentered(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	uint8_t x=0;
+	uint8_t width=0;
+
+	if(font==1)
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]!=' ')
+				width+=fonts_glyph_dsc[str[i]-'!'].w_px+2;
+			else
+				width+=2;
+		}
+
+		//x=(127-strlen(str)*9)/2;
+		x=(127-width)/2;
+	}
+
+	TFT_PutStr(x, y, str, font, color);
+}
+
+//TODO: not very efficient, but works
+void TFT_PutStrCenteredBold(uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
+{
+	uint8_t x=0;
+	uint8_t width=0;
+
+	if(font==1)
+	{
+		for(uint8_t i=0; i<strlen(str); i++)
+		{
+			if(str[i]!=' ')
+				width+=fonts_glyph_dsc[str[i]-'!'].w_px+2;
+			else
+				width+=2;
+		}
+
+		//x=(127-strlen(str)*9)/2;
+		x=(127-width)/2;
+	}
+
+	TFT_PutStr(x, y, str, font, color);
+	TFT_PutStr(x+1, y, str, font, color);
+}
+
+//-------------------------------------ESP-------------------------------------
+void ESP_Enable(uint8_t ena)
+{
+	if(ena)
+		HAL_GPIO_WritePin(WIFI_EN_GPIO_Port, WIFI_EN_Pin, 1);
+	else
+		HAL_GPIO_WritePin(WIFI_EN_GPIO_Port, WIFI_EN_Pin, 0);
+}
+
+void ESP_GetResp(void)
+{
+	memset(esp_rcv, 0, sizeof(esp_rcv));
+	esp_cnt=0;
+	HAL_UART_Receive_IT(&huart2, esp_rcv, 1);
+}
+
+void ESP_ConnectAP(uint8_t *ap_name, uint8_t *pwd)
+{
+	sprintf(esp_cmd, "AT+CWMODE=1\r\n", ap_name, pwd);
+	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+	HAL_Delay(50);
+	sprintf(esp_cmd, "AT+CWJAP=\"%s\",\"%s\"\r\n", ap_name, pwd);
+	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+}
+
+//-------------------------------------ADF-------------------------------------
+void ADF_Init(void)
+{
+	HAL_GPIO_WritePin(ADF_CE_GPIO_Port, ADF_CE_Pin, 0);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(ADF_CE_GPIO_Port, ADF_CE_Pin, 1);
+}
+
+void ADF_WriteReg(uint32_t val)
+{
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	HAL_Delay(0);
+
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+	HAL_Delay(0);
+
+	for(uint8_t i=0; i<32; i++)
+	{
+		HAL_GPIO_WritePin(ADF_SDATA_GPIO_Port, ADF_SDATA_Pin, (val>>(31-i))&1);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+	}
+
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 1);
+	for(uint16_t i=0; i<100; i++)
+		asm("NOP");
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	for(uint16_t i=0; i<100; i++)
+		asm("NOP");
+}
+
+void ADF_SetFreq(uint32_t freq, uint8_t rx)
+{
+	uint8_t i=0;
+	uint16_t f=0;
+
+	if(rx)
+		freq-=100000;	//IF correction
+
+	i=freq/(12288000/(3*2));
+	f=10*(freq-i*(12288000/(3*2)))/625;
+
+	ADF_WriteReg((i<<19)|(f<<4)|(rx<<27));
+}
+
+uint16_t ADF_GetChipVersion(void)
+{
+	uint32_t val=0x1C7;
+	uint16_t rv=0;
+
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	HAL_Delay(0);
+
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+	HAL_Delay(0);
+
+	for(uint8_t i=0; i<9; i++)
+	{
+		HAL_GPIO_WritePin(ADF_SDATA_GPIO_Port, ADF_SDATA_Pin, (val>>(8-i))&1);
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+	}
+
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 1);
+	for(uint16_t i=0; i<1000; i++)
+		asm("NOP");
+
+	//readback
+	for(uint8_t i=0; i<16+1; i++)
+	{
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+
+		if(i)
+		{
+			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>11)&1)<<(16-i));
+		}
+
+		for(uint16_t i=0; i<1000; i++)
+			asm("NOP");
+	}
+
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+	for(uint16_t i=0; i<1000; i++)
+		asm("NOP");
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	for(uint16_t i=0; i<1000; i++)
+		asm("NOP");
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+
+	return rv;
+}
+
+float ADF_GetRSSI(void)
+{
+	uint32_t val=0x147;
+	uint16_t rv=0;
+
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	HAL_Delay(0);
+
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+	HAL_Delay(0);
+
+	for(uint8_t i=0; i<9; i++)
+	{
+		HAL_GPIO_WritePin(ADF_SDATA_GPIO_Port, ADF_SDATA_Pin, (val>>(8-i))&1);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+	}
+
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 1);
+	for(uint16_t i=0; i<100; i++)
+		asm("NOP");
+
+	//readback
+	for(uint8_t i=0; i<16+1; i++)
+	{
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+		HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+
+		if(i)
+		{
+			rv|=((((ADF_SREAD_GPIO_Port->IDR)>>11)&1)<<(16-i));
+		}
+
+		for(uint16_t i=0; i<100; i++)
+			asm("NOP");
+	}
+
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 1);
+	for(uint16_t i=0; i<100; i++)
+		asm("NOP");
+	HAL_GPIO_WritePin(ADF_SLE_GPIO_Port, ADF_SLE_Pin, 0);
+	for(uint16_t i=0; i<100; i++)
+		asm("NOP");
+	HAL_GPIO_WritePin(ADF_SCLK_GPIO_Port, ADF_SCLK_Pin, 0);
+
+	uint8_t lna_gain=(rv>>9)&3;
+	uint8_t filter_gain=(rv>>7)&3;
+	uint8_t rdb=rv&0x7F;
+	float gain_corr=0.0;
+
+	if(lna_gain==2 && filter_gain==2)
+		gain_corr=0.0;
+	else if(lna_gain==1)
+	{
+		if(filter_gain==2)
+			gain_corr=24.0;
+		else if(filter_gain==1)
+			gain_corr=38.0;
+		else
+			gain_corr=58.0;
+	}
+	else if(lna_gain==0 && filter_gain==0)
+		gain_corr=86.0;
+
+	return -130.0+((float)rdb+gain_corr)/2.0;
+}
+
+//-------------------------------------IRQ-------------------------------------
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance==USART2)
+	{
+		esp_cnt++;
+		HAL_UART_Receive_IT(&huart2, &esp_rcv[esp_cnt], 1);
+	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin==PTT_INT_Pin)
+	{
+		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -203,6 +986,93 @@ int main(void)
   MX_UART7_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+  //Init stuff
+  //RF_SetPWR(0);
+  RF_Mode(RX_MODE);
+  AUDIO_Mux(AUDIO_MUX_NONE);
+  LNA_Ctrl(LNA_OFF);
+  TFT_SetBrght(0);
+  TFT_Reset();
+  TFT_Init();
+  ADF_Init();
+
+  //DAC_OUT1 test
+  /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+  while(1)
+  {
+	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
+	  HAL_Delay(50);
+	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0xFF);
+	  HAL_Delay(50);
+  }*/
+
+  if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
+  {
+	  TFT_Clear(CL_BLACK);
+  	  TFT_PutStrCenteredBold(128/2-8, "CARD ERROR", 1, CL_RED);
+  	  TFT_SetBrght(50);
+
+  	  while(1)
+  	  {
+  		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+  		  HAL_Delay(500);
+  	  }
+  }
+
+  chip_rev=ADF_GetChipVersion();
+  if(chip_rev!=0x2104)	//not OK?
+  {
+	  TFT_Clear(CL_BLACK);
+	  TFT_PutStrCenteredBold(128/2-8, "ADF7021 ERROR", 1, CL_RED);
+	  TFT_SetBrght(50);
+
+	  while(1)
+	  {
+		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  HAL_Delay(100);
+	  }
+  }
+
+  //HAL_Delay(500);
+  //TFT_Clear(CL_BLACK);
+  TFT_DisplaySplash("splash.raw");
+  TFT_SetBrght(50);
+
+  ESP_Enable(1);
+  HAL_Delay(500);
+  //TFT_Clear(CL_WHITE);
+
+  huart2.Init.Mode = UART_MODE_TX;
+  HAL_UART_Init(&huart2);
+
+  sprintf(esp_cmd, "ATE0\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  HAL_Delay(100);
+
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  HAL_UART_Init(&huart2);
+
+  HAL_Delay(1000);
+  //ESP_ConnectAP("Teletra", "");
+
+  sprintf(esp_cmd, "AT+CIPMUX=1\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
+
+  ESP_GetResp();
+  while(esp_rcv[27]!='G');	//"WIFI GOT IP"
+
+  sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"192.168.1.189\",17000\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  ESP_GetResp();
+  while(esp_rcv[4]!='O');	//"OK" TODO: fix this
+
+  while(1);
+  sprintf(esp_cmd, "AT+CIPSEND=1,%d\r\n", 2);
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  HAL_Delay(100);
+  HAL_UART_Transmit(&huart2, "xD", 2, 10);
 
   /* USER CODE END 2 */
 
@@ -210,10 +1080,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 1);
-	  HAL_Delay(100);
-	  HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, 0);
-	  HAL_Delay(900);
+	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 0);
+	  HAL_Delay(50);
+	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 1);
+	  HAL_Delay(950);
+	  /*HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+	  HAL_Delay(50);
+	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+	  HAL_Delay(450);*/
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -243,7 +1117,7 @@ void SystemClock_Config(void)
     /**Initializes the CPU, AHB and APB busses clocks 
     */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -475,7 +1349,7 @@ static void MX_DAC_Init(void)
 
     /**DAC channel OUT2 config 
     */
-  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+  sConfig.DAC_Trigger = DAC_TRIGGER_SOFTWARE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -563,17 +1437,17 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_1LINE;
-  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_9BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 7;
   hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -616,9 +1490,9 @@ static void MX_TIM3_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 215;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 0;
+  htim3.Init.Period = 999;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -964,7 +1838,10 @@ static void MX_GPIO_Init(void)
                           |N3_Pin|N2_Pin|N1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, XO_EN_Pin|VIBRATE_Pin|N9_Pin|N8_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, XO_EN_Pin|LNA_EN_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, VIBRATE_Pin|N9_Pin|N8_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPK_AMP_SEL_Pin|FM_MOD_SEL_Pin|SPI1_CS_Pin|WIFI_RST_Pin, GPIO_PIN_SET);
@@ -977,9 +1854,6 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, ADF_SLE_Pin|ADF_SDATA_Pin|ADF_SCLK_Pin|TFT_RST_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LNA_EN_GPIO_Port, LNA_EN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPS_EN_GPIO_Port, GPS_EN_Pin, GPIO_PIN_RESET);
@@ -1009,20 +1883,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : ADF_CE_Pin */
-  GPIO_InitStruct.Pin = ADF_CE_Pin;
+  /*Configure GPIO pins : ADF_CE_Pin ADF_SLE_Pin ADF_SDATA_Pin ADF_SCLK_Pin */
+  GPIO_InitStruct.Pin = ADF_CE_Pin|ADF_SLE_Pin|ADF_SDATA_Pin|ADF_SCLK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(ADF_CE_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : ADF_SLE_Pin ADF_SDATA_Pin ADF_SCLK_Pin LED_GRN_Pin 
-                           LED_RED_Pin TFT_RST_Pin */
-  GPIO_InitStruct.Pin = ADF_SLE_Pin|ADF_SDATA_Pin|ADF_SCLK_Pin|LED_GRN_Pin 
-                          |LED_RED_Pin|TFT_RST_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ADF_SREAD_Pin */
@@ -1050,6 +1915,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPS_EN_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_GRN_Pin LED_RED_Pin TFT_RST_Pin */
+  GPIO_InitStruct.Pin = LED_GRN_Pin|LED_RED_Pin|TFT_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SPI1_CS_Pin */
   GPIO_InitStruct.Pin = SPI1_CS_Pin;
@@ -1086,6 +1958,9 @@ void _Error_Handler(char *file, int line)
   /* User can add his own implementation to report the HAL error return state */
   while(1)
   {
+	  //HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+	  //HAL_Delay(200);
+
   }
   /* USER CODE END Error_Handler_Debug */
 }
