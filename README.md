@@ -20,4 +20,4 @@ RF output level can be regulated by the software. The maximum power output is 3 
 # Software
 M17 standard was designed having [Codec2](https://github.com/drowe67/codec2) vocoder in mind. TR-9 takes advantage of STM's internal Advanced Encryption Standard (AES) hardware for optional end-to-end encryption. There is a possibility of using other block ciphers and scrambling.  
   
-This repo contains SW4STM32 project for the TR-9 board.
+This repo contains SW4STM32 project for the TR-9 board. The CubeMX version used is **4.27.0**.
