@@ -56,15 +56,17 @@
 #include "TFT_ST7735.h"
 
 //macros
-#define RX_MODE			0
-#define TX_MODE			1
+#define RX_MODE					0
+#define TX_MODE					1
 
-#define LNA_ON			0
-#define LNA_OFF			1
+#define LNA_ON					0
+#define LNA_OFF					1
 
-#define AUDIO_MUX_NONE	0b11		//both switches off
-#define AUDIO_MUX_MOD	0b10		//audio DAC -> analog FM modulator
-#define AUDIO_MUX_SPK	0b01		//audio DAC -> speaker
+#define AUDIO_MUX_NONE			0b11		//both switches off
+#define AUDIO_MUX_MOD			0b10		//audio DAC -> analog FM modulator
+#define AUDIO_MUX_SPK			0b01		//audio DAC -> speaker
+
+#define FONT_MONOSPACED_16_9	1
 
 /* USER CODE END Includes */
 
@@ -614,7 +616,7 @@ uint8_t TFT_DisplaySplash(uint8_t *img_path)
 
 void TFT_PutStr(uint8_t x, uint8_t y, const uint8_t* str, uint8_t font, uint16_t color)
 {
-	if(font==1)//monospaced, 16px height, 9px width
+	if(font==FONT_MONOSPACED_16_9)//monospaced, 16px height, 9px width
 	{
 		for(uint8_t i=0; i<strlen(str); i++)
 		{
@@ -708,8 +710,18 @@ void ESP_Enable(uint8_t ena)
 		HAL_GPIO_WritePin(WIFI_EN_GPIO_Port, WIFI_EN_Pin, 0);
 }
 
+void ESP_GetResp(void)
+{
+	memset(esp_rcv, 0, sizeof(esp_rcv));
+	esp_cnt=0;
+	HAL_UART_Receive_IT(&huart2, esp_rcv, 1);
+}
+
 void ESP_ConnectAP(uint8_t *ap_name, uint8_t *pwd)
 {
+	sprintf(esp_cmd, "AT+CWMODE=1\r\n", ap_name, pwd);
+	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+	HAL_Delay(50);
 	sprintf(esp_cmd, "AT+CWJAP=\"%s\",\"%s\"\r\n", ap_name, pwd);
 	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
 }
@@ -985,7 +997,7 @@ int main(void)
   ADF_Init();
 
   //DAC_OUT1 test
-  HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+  /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
   while(1)
   {
 	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
@@ -994,7 +1006,7 @@ int main(void)
 	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
 	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0xFF);
 	  HAL_Delay(50);
-  }
+  }*/
 
   if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
   {
@@ -1027,18 +1039,14 @@ int main(void)
   //TFT_Clear(CL_BLACK);
   TFT_DisplaySplash("splash.raw");
   TFT_SetBrght(50);
-  /*for(uint8_t i=0; i<127; i++)
-  {
-	  TFT_PutPixel(i, i, CL_GREEN);
-	  HAL_Delay(50);
-  }*/
-
-  /*huart2.Init.Mode = UART_MODE_TX;
-  HAL_UART_Init(&huart2);
 
   ESP_Enable(1);
+  HAL_Delay(500);
+  //TFT_Clear(CL_WHITE);
 
-  HAL_Delay(2000);
+  huart2.Init.Mode = UART_MODE_TX;
+  HAL_UART_Init(&huart2);
+
   sprintf(esp_cmd, "ATE0\r\n");
   HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
   HAL_Delay(100);
@@ -1046,18 +1054,25 @@ int main(void)
   huart2.Init.Mode = UART_MODE_TX_RX;
   HAL_UART_Init(&huart2);
 
-  HAL_UART_Receive_IT(&huart2, esp_rcv, 1);
+  HAL_Delay(1000);
+  //ESP_ConnectAP("Teletra", "");
 
-  HAL_Delay(2000);
-  ESP_ConnectAP("123123", "123123");*/
+  sprintf(esp_cmd, "AT+CIPMUX=1\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
 
-  //sprintf(esp_cmd, "AT+CIPMUX=1\r\n");
-  //HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
+  ESP_GetResp();
+  while(esp_rcv[27]!='G');	//"WIFI GOT IP"
 
-  //HAL_Delay(200);
+  sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"192.168.1.189\",17000\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  ESP_GetResp();
+  while(esp_rcv[4]!='O');	//"OK" TODO: fix this
 
-  //sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"192.168.1.189\",17000\r\n");
-  //HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
+  while(1);
+  sprintf(esp_cmd, "AT+CIPSEND=1,%d\r\n", 2);
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
+  HAL_Delay(100);
+  HAL_UART_Transmit(&huart2, "xD", 2, 10);
 
   /* USER CODE END 2 */
 
