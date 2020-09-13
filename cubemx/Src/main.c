@@ -53,6 +53,18 @@
 
 /* USER CODE BEGIN Includes */
 #include "TFT_ST7735.h"
+
+//macros
+#define RX_MODE			0
+#define TX_MODE			1
+
+#define LNA_ON			0
+#define LNA_OFF			1
+
+#define AUDIO_MUX_NONE	0b11		//both switches off
+#define AUDIO_MUX_MOD	0b10		//audio DAC -> analog FM modulator
+#define AUDIO_MUX_SPK	0b01		//audio DAC -> speaker
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -167,6 +179,44 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+//----------------------------------Misc Stuff---------------------------------
+void Vibrator(uint8_t state)
+{
+	//1: on, 0:off
+	HAL_GPIO_WritePin(VIBRATE_GPIO_Port, VIBRATE_Pin, state);
+}
+
+//--------------------------------------RF-------------------------------------
+void RF_SetPWR(uint16_t val)
+{
+	//set DAC_OUT2
+	//TODO: fix this
+	HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, val);
+}
+
+void LNA_Ctrl(uint8_t lna_state)
+{
+	//0: on, 1: off
+	HAL_GPIO_WritePin(LNA_EN_GPIO_Port, LNA_EN_Pin, lna_state);
+}
+
+void RF_Mode(uint8_t mode)
+{
+	//set TX or RX via GaAs switch
+	//RX: mode=0
+	//TX: mode=1
+	HAL_GPIO_WritePin(TRX_SW_GPIO_Port, TRX_SW_Pin, mode);
+}
+
+//------------------------------------AUDIO------------------------------------
+void AUDIO_Mux(uint8_t mux)
+{
+	//set SPK amp source
+	HAL_GPIO_WritePin(SPK_AMP_SEL_GPIO_Port, SPK_AMP_SEL_Pin, mux>>1);
+	HAL_GPIO_WritePin(FM_MOD_SEL_GPIO_Port, FM_MOD_SEL_Pin, mux&1);
+}
+
 //-------------------------------------TFT-------------------------------------
 void TFT_SetBrght(uint8_t brght)
 {
@@ -785,10 +835,27 @@ int main(void)
   MX_UART7_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
+  //Init stuff
+  //RF_SetPWR(0);
+  RF_Mode(RX_MODE);
+  AUDIO_Mux(AUDIO_MUX_NONE);
+  LNA_Ctrl(LNA_OFF);
   TFT_SetBrght(0);
   TFT_Reset();
   TFT_Init();
   ADF_Init();
+
+  //DAC_OUT1 test
+  HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+  while(1)
+  {
+	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
+	  HAL_Delay(50);
+	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0xFF);
+	  HAL_Delay(50);
+  }
 
   if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
   {
@@ -1128,7 +1195,7 @@ static void MX_DAC_Init(void)
 
     /**DAC channel OUT2 config 
     */
-  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+  sConfig.DAC_Trigger = DAC_TRIGGER_SOFTWARE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
