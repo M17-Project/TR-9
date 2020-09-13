@@ -117,7 +117,7 @@ F 0 "C79" V 5521 1150 50  0000 C CNN
 F 1 "10u" V 5612 1150 50  0000 C CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 5750 1150 50  0001 C CNN
 F 3 "~" H 5750 1150 50  0001 C CNN
-F 4 "50" H 5750 1150 50  0001 C CNN "Voltage"
+F 4 "10" H 5750 1150 50  0001 C CNN "Voltage"
 F 5 "X7R" H 5750 1150 50  0001 C CNN "TempCoef"
 F 6 "10" H 5750 1150 50  0001 C CNN "Tolerance"
 	1    5750 1150
@@ -238,7 +238,7 @@ F 0 "C76" H 5042 3446 50  0000 L CNN
 F 1 "22u" H 5042 3355 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 4950 3400 50  0001 C CNN
 F 3 "~" H 4950 3400 50  0001 C CNN
-F 4 "50" H 4950 3400 50  0001 C CNN "Voltage"
+F 4 "10" H 4950 3400 50  0001 C CNN "Voltage"
 F 5 "X7R" H 4950 3400 50  0001 C CNN "TempCoef"
 F 6 "10" H 4950 3400 50  0001 C CNN "Tolerance"
 	1    4950 3400
@@ -339,7 +339,7 @@ F 0 "C87" H 8108 3604 50  0000 R CNN
 F 1 "10u" H 8108 3695 50  0000 R CNN
 F 2 "Capacitor_SMD:C_0603_1608Metric" H 8200 3650 50  0001 C CNN
 F 3 "~" H 8200 3650 50  0001 C CNN
-F 4 "50" H 8200 3650 50  0001 C CNN "Voltage"
+F 4 "10" H 8200 3650 50  0001 C CNN "Voltage"
 F 5 "X7R" H 8200 3650 50  0001 C CNN "TempCoef"
 F 6 "10" H 8200 3650 50  0001 C CNN "Tolerance"
 	1    8200 3650
@@ -1052,9 +1052,10 @@ L Mainboard-rescue:R_POT-Device RV1
 U 1 1 5E5198E8
 P 7050 4900
 F 0 "RV1" H 6981 4946 50  0000 R CNN
-F 1 "50k/log" H 6981 4855 50  0000 R CNN
+F 1 "50k/log SPST" H 6981 4855 50  0000 R CNN
 F 2 "Connector_PinHeader_1.27mm:PinHeader_1x03_P1.27mm_Vertical" H 7050 4900 50  0001 C CNN
 F 3 "~" H 7050 4900 50  0001 C CNN
+F 4 "Alps RK0971111Z32" H 7050 4900 50  0001 C CNN "Partno"
 	1    7050 4900
 	1    0    0    -1  
 $EndComp
@@ -1818,7 +1819,7 @@ Wire Notes Line
 Wire Notes Line
 	3950 7000 3950 7250
 Wire Wire Line
-	3250 6100 3650 6100
+	3250 6100 3500 6100
 $Comp
 L Mainboard-rescue:C_Small-Device C72
 U 1 1 5E81740F
@@ -1982,4 +1983,20 @@ F 6 "10" H 4500 3250 50  0001 C CNN "Tolerance"
 	1    4500 3250
 	0    1    1    0   
 $EndComp
+$Comp
+L Mainboard-rescue:TestPoint_Probe-Connector TP?
+U 1 1 5F2AA401
+P 3500 6100
+AR Path="/5DF0E505/5F2AA401" Ref="TP?"  Part="1" 
+AR Path="/5DFC2ACA/5F2AA401" Ref="TP10"  Part="1" 
+F 0 "TP10" H 3653 6201 50  0000 L CNN
+F 1 "TestPoint_Probe" H 3653 6110 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_D1.0mm" H 3700 6100 50  0001 C CNN
+F 3 "~" H 3700 6100 50  0001 C CNN
+	1    3500 6100
+	0    -1   -1   0   
+$EndComp
+Connection ~ 3500 6100
+Wire Wire Line
+	3500 6100 3650 6100
 $EndSCHEMATC

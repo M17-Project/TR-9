@@ -680,9 +680,10 @@ L Mainboard-rescue:L_Small-device L1
 U 1 1 5DED78AF
 P 8550 4350
 F 0 "L1" V 8500 4300 50  0000 L CNN
-F 1 "100MHz" V 8650 4200 50  0000 L CNN
+F 1 "Ferrite Bead" V 8650 4200 50  0000 L CNN
 F 2 "Inductor_SMD:L_0603_1608Metric" H 8550 4350 50  0001 C CNN
 F 3 "~" H 8550 4350 50  0001 C CNN
+F 4 "Fair-Rite 2506032217Y2" H 8550 4350 50  0001 C CNN "Partno"
 	1    8550 4350
 	1    0    0    -1  
 $EndComp
