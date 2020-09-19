@@ -52,6 +52,7 @@
 #include "fatfs.h"
 
 /* USER CODE BEGIN Includes */
+#include <math.h>
 #include <string.h>
 #include "TFT_ST7735.h"
 
@@ -164,6 +165,10 @@ struct moip_packet
 } packet;
 
 uint8_t udp_frame[MOIP_UDP_SIZE];
+
+//audio
+uint16_t audio_samples[320];
+volatile uint8_t dac_play=1;		//is the DAC playing samples?
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -953,6 +958,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	}
 }
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	//4kHz (f_s/2) test
+	HAL_GPIO_TogglePin(N9_GPIO_Port, N9_Pin);
+}
+
+void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
+{
+	dac_play=0;
+}
 /* USER CODE END 0 */
 
 /**
@@ -1020,7 +1036,7 @@ int main(void)
   TFT_Init();
   ADF_Init();
 
-  //DAC_OUT1 test
+  //DAC_OUT2 test
   /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
   while(1)
   {
@@ -1088,16 +1104,9 @@ int main(void)
   while(esp_rcv[32]!='P');	//"WIFI GOT IP"
   HAL_Delay(1);
 
-  MoIP_Connect("192.168.1.186", 17000);
+  //MoIP test
+  /*MoIP_Connect("192.168.1.186", 17000);
 
-  /*
-    uint8_t dst[10];
-	uint8_t src[10];
-	uint16_t type;
-	uint8_t nonce[14];
-	uint16_t fn;
-	uint8_t payload[16];
-   */
   sprintf(packet.dst, "SP5WWP");
   sprintf(packet.dst, "W2FBI");
   packet.type=P_TYPE_VOICE;
@@ -1109,7 +1118,14 @@ int main(void)
 	  M17_Framer(&packet, udp_frame, p==99?1:0);
 	  MoIP_Send(udp_frame);
 	  HAL_Delay(20);
-  }
+  }*/
+
+  //DAC OUT2 (audio) test
+  for(uint16_t i=0; i<320; i++)
+	  audio_samples[i]=0xFFF*(sin((40.0*i)/320.0*2*3.14159265348)/2.0+0.5);
+  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
+  AUDIO_Mux(AUDIO_MUX_SPK);
+  HAL_TIM_Base_Start(&htim6);
 
   /* USER CODE END 2 */
 
@@ -1117,10 +1133,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 0);
+	  /*HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 0);
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 1);
-	  HAL_Delay(950);
+	  HAL_Delay(950);*/
+	  if(!dac_play)
+	  {
+		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
+		  dac_play=1;
+	  }
 	  /*HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
@@ -1836,7 +1857,7 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Stream5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 10, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
   /* DMA1_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 0, 0);
