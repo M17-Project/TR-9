@@ -56,6 +56,8 @@
 #include "TFT_ST7735.h"
 
 //macros
+#define MOIP_UDP_SIZE			54
+
 #define RX_MODE					0
 #define TX_MODE					1
 
@@ -67,6 +69,9 @@
 #define AUDIO_MUX_SPK			0b01		//audio DAC -> speaker
 
 #define FONT_MONOSPACED_16_9	1
+
+#define P_TYPE_VOICE			(0b10<<1)
+#define P_TYPE_DATA				(0b01<<1)
 
 /* USER CODE END Includes */
 
@@ -158,7 +163,7 @@ struct moip_packet
 	uint16_t crc_udp;
 } packet;
 
-uint8_t udp_frame[54];
+uint8_t udp_frame[MOIP_UDP_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -278,7 +283,7 @@ uint64_t Encode_Callsign(const char *callsign)
 //arg1: struct with packet data
 //arg2: output byte array
 //arg3: transmission end flag
-void M17_Framer(struct moip_packet* inp, uint8_t *out, uint8_t tr_end)
+void M17_Framer(struct moip_packet *inp, uint8_t *out, uint8_t tr_end)
 {
 	//FIELD		BYTES
 	//prefix	4
@@ -314,8 +319,8 @@ void M17_Framer(struct moip_packet* inp, uint8_t *out, uint8_t tr_end)
 	ypcmem(&out[34], &(inp->fn), 2);
 	ypcmem(&out[36], &(inp->payload), 16);
 	crc=0xBEEF;//CRC_M17(crc_lut, out, 52); TODO: fix this
-	ypcmem(&out[52], (uint8_t*)crc, 2);
-	ypcmem(&(inp->crc_udp), (uint8_t*)crc, 2);
+	ypcmem(&out[52], (uint8_t*)&crc, 2);
+	ypcmem((uint8_t*)&(inp->crc_udp), (uint8_t*)&crc, 2);
 
 	//rotate SID
 	if(sid&1)
@@ -726,6 +731,25 @@ void ESP_ConnectAP(uint8_t *ap_name, uint8_t *pwd)
 	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
 }
 
+//------------------------------------MoIP-------------------------------------
+void MoIP_Connect(uint8_t *addr, uint16_t port)
+{
+	ESP_GetResp();
+	sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"%s\",%d\r\n", addr, port);
+	HAL_UART_Transmit_IT(&huart2, esp_cmd, strlen(esp_cmd));
+	while(esp_rcv[13]!='O' && esp_rcv[14]!='K');
+}
+
+//send a MoIP packet
+//we expect a MOIP_UDP_SIZE byte long input at arg1
+void MoIP_Send(uint8_t *inp)
+{
+	sprintf(esp_cmd, "AT+CIPSEND=1,%d\r\n", MOIP_UDP_SIZE);
+	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
+	HAL_Delay(20);	//FIXME: wait for '>' character
+	HAL_UART_Transmit(&huart2, inp, MOIP_UDP_SIZE, 5);
+}
+
 //-------------------------------------ADF-------------------------------------
 void ADF_Init(void)
 {
@@ -1058,21 +1082,34 @@ int main(void)
   //ESP_ConnectAP("Teletra", "");
 
   sprintf(esp_cmd, "AT+CIPMUX=1\r\n");
-  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 100);
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
 
   ESP_GetResp();
-  while(esp_rcv[27]!='G');	//"WIFI GOT IP"
+  while(esp_rcv[32]!='P');	//"WIFI GOT IP"
+  HAL_Delay(1);
 
-  sprintf(esp_cmd, "AT+CIPSTART=1,\"UDP\",\"192.168.1.189\",17000\r\n");
-  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
-  ESP_GetResp();
-  while(esp_rcv[4]!='O');	//"OK" TODO: fix this
+  MoIP_Connect("192.168.1.186", 17000);
 
-  while(1);
-  sprintf(esp_cmd, "AT+CIPSEND=1,%d\r\n", 2);
-  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 10);
-  HAL_Delay(100);
-  HAL_UART_Transmit(&huart2, "xD", 2, 10);
+  /*
+    uint8_t dst[10];
+	uint8_t src[10];
+	uint16_t type;
+	uint8_t nonce[14];
+	uint16_t fn;
+	uint8_t payload[16];
+   */
+  sprintf(packet.dst, "SP5WWP");
+  sprintf(packet.dst, "W2FBI");
+  packet.type=P_TYPE_VOICE;
+
+  for(uint16_t p=0; p<100; p++)
+  {
+	  packet.fn=p;
+	  sprintf(packet.payload, "Hello M17!\r\n");
+	  M17_Framer(&packet, udp_frame, p==99?1:0);
+	  MoIP_Send(udp_frame);
+	  HAL_Delay(20);
+  }
 
   /* USER CODE END 2 */
 
