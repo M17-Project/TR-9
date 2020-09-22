@@ -74,6 +74,7 @@
 #define P_TYPE_VOICE			(0b10<<1)
 #define P_TYPE_DATA				(0b01<<1)
 
+const uint16_t crc_poly=0x5935;
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -82,6 +83,7 @@ ADC_HandleTypeDef hadc2;
 ADC_HandleTypeDef hadc3;
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
+DMA_HandleTypeDef hdma_adc3;
 
 CRC_HandleTypeDef hcrc;
 
@@ -167,8 +169,11 @@ struct moip_packet
 uint8_t udp_frame[MOIP_UDP_SIZE];
 
 //audio
+uint16_t fm_demod_in[2*320];
 uint16_t audio_samples[320];
 volatile uint8_t dac_play=1;		//is the DAC playing samples?
+volatile uint8_t collect_samples=0;	//collect ADC data?
+volatile uint8_t buff_num=0;		//which buffer is in use?
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -222,7 +227,7 @@ void ypcmem(uint8_t *dst, uint8_t *src, uint16_t nBytes)
 }
 
 //uncomment these 2 funcs below if you are not using hardware CRC calculation unit
-/*
+uint16_t CRC_LUT[256];
 void CRC_Init(uint16_t *crc_table, uint16_t poly)
 {
 	uint16_t remainder;
@@ -256,7 +261,6 @@ uint16_t CRC_M17(uint16_t* crc_table, const uint8_t* message, uint16_t nBytes)
 
 	return(remainder);
 }
-*/
 
 //-------------------------------------M17-------------------------------------
 uint64_t Encode_Callsign(const char *callsign)
@@ -323,7 +327,7 @@ void M17_Framer(struct moip_packet *inp, uint8_t *out, uint8_t tr_end)
 	ypcmem(&out[20], &(inp->nonce), 14);
 	ypcmem(&out[34], &(inp->fn), 2);
 	ypcmem(&out[36], &(inp->payload), 16);
-	crc=0xBEEF;//CRC_M17(crc_lut, out, 52); TODO: fix this
+	crc=CRC_M17(CRC_LUT, out, 52); //TODO: fix this
 	ypcmem(&out[52], (uint8_t*)&crc, 2);
 	ypcmem((uint8_t*)&(inp->crc_udp), (uint8_t*)&crc, 2);
 
@@ -968,6 +972,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 {
 	dac_play=0;
+	HAL_GPIO_TogglePin(N7_GPIO_Port, N7_Pin);
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	buff_num++;
+	buff_num%=2;
+
+	HAL_GPIO_WritePin(N8_GPIO_Port, N8_Pin, buff_num);
+
+	if(buff_num)
+	{
+		HAL_ADC_Start_DMA(&hadc3, &fm_demod_in[320], 320);
+		dac_play=0;
+	}
+	else
+	{
+		HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
+		dac_play=0;
+	}
 }
 /* USER CODE END 0 */
 
@@ -1035,6 +1059,7 @@ int main(void)
   TFT_Reset();
   TFT_Init();
   ADF_Init();
+  CRC_Init(CRC_LUT, crc_poly);
 
   //DAC_OUT2 test
   /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
@@ -1048,6 +1073,7 @@ int main(void)
 	  HAL_Delay(50);
   }*/
 
+  //SD card
   if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
   {
 	  TFT_Clear(CL_BLACK);
@@ -1105,10 +1131,12 @@ int main(void)
   HAL_Delay(1);
 
   //MoIP test
-  /*MoIP_Connect("192.168.1.186", 17000);
+  //MoIP_Connect("192.168.1.186", 17000);
+  /*MoIP_Connect("m17.link", 17000);
+  HAL_Delay(550);
 
-  sprintf(packet.dst, "SP5WWP");
-  sprintf(packet.dst, "W2FBI");
+  sprintf(packet.src, "SP5WWP");
+  sprintf(packet.dst, "KC1AWV");
   packet.type=P_TYPE_VOICE;
 
   for(uint16_t p=0; p<100; p++)
@@ -1121,11 +1149,46 @@ int main(void)
   }*/
 
   //DAC OUT2 (audio) test
-  for(uint16_t i=0; i<320; i++)
+  /*for(uint16_t i=0; i<320; i++)
 	  audio_samples[i]=0xFFF*(sin((40.0*i)/320.0*2*3.14159265348)/2.0+0.5);
   HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
   AUDIO_Mux(AUDIO_MUX_SPK);
+  HAL_TIM_Base_Start(&htim6);*/
+
+  //ADF7021 test
+  ADF_WriteReg((uint32_t)0x0003B|((uint32_t)0x3243<<8));	//SWD (0x3B) syncword: 0x3243
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x0010C|(uint32_t)1<<8);			//DPL (0x10C)
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x5770B4); //0x5770B4
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x01ED5);	//coarse cal ON
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x505EBA6|(uint32_t)1<<4);			//0x505EBA6
+  HAL_Delay(10-1);
+  //((uint32_t)0x007);
+  //HAL_Delay(2-1);
+  //ADF_WriteReg((uint32_t)0x0008);
+  //HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x9|(uint32_t)40<<4|(uint32_t)70<<11);//|((uint32_t)1<<18)|((uint32_t)2<<20)|((uint32_t)2<<22)); //manual gain - max
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x3296556B);
+  HAL_Delay(2-1);
+  ADF_WriteReg((uint32_t)0x003BD);
+
+  ADF_WriteReg((uint32_t)0x475031);
+  HAL_Delay(2-1);
+
+  //ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
+  ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+  HAL_Delay(2-1);
+
+  ADF_SetFreq(460125000, 1);	//SR5ND
+  LNA_Ctrl(LNA_ON);
+
   HAL_TIM_Base_Start(&htim6);
+  HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
+  AUDIO_Mux(AUDIO_MUX_SPK);
 
   /* USER CODE END 2 */
 
@@ -1139,9 +1202,14 @@ int main(void)
 	  HAL_Delay(950);*/
 	  if(!dac_play)
 	  {
-		  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
+		  if(buff_num)
+			  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, &fm_demod_in[0], 320, DAC_ALIGN_12B_R);
+		  else
+			  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, &fm_demod_in[320], 320, DAC_ALIGN_12B_R);
+		  //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
 		  dac_play=1;
 	  }
+
 	  /*HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
@@ -1326,11 +1394,11 @@ static void MX_ADC3_Init(void)
   hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc3.Init.ContinuousConvMode = DISABLE;
   hadc3.Init.DiscontinuousConvMode = DISABLE;
-  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
+  hadc3.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T6_TRGO;
   hadc3.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc3.Init.NbrOfConversion = 1;
-  hadc3.Init.DMAContinuousRequests = DISABLE;
+  hadc3.Init.DMAContinuousRequests = ENABLE;
   hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc3) != HAL_OK)
   {
@@ -1865,6 +1933,9 @@ static void MX_DMA_Init(void)
   /* DMA2_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 9, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+  /* DMA2_Stream1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
   /* DMA2_Stream2_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 15, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
