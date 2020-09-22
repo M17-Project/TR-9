@@ -5,3 +5,4 @@ Important notes:
 #4: All ferrite beads (including L1) are Fair-Rite 2506032217Y2. //DONE
 #5: Volume pot is 50k/log Alps RK0971111Z32 with an SPST. //DONE
 #6: All tact buttons on the side (including PTT) can be of the same type.
+#7: D1 is green, D2 is red
