@@ -9,6 +9,7 @@ The TR-9 Radio will be capable of the following:
 * Digital Voice ([M17 Codec](https://docs.m17project.org))
 * FM Voice
 * APRS via 1200 bps Packet (AX.25)
+* Short text messaging (SMS-like)
 * Optional Wi-Fi and GPS modules
 
 # Hardware  
