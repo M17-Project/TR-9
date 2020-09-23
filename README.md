@@ -3,6 +3,15 @@
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
 This repo contains SW4STM32 project for the TR-9 board, TR-9 case design files, KiCAD schematics, gerber files and a sample codeplug. CubeMX version used: **4.27.0**.
 
+# Capabilities
+The TR-9 Radio will be capable of the following:
+* UHF band (420 MHz - 450 MHz)
+* Digital Voice ([M17 Codec](https://docs.m17project.org))
+* FM Voice
+* APRS via 1200 bps Packet (AX.25)
+* Short text messaging (SMS-like)
+* Optional Wi-Fi and GPS modules
+
 # Hardware  
 The heart of TR-9 is STM32F777VI microcontroller. The handheld also contains:  
 *  a **DEM 128128A1 TMH-PWN** 1.44" 128x128px TFT display  
