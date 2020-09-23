@@ -54,6 +54,7 @@
 /* USER CODE BEGIN Includes */
 #include <math.h>
 #include <string.h>
+#include "codec2.h"
 #include "TFT_ST7735.h"
 
 //macros
@@ -136,8 +137,13 @@ volatile uint8_t esp_cnt=0;
 //FatFS file
 FIL	myFile;
 
+//Codec2
+volatile struct CODEC2 *cod;
+uint8_t c2_data[16];			//2*8 bytes (2*20ms - each frame is 40ms)
+
 //ADF7021
 uint16_t chip_rev=0;
+float rssi=0.0;
 
 //TFT
 uint8_t addr_col=0;							//current memory position
@@ -154,6 +160,7 @@ struct font_1_glyph_dsc
 
 //M17 over IP
 const uint32_t M17_STREAM_PREFIX = 0x4D313720;	//this is equal to "M17 "
+volatile uint8_t data_rdy=0;					//data ready to send?
 
 struct moip_packet
 {
@@ -170,7 +177,7 @@ uint8_t udp_frame[MOIP_UDP_SIZE];
 
 //audio
 uint16_t fm_demod_in[2*320];
-uint16_t audio_samples[320];
+uint16_t audio_samples[2*320];
 volatile uint8_t dac_play=1;		//is the DAC playing samples?
 volatile uint8_t collect_samples=0;	//collect ADC data?
 volatile uint8_t buff_num=0;		//which buffer is in use?
@@ -327,7 +334,7 @@ void M17_Framer(struct moip_packet *inp, uint8_t *out, uint8_t tr_end)
 	ypcmem(&out[20], &(inp->nonce), 14);
 	ypcmem(&out[34], &(inp->fn), 2);
 	ypcmem(&out[36], &(inp->payload), 16);
-	crc=CRC_M17(CRC_LUT, out, 52); //TODO: fix this
+	crc=HAL_CRC_Calculate(&hcrc, out, 52);//CRC_M17(CRC_LUT, out, 52); //FIXME: use HW CRC unit
 	ypcmem(&out[52], (uint8_t*)&crc, 2);
 	ypcmem((uint8_t*)&(inp->crc_udp), (uint8_t*)&crc, 2);
 
@@ -754,9 +761,9 @@ void MoIP_Connect(uint8_t *addr, uint16_t port)
 void MoIP_Send(uint8_t *inp)
 {
 	sprintf(esp_cmd, "AT+CIPSEND=1,%d\r\n", MOIP_UDP_SIZE);
-	HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
-	HAL_Delay(20);	//FIXME: wait for '>' character
-	HAL_UART_Transmit(&huart2, inp, MOIP_UDP_SIZE, 5);
+	HAL_UART_Transmit_DMA(&huart2, esp_cmd, strlen(esp_cmd));
+	HAL_Delay(10);	//FIXME: wait for '>' character
+	HAL_UART_Transmit_DMA(&huart2, inp, MOIP_UDP_SIZE);
 }
 
 //-------------------------------------ADF-------------------------------------
@@ -977,20 +984,37 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
-	buff_num++;
-	buff_num%=2;
-
-	HAL_GPIO_WritePin(N8_GPIO_Port, N8_Pin, buff_num);
-
-	if(buff_num)
+	//ADC3 -> FM demod in
+	if(hadc->Instance==ADC3)
 	{
-		HAL_ADC_Start_DMA(&hadc3, &fm_demod_in[320], 320);
-		dac_play=0;
+		buff_num++;
+		buff_num%=2;
+
+		HAL_GPIO_WritePin(N8_GPIO_Port, N8_Pin, buff_num);
+
+		if(buff_num)
+		{
+			//if(rssi>-50.0){
+			HAL_ADC_Start_DMA(&hadc3, &fm_demod_in[320], 320);
+			dac_play=0;//}
+		}
+		else
+		{
+			//if(rssi>-50.0){
+			HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
+			dac_play=0;//}
+		}
 	}
-	else
+
+	//ADC1 -> MIC in
+	else if(hadc->Instance==ADC1)
 	{
-		HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
-		dac_play=0;
+		codec2_encode_3200(cod, &c2_data[0], &audio_samples[0]);
+		codec2_encode_3200(cod, &c2_data[8], &audio_samples[160]);
+		data_rdy=1;
+		//start another run. FIXME: use 2 buffers and swap them
+		//because this approach causes breaks in audio
+		HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 	}
 }
 /* USER CODE END 0 */
@@ -1059,7 +1083,9 @@ int main(void)
   TFT_Reset();
   TFT_Init();
   ADF_Init();
-  CRC_Init(CRC_LUT, crc_poly);
+  CRC_Init(CRC_LUT, crc_poly);	//not used if HW CRC is enabled
+  hcrc.Init.GeneratingPolynomial = 0x5935;
+  HAL_CRC_Init(&hcrc);
 
   //DAC_OUT2 test
   /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
@@ -1078,7 +1104,7 @@ int main(void)
   {
 	  TFT_Clear(CL_BLACK);
   	  TFT_PutStrCenteredBold(128/2-8, "CARD ERROR", 1, CL_RED);
-  	  TFT_SetBrght(50);
+  	  TFT_SetBrght(40);
 
   	  while(1)
   	  {
@@ -1092,7 +1118,7 @@ int main(void)
   {
 	  TFT_Clear(CL_BLACK);
 	  TFT_PutStrCenteredBold(128/2-8, "ADF7021 ERROR", 1, CL_RED);
-	  TFT_SetBrght(50);
+	  TFT_SetBrght(40);
 
 	  while(1)
 	  {
@@ -1104,7 +1130,7 @@ int main(void)
   //HAL_Delay(500);
   //TFT_Clear(CL_BLACK);
   TFT_DisplaySplash("splash.raw");
-  TFT_SetBrght(50);
+  TFT_SetBrght(40);
 
   ESP_Enable(1);
   HAL_Delay(500);
@@ -1132,20 +1158,25 @@ int main(void)
 
   //MoIP test
   //MoIP_Connect("192.168.1.186", 17000);
-  /*MoIP_Connect("m17.link", 17000);
+  MoIP_Connect("m17.link", 17000);
   HAL_Delay(550);
+
+  //Codec2
+  cod = codec2_create(CODEC2_MODE_3200);
+  HAL_TIM_Base_Start(&htim6);
+  HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 
   sprintf(packet.src, "SP5WWP");
   sprintf(packet.dst, "KC1AWV");
   packet.type=P_TYPE_VOICE;
 
-  for(uint16_t p=0; p<100; p++)
+  /*for(uint16_t p=0; p<20; p++)
   {
 	  packet.fn=p;
 	  sprintf(packet.payload, "Hello M17!\r\n");
-	  M17_Framer(&packet, udp_frame, p==99?1:0);
+	  M17_Framer(&packet, udp_frame, p==19?1:0);
 	  MoIP_Send(udp_frame);
-	  HAL_Delay(20);
+	  HAL_Delay(10);
   }*/
 
   //DAC OUT2 (audio) test
@@ -1156,7 +1187,7 @@ int main(void)
   HAL_TIM_Base_Start(&htim6);*/
 
   //ADF7021 test
-  ADF_WriteReg((uint32_t)0x0003B|((uint32_t)0x3243<<8));	//SWD (0x3B) syncword: 0x3243
+  /*ADF_WriteReg((uint32_t)0x0003B|((uint32_t)0x3243<<8));	//SWD (0x3B) syncword: 0x3243
   HAL_Delay(2-1);
   ADF_WriteReg((uint32_t)0x0010C|(uint32_t)1<<8);			//DPL (0x10C)
   HAL_Delay(2-1);
@@ -1183,12 +1214,12 @@ int main(void)
   ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
   HAL_Delay(2-1);
 
-  ADF_SetFreq(460125000, 1);	//SR5ND
+  ADF_SetFreq(439425000, 1);	//SR5ND
   LNA_Ctrl(LNA_ON);
 
   HAL_TIM_Base_Start(&htim6);
   HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
-  AUDIO_Mux(AUDIO_MUX_SPK);
+  AUDIO_Mux(AUDIO_MUX_SPK);*/
 
   /* USER CODE END 2 */
 
@@ -1196,11 +1227,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(data_rdy)
+	  {
+		  memcpy(packet.payload, c2_data, 16);
+		  M17_Framer(&packet, udp_frame, 0);
+		  MoIP_Send(udp_frame);
+		  packet.fn++;
+		  data_rdy=0;
+	  }
+
 	  /*HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 0);
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_GRN_GPIO_Port, LED_GRN_Pin, 1);
 	  HAL_Delay(950);*/
-	  if(!dac_play)
+	  /*if(!dac_play)
 	  {
 		  if(buff_num)
 			  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, &fm_demod_in[0], 320, DAC_ALIGN_12B_R);
@@ -1208,8 +1248,9 @@ int main(void)
 			  HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, &fm_demod_in[320], 320, DAC_ALIGN_12B_R);
 		  //HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
 		  dac_play=1;
-	  }
+	  }*/
 
+	  //rssi=ADF_GetRSSI();
 	  /*HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
@@ -1422,8 +1463,11 @@ static void MX_CRC_Init(void)
 {
 
   hcrc.Instance = CRC;
-  hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
-  hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+  hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_DISABLE;
+  hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_DISABLE;
+  hcrc.Init.GeneratingPolynomial = 7;
+  hcrc.Init.CRCLength = CRC_POLYLENGTH_16B;
+  hcrc.Init.InitValue = 0xFFFF;
   hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
   hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
   hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
