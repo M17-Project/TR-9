@@ -176,8 +176,11 @@ struct moip_packet
 uint8_t udp_frame[MOIP_UDP_SIZE];
 
 //audio
+#define DC_OFFSET 2040
+volatile uint8_t mic_gain=10;		//microphone gain (linear) 0 -> mute
 uint16_t fm_demod_in[2*320];
 uint16_t audio_samples[2*320];
+int16_t pr_audio_samples[2*320];
 volatile uint8_t dac_play=1;		//is the DAC playing samples?
 volatile uint8_t collect_samples=0;	//collect ADC data?
 volatile uint8_t buff_num=0;		//which buffer is in use?
@@ -1009,8 +1012,12 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	//ADC1 -> MIC in
 	else if(hadc->Instance==ADC1)
 	{
-		codec2_encode_3200(cod, &c2_data[0], &audio_samples[0]);
-		codec2_encode_3200(cod, &c2_data[8], &audio_samples[160]);
+		for(uint16_t i=0; i<2*320; i++)
+		{
+			pr_audio_samples[i]=((int16_t)audio_samples[i]-DC_OFFSET)*mic_gain;
+		}
+		codec2_encode_3200(cod, &c2_data[0], &pr_audio_samples[0]);
+		codec2_encode_3200(cod, &c2_data[8], &pr_audio_samples[160]);
 		data_rdy=1;
 		//start another run. FIXME: use 2 buffers and swap them
 		//because this approach causes breaks in audio
@@ -1157,8 +1164,9 @@ int main(void)
   HAL_Delay(1);
 
   //MoIP test
-  //MoIP_Connect("192.168.1.186", 17000);
-  MoIP_Connect("m17.link", 17000);
+  MoIP_Connect("192.168.1.186", 17000);
+  //MoIP_Connect("m17.link", 17000);
+
   HAL_Delay(550);
 
   //Codec2
@@ -1167,7 +1175,8 @@ int main(void)
   HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 
   sprintf(packet.src, "SP5WWP");
-  sprintf(packet.dst, "KC1AWV");
+  //sprintf(packet.dst, "KC1AWV");
+  sprintf(packet.dst, "W2FBI");
   packet.type=P_TYPE_VOICE;
 
   /*for(uint16_t p=0; p<20; p++)
@@ -1229,7 +1238,7 @@ int main(void)
   {
 	  if(data_rdy)
 	  {
-		  memcpy(packet.payload, c2_data, 16);
+		  ypcmem(packet.payload, c2_data, 16);
 		  M17_Framer(&packet, udp_frame, 0);
 		  MoIP_Send(udp_frame);
 		  packet.fn++;
