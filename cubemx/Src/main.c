@@ -1012,16 +1012,18 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 	//ADC1 -> MIC in
 	else if(hadc->Instance==ADC1)
 	{
-		for(uint16_t i=0; i<2*320; i++)
+		if(buff_num)
 		{
-			pr_audio_samples[i]=((int16_t)audio_samples[i]-DC_OFFSET)*mic_gain;
+			HAL_ADC_Start_DMA(&hadc1, &audio_samples[0], 320);
+			buff_num=0;
 		}
-		codec2_encode_3200(cod, &c2_data[0], &pr_audio_samples[0]);
-		codec2_encode_3200(cod, &c2_data[8], &pr_audio_samples[160]);
+		else
+		{
+			HAL_ADC_Start_DMA(&hadc1, &audio_samples[320], 320);
+			buff_num=1;
+		}
+
 		data_rdy=1;
-		//start another run. FIXME: use 2 buffers and swap them
-		//because this approach causes breaks in audio
-		HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 	}
 }
 /* USER CODE END 0 */
@@ -1238,6 +1240,16 @@ int main(void)
   {
 	  if(data_rdy)
 	  {
+		  uint16_t offs=buff_num*320;	//either 0 or 320
+
+		  for(uint16_t i=0; i<320; i++)
+		  {
+			  pr_audio_samples[i]=((int16_t)audio_samples[offs+i]-DC_OFFSET)*mic_gain;
+		  }
+
+		  codec2_encode_3200(cod, &c2_data[0], &pr_audio_samples[0]);
+		  codec2_encode_3200(cod, &c2_data[8], &pr_audio_samples[160]);
+
 		  ypcmem(packet.payload, c2_data, 16);
 		  M17_Framer(&packet, udp_frame, 0);
 		  MoIP_Send(udp_frame);
