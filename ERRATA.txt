@@ -5,3 +5,4 @@ Important notes:
 #4: Volume pot is 50k/log Alps RK0971111Z32 with an SPST. //DONE
 #5: All tact buttons on the side (including PTT) can be of the same type.
 #6: D1 is green, D2 is red
+#7: Pins 31 and 32 of STM32L011 (on the HMI board) should be soldered together. That's equivalent of forcing a low state on BOOT0.
