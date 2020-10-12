@@ -1201,7 +1201,7 @@ int main(void)
   //ADF7021 test
   RF_Mode(TX_MODE);
   //we need to set the output power with DAC OUT2
-  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 2710);
+  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 3900);
   HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
   //DAC OUT2 stop test
   //HAL_Delay(1000);
@@ -1234,7 +1234,7 @@ int main(void)
   //ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
   HAL_Delay(2-1);
 
-  uint8_t pwr=22;	//1=-16dBm, 63=+13dBm
+  uint8_t pwr=0;	//1=-16dBm, 63=+13dBm
   //ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(pwr<<13));	//4FSK raw
   ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(pwr<<13));	//4FSK + RRC filter
   HAL_Delay(2-1);
