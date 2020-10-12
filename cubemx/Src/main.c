@@ -177,13 +177,17 @@ uint8_t udp_frame[MOIP_UDP_SIZE];
 
 //audio
 #define DC_OFFSET 2040
-volatile uint8_t mic_gain=10;		//microphone gain (linear) 0 -> mute
+volatile uint8_t mic_gain=15;		//microphone gain (linear) 0 -> mute
 uint16_t fm_demod_in[2*320];
 uint16_t audio_samples[2*320];
 int16_t pr_audio_samples[2*320];
 volatile uint8_t dac_play=1;		//is the DAC playing samples?
 volatile uint8_t collect_samples=0;	//collect ADC data?
 volatile uint8_t buff_num=0;		//which buffer is in use?
+
+//HMI
+volatile uint8_t kbd_key=0;			//key ID
+volatile uint8_t key_pressed=0;		//key pressed?
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -958,10 +962,18 @@ float ADF_GetRSSI(void)
 //-------------------------------------IRQ-------------------------------------
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	//ESP8266
 	if(huart->Instance==USART2)
 	{
 		esp_cnt++;
 		HAL_UART_Receive_IT(&huart2, &esp_rcv[esp_cnt], 1);
+	}
+
+	//HMI (keyboard)
+	else if(huart->Instance==USART3)
+	{
+		key_pressed=1;
+		HAL_UART_Receive_IT(&huart3, &kbd_key, 1);
 	}
 }
 
@@ -1092,21 +1104,9 @@ int main(void)
   TFT_Reset();
   TFT_Init();
   ADF_Init();
-  CRC_Init(CRC_LUT, crc_poly);	//not used if HW CRC is enabled
+  //CRC_Init(CRC_LUT, crc_poly);	//not used if HW CRC is enabled
   hcrc.Init.GeneratingPolynomial = 0x5935;
   HAL_CRC_Init(&hcrc);
-
-  //DAC_OUT2 test
-  /*HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
-  while(1)
-  {
-	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
-	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0);
-	  HAL_Delay(50);
-	  //HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
-	  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 0xFF);
-	  HAL_Delay(50);
-  }*/
 
   //SD card
   if(f_mount(&SDFatFS, (TCHAR const*)SDPath, 0))
@@ -1140,6 +1140,7 @@ int main(void)
   //TFT_Clear(CL_BLACK);
   TFT_DisplaySplash("splash.raw");
   TFT_SetBrght(40);
+  HAL_UART_Receive_IT(&huart3, &kbd_key, 1);
 
   ESP_Enable(1);
   HAL_Delay(500);
@@ -1162,19 +1163,19 @@ int main(void)
   HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
 
   ESP_GetResp();
-  while(esp_rcv[32]!='P');	//"WIFI GOT IP"
+  //while(esp_rcv[32]!='P');	//"WIFI GOT IP"
   HAL_Delay(1);
 
   //MoIP test
-  MoIP_Connect("192.168.1.186", 17000);
+  //MoIP_Connect("192.168.1.186", 17000);
   //MoIP_Connect("m17.link", 17000);
 
   HAL_Delay(550);
 
   //Codec2
   cod = codec2_create(CODEC2_MODE_3200);
-  HAL_TIM_Base_Start(&htim6);
-  HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
+  //HAL_TIM_Base_Start(&htim6);
+  //HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 
   sprintf(packet.src, "SP5WWP");
   //sprintf(packet.dst, "KC1AWV");
@@ -1190,7 +1191,7 @@ int main(void)
 	  HAL_Delay(10);
   }*/
 
-  //DAC OUT2 (audio) test
+  //DAC OUT1 (audio) test
   /*for(uint16_t i=0; i<320; i++)
 	  audio_samples[i]=0xFFF*(sin((40.0*i)/320.0*2*3.14159265348)/2.0+0.5);
   HAL_DAC_Start_DMA(&hdac, DAC_CHANNEL_1, audio_samples, 320, DAC_ALIGN_12B_R);
@@ -1198,7 +1199,15 @@ int main(void)
   HAL_TIM_Base_Start(&htim6);*/
 
   //ADF7021 test
-  /*ADF_WriteReg((uint32_t)0x0003B|((uint32_t)0x3243<<8));	//SWD (0x3B) syncword: 0x3243
+  RF_Mode(TX_MODE);
+  //we need to set the output power with DAC OUT2
+  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 2710);
+  HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+  //DAC OUT2 stop test
+  //HAL_Delay(1000);
+  //HAL_DAC_Stop(&hdac, DAC_CHANNEL_2);
+
+  ADF_WriteReg((uint32_t)0x0003B|((uint32_t)0x3243<<8));	//SWD (0x3B) syncword: 0x3243
   HAL_Delay(2-1);
   ADF_WriteReg((uint32_t)0x0010C|(uint32_t)1<<8);			//DPL (0x10C)
   HAL_Delay(2-1);
@@ -1221,12 +1230,18 @@ int main(void)
   ADF_WriteReg((uint32_t)0x475031);
   HAL_Delay(2-1);
 
-  //ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
-  ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+  ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
+  //ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
   HAL_Delay(2-1);
 
-  ADF_SetFreq(439425000, 1);	//SR5ND
-  LNA_Ctrl(LNA_ON);
+  uint8_t pwr=22;	//1=-16dBm, 63=+13dBm
+  //ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(pwr<<13));	//4FSK raw
+  ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(pwr<<13));	//4FSK + RRC filter
+  HAL_Delay(2-1);
+
+  ADF_WriteReg((uint32_t)0x0000000F|(5<<8));	//1:TX carrier, 2:+f_i, 3:-f_i, 5:PN9
+  ADF_SetFreq(435000000, 0);
+  /*LNA_Ctrl(LNA_ON);
 
   HAL_TIM_Base_Start(&htim6);
   HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
@@ -1240,7 +1255,7 @@ int main(void)
   {
 	  if(data_rdy)
 	  {
-		  uint16_t offs=buff_num*320;	//either 0 or 320
+		  /*uint16_t offs=buff_num*320;	//either 0 or 320
 
 		  for(uint16_t i=0; i<320; i++)
 		  {
@@ -1253,7 +1268,7 @@ int main(void)
 		  ypcmem(packet.payload, c2_data, 16);
 		  M17_Framer(&packet, udp_frame, 0);
 		  MoIP_Send(udp_frame);
-		  packet.fn++;
+		  packet.fn++;*/
 		  data_rdy=0;
 	  }
 
@@ -1276,6 +1291,16 @@ int main(void)
 	  HAL_Delay(50);
 	  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 	  HAL_Delay(450);*/
+
+	  if(key_pressed)
+	  {
+		  for(uint8_t i=0; i<15; i++)
+			  for(uint8_t j=0; j<15; j++)
+				  TFT_PutPixel(i, j, CL_WHITE);
+		  TFT_PutStr(1, 1, &kbd_key, FONT_MONOSPACED_16_9, CL_BLACK);
+
+		  key_pressed=0;
+	  }
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
