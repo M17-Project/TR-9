@@ -144,10 +144,13 @@ uint8_t c2_data[16];			//2*8 bytes (2*20ms - each frame is 40ms)
 //ADF7021
 uint16_t chip_rev=0;
 float rssi=0.0;
+volatile uint8_t adf_pwr=0;		//1=-16dBm, 63=+13dBm. 0=PA_off
+volatile uint16_t rf_bias=2700;	//bias voltage for the RF MOSFET (DAC OUT2)
 
 //TFT
 uint8_t addr_col=0;							//current memory position
 uint8_t addr_row=0;
+uint8_t line[2][16];
 
 //FONTS
 struct font_1_glyph_dsc
@@ -356,12 +359,15 @@ void M17_Framer(struct moip_packet *inp, uint8_t *out, uint8_t tr_end)
 }
 
 //--------------------------------------RF-------------------------------------
-void RF_SetPWR(uint16_t val)
+void RF_SetBias(uint16_t val)
 {
-	//set DAC_OUT2
-	//TODO: fix this
-	HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
-	HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, val);
+	if(val==0)
+		HAL_DAC_Stop(&hdac, DAC_CHANNEL_2);
+	else
+	{
+		HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, val);
+		HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+	}
 }
 
 void LNA_Ctrl(uint8_t lna_state)
@@ -605,6 +611,14 @@ void TFT_PutPixel(uint8_t x, uint8_t y, uint16_t color)
 	while(SPI1->SR & SPI_SR_BSY);
 
 	GPIOB->BSRR=(uint32_t)(1<<4);	//SPI1_CS HIGH
+}
+
+//TODO: add coord check!
+void TFT_RectFill(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint16_t color)
+{
+	for(uint8_t x=x1; x<=x2; x++)
+		for(uint8_t y=y1; y<=y2;y++)
+			TFT_PutPixel(x, y, color);
 }
 
 void TFT_Clear(uint16_t color)
@@ -981,7 +995,32 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin==PTT_INT_Pin)
 	{
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		//PTT up (RX)
+		if(PTT_INT_GPIO_Port->IDR&(PTT_INT_Pin))
+		{
+			RF_SetBias(0);
+			RF_Mode(RX_MODE);
+			//AUDIO_Mux(AUDIO_MUX_NONE);
+			//LNA_Ctrl(LNA_OFF);
+			ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+			ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
+			ADF_SetFreq(435000000, 1);
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
+		}
+
+		//PTT down (TX)
+		else
+		{
+			RF_Mode(TX_MODE);
+			//AUDIO_Mux(AUDIO_MUX_NONE);
+			//LNA_Ctrl(LNA_OFF);
+			ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
+			ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
+			ADF_SetFreq(435000000, 0);
+			ADF_WriteReg((uint32_t)0x0000000F|(5<<8));	//1:TX carrier, 2:+f_i, 3:-f_i, 5:PN9
+			RF_SetBias(rf_bias);
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
+		}
 	}
 }
 
@@ -1095,15 +1134,16 @@ int main(void)
   MX_UART7_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-  //Init stuff
-  //RF_SetPWR(0);
+  //Init stuff (idle RX config)
+  RF_SetBias(0);
   RF_Mode(RX_MODE);
   AUDIO_Mux(AUDIO_MUX_NONE);
-  LNA_Ctrl(LNA_OFF);
+  LNA_Ctrl(LNA_ON);
   TFT_SetBrght(0);
   TFT_Reset();
   TFT_Init();
   ADF_Init();
+
   //CRC_Init(CRC_LUT, crc_poly);	//not used if HW CRC is enabled
   hcrc.Init.GeneratingPolynomial = 0x5935;
   HAL_CRC_Init(&hcrc);
@@ -1170,7 +1210,7 @@ int main(void)
   //MoIP_Connect("192.168.1.186", 17000);
   //MoIP_Connect("m17.link", 17000);
 
-  HAL_Delay(550);
+  //HAL_Delay(550);
 
   //Codec2
   cod = codec2_create(CODEC2_MODE_3200);
@@ -1199,10 +1239,9 @@ int main(void)
   HAL_TIM_Base_Start(&htim6);*/
 
   //ADF7021 test
-  RF_Mode(TX_MODE);
+  //RF_Mode(TX_MODE);
   //we need to set the output power with DAC OUT2
-  HAL_DAC_SetValue(&hdac, DAC_CHANNEL_2, DAC_ALIGN_12B_R, 3900);
-  HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
+  RF_SetBias(0);
   //DAC OUT2 stop test
   //HAL_Delay(1000);
   //HAL_DAC_Stop(&hdac, DAC_CHANNEL_2);
@@ -1230,23 +1269,23 @@ int main(void)
   ADF_WriteReg((uint32_t)0x475031);
   HAL_Delay(2-1);
 
-  ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
-  //ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+  //ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
+  ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
   HAL_Delay(2-1);
 
-  uint8_t pwr=0;	//1=-16dBm, 63=+13dBm
-  //ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(pwr<<13));	//4FSK raw
-  ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(pwr<<13));	//4FSK + RRC filter
+  ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(adf_pwr<<13));	//4FSK raw
+  //ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
   HAL_Delay(2-1);
-
-  ADF_WriteReg((uint32_t)0x0000000F|(5<<8));	//1:TX carrier, 2:+f_i, 3:-f_i, 5:PN9
-  ADF_SetFreq(435000000, 0);
   /*LNA_Ctrl(LNA_ON);
 
   HAL_TIM_Base_Start(&htim6);
   HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
   AUDIO_Mux(AUDIO_MUX_SPK);*/
 
+  sprintf(&line[0][0], "bias=%d", rf_bias);
+  sprintf(&line[1][0], "adf_pwr=%d", adf_pwr);
+  TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
+  TFT_PutStr(1,17,&line[1][0],FONT_MONOSPACED_16_9,CL_BLUE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -1294,10 +1333,42 @@ int main(void)
 
 	  if(key_pressed)
 	  {
-		  for(uint8_t i=0; i<15; i++)
-			  for(uint8_t j=0; j<15; j++)
-				  TFT_PutPixel(i, j, CL_WHITE);
-		  TFT_PutStr(1, 1, &kbd_key, FONT_MONOSPACED_16_9, CL_BLACK);
+		  if(kbd_key=='R')
+		  {
+			  if(rf_bias<4050)
+				  rf_bias+=50;
+			  RF_SetBias(rf_bias);
+			  TFT_RectFill(1,1,127,16,CL_WHITE);
+			  sprintf(&line[0][0], "bias=%d", rf_bias);
+			  TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
+		  }
+		  else if(kbd_key=='L')
+		  {
+			  if(rf_bias>=50)
+				  rf_bias-=50;
+			  RF_SetBias(rf_bias);
+			  TFT_RectFill(1,1,127,16,CL_WHITE);
+			  sprintf(&line[0][0], "bias=%d", rf_bias);
+			  TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
+		  }
+		  else if(kbd_key=='Y')
+		  {
+			  if(adf_pwr<63)
+				  adf_pwr++;
+			  ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));
+			  TFT_RectFill(1,16,127,31,CL_WHITE);
+			  sprintf(&line[1][0], "adf_pwr=%d", adf_pwr);
+			  TFT_PutStr(1,17,&line[1][0],FONT_MONOSPACED_16_9,CL_BLUE);
+		  }
+		  else if(kbd_key=='X')
+		  {
+			  if(adf_pwr)
+				  adf_pwr--;
+			  ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));
+			  TFT_RectFill(1,16,127,31,CL_WHITE);
+			  sprintf(&line[1][0], "adf_pwr=%d", adf_pwr);
+			  TFT_PutStr(1,17,&line[1][0],FONT_MONOSPACED_16_9,CL_BLUE);
+		  }
 
 		  key_pressed=0;
 	  }
