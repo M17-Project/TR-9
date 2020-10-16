@@ -835,7 +835,7 @@ void ADF_SetFreq(uint32_t freq, uint8_t rx)
 	i=freq/(12288000/(3*2));
 	f=10*(freq-i*(12288000/(3*2)))/625;
 
-	ADF_WriteReg((i<<19)|(f<<4)|(rx<<27));
+	ADF_WriteReg((i<<19)|(f<<4)|(rx<<27)|(1<<28));	//UART/SPI mode ON
 }
 
 uint16_t ADF_GetChipVersion(void)
@@ -1001,23 +1001,25 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			RF_SetBias(0);
 			RF_Mode(RX_MODE);
 			//AUDIO_Mux(AUDIO_MUX_NONE);
-			//LNA_Ctrl(LNA_OFF);
-			ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+			//ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+			ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
 			ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
 			ADF_SetFreq(435000000, 1);
+			LNA_Ctrl(LNA_ON);
 			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
 		}
 
 		//PTT down (TX)
 		else
 		{
+			RF_SetBias(rf_bias);
 			RF_Mode(TX_MODE);
 			//AUDIO_Mux(AUDIO_MUX_NONE);
-			//LNA_Ctrl(LNA_OFF);
+			LNA_Ctrl(LNA_OFF);
 			ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
 			ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
 			ADF_SetFreq(435000000, 0);
-			ADF_WriteReg((uint32_t)0x0000000F|(5<<8));	//1:TX carrier, 2:+f_i, 3:-f_i, 5:PN9
+			ADF_WriteReg((uint32_t)0x0000000F|(7<<17)|(5<<8));	//1:TX carrier, 2:+f_i, 3:-f_i, 5:PN9 | CLK_MUX set (UART/SPI mode ON)
 			RF_SetBias(rf_bias);
 			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
 		}
@@ -1138,7 +1140,7 @@ int main(void)
   RF_SetBias(0);
   RF_Mode(RX_MODE);
   AUDIO_Mux(AUDIO_MUX_NONE);
-  LNA_Ctrl(LNA_ON);
+  LNA_Ctrl(LNA_OFF);
   TFT_SetBrght(0);
   TFT_Reset();
   TFT_Init();
@@ -1239,7 +1241,6 @@ int main(void)
   HAL_TIM_Base_Start(&htim6);*/
 
   //ADF7021 test
-  //RF_Mode(TX_MODE);
   //we need to set the output power with DAC OUT2
   RF_SetBias(0);
   //DAC OUT2 stop test
@@ -1269,16 +1270,19 @@ int main(void)
   ADF_WriteReg((uint32_t)0x475031);
   HAL_Delay(2-1);
 
-  //ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
-  ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
+  ADF_WriteReg((uint32_t)0x29ECA093);	//CDR=40
+  //ADF_WriteReg((uint32_t)(0x29ECA093&(~(0xFF<<10)))|1<<10);	//CDR=1 for DAC test
   HAL_Delay(2-1);
 
-  ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(adf_pwr<<13));	//4FSK raw
-  //ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
+  //ADF_WriteReg((uint32_t)0x00D018B2|(0<<30)|(adf_pwr<<13));	//4FSK raw
+  ADF_WriteReg((uint32_t)0x00D018F2|(0<<30)|(adf_pwr<<13));	//4FSK + RRC filter
   HAL_Delay(2-1);
-  /*LNA_Ctrl(LNA_ON);
+  ADF_WriteReg((uint32_t)0x0000000F|(7<<17));
+  ADF_SetFreq(435000000, 1);
+  LNA_Ctrl(LNA_ON);
+  RF_Mode(RX_MODE);
 
-  HAL_TIM_Base_Start(&htim6);
+  /*HAL_TIM_Base_Start(&htim6);
   HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
   AUDIO_Mux(AUDIO_MUX_SPK);*/
 
@@ -1337,7 +1341,7 @@ int main(void)
 		  {
 			  if(rf_bias<4050)
 				  rf_bias+=50;
-			  RF_SetBias(rf_bias);
+
 			  TFT_RectFill(1,1,127,16,CL_WHITE);
 			  sprintf(&line[0][0], "bias=%d", rf_bias);
 			  TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
@@ -1346,7 +1350,7 @@ int main(void)
 		  {
 			  if(rf_bias>=50)
 				  rf_bias-=50;
-			  RF_SetBias(rf_bias);
+
 			  TFT_RectFill(1,1,127,16,CL_WHITE);
 			  sprintf(&line[0][0], "bias=%d", rf_bias);
 			  TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
