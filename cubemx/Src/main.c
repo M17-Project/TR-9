@@ -167,6 +167,7 @@ volatile uint8_t data_rdy=0;					//data ready to send?
 
 struct moip_packet
 {
+	uint16_t sid;
 	uint8_t dst[10];
 	uint8_t src[10];
 	uint16_t type;
@@ -322,40 +323,34 @@ void M17_Framer(struct moip_packet *inp, uint8_t *out, uint8_t tr_end)
 	//payload	16
 	//crc_udp	2
 
-	static uint16_t sid=0xDEAD;
 	uint8_t src_enc[6];
 	uint8_t dst_enc[6];
 	uint16_t crc=0;
 
+	uint64_t tmp1, tmp2;
+	tmp1=Encode_Callsign(inp->src);
+	tmp2=Encode_Callsign(inp->dst);
+
 	for(uint8_t i=0; i<6; i++)
 	{
-		src_enc[i]=Encode_Callsign(inp->src)>>(i*8);
-		dst_enc[i]=Encode_Callsign(inp->dst)>>(i*8);
+		src_enc[i]=tmp1>>(i*8);
+		dst_enc[i]=tmp2>>(i*8);
 	}
 
 	if(tr_end)
 		inp->fn|=(1<<15);
 
 	ypcmem(&out[0], (uint8_t*)&M17_STREAM_PREFIX, 4);
-	ypcmem(&out[4], (uint8_t*)&sid, 2);
+	ypcmem(&out[4], &(inp->sid), 2);
 	ypcmem(&out[6], dst_enc, 6);
 	ypcmem(&out[12], src_enc, 6);
 	ypcmem(&out[18], &(inp->type), 2);
 	ypcmem(&out[20], &(inp->nonce), 14);
 	ypcmem(&out[34], &(inp->fn), 2);
 	ypcmem(&out[36], &(inp->payload), 16);
-	crc=HAL_CRC_Calculate(&hcrc, out, 52);//CRC_M17(CRC_LUT, out, 52); //FIXME: use HW CRC unit
+	crc=HAL_CRC_Calculate(&hcrc, out, 52);//CRC_M17(CRC_LUT, out, 52);
 	ypcmem(&out[52], (uint8_t*)&crc, 2);
 	ypcmem((uint8_t*)&(inp->crc_udp), (uint8_t*)&crc, 2);
-
-	//rotate SID
-	if(sid&1)
-	{
-		sid>>=1;
-		sid|=(1<<15);
-	}
-	else
-		sid>>=1;
 }
 
 //--------------------------------------RF-------------------------------------
@@ -1205,30 +1200,50 @@ int main(void)
   HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
 
   ESP_GetResp();
-  //while(esp_rcv[32]!='P');	//"WIFI GOT IP"
+  while(esp_rcv[32]!='P');	//"WIFI GOT IP"
   HAL_Delay(1);
 
   //MoIP test
-  //MoIP_Connect("192.168.1.186", 17000);
-  //MoIP_Connect("m17.link", 17000);
+  //MoIP_Connect("192.168.1.193", 17000);
+  //MoIP_Connect("77.55.209.188", 17000);
+  MoIP_Connect("m17-usa.openquad.net", 17000);
 
-  //HAL_Delay(550);
+  HAL_Delay(550);
+
+  uint8_t src_call[6];
+  uint64_t val=Encode_Callsign("SP5WWP");
+  for(uint8_t i=0; i<6; i++)
+	  src_call[5-i]=val>>(i*8);
+  sprintf(esp_cmd, "AT+CIPSEND=1,11\r\n");
+  HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
+  HAL_Delay(5);
+  sprintf(esp_cmd, "CONN");
+  memcpy(&esp_cmd[4], src_call, 6);
+  esp_cmd[10]='A';	//module
+  HAL_UART_Transmit(&huart2, esp_cmd, 11, 2);
 
   //Codec2
   cod = codec2_create(CODEC2_MODE_3200);
-  //HAL_TIM_Base_Start(&htim6);
-  //HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
+  HAL_TIM_Base_Start(&htim6);
+  HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 
   sprintf(packet.src, "SP5WWP");
-  //sprintf(packet.dst, "KC1AWV");
-  sprintf(packet.dst, "W2FBI");
+  sprintf(packet.dst, "M17-USA A");
   packet.type=P_TYPE_VOICE;
+  //generate random, non-zero SID
+  uint32_t rndval;
+  do
+  {
+	  HAL_RNG_GenerateRandomNumber(&hrng, &rndval);
+  }
+  while(rndval==0);
+  packet.sid=rndval;
 
-  /*for(uint16_t p=0; p<20; p++)
+  /*for(uint16_t p=0; p<200; p++)
   {
 	  packet.fn=p;
-	  sprintf(packet.payload, "Hello M17!\r\n");
-	  M17_Framer(&packet, udp_frame, p==19?1:0);
+	  sprintf(packet.payload, "~~Hello M17!~~\r\n");
+	  M17_Framer(&packet, udp_frame, p==199?1:0);
 	  MoIP_Send(udp_frame);
 	  HAL_Delay(10);
   }*/
@@ -1286,10 +1301,10 @@ int main(void)
   HAL_ADC_Start_DMA(&hadc3, fm_demod_in, 320);
   AUDIO_Mux(AUDIO_MUX_SPK);*/
 
-  sprintf(&line[0][0], "bias=%d", rf_bias);
+  /*sprintf(&line[0][0], "bias=%d", rf_bias);
   sprintf(&line[1][0], "adf_pwr=%d", adf_pwr);
   TFT_PutStr(1,1,&line[0][0],FONT_MONOSPACED_16_9,CL_BLUE);
-  TFT_PutStr(1,17,&line[1][0],FONT_MONOSPACED_16_9,CL_BLUE);
+  TFT_PutStr(1,17,&line[1][0],FONT_MONOSPACED_16_9,CL_BLUE);*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -1298,7 +1313,7 @@ int main(void)
   {
 	  if(data_rdy)
 	  {
-		  /*uint16_t offs=buff_num*320;	//either 0 or 320
+		  uint16_t offs=buff_num*320;	//either 0 or 320
 
 		  for(uint16_t i=0; i<320; i++)
 		  {
@@ -1311,7 +1326,7 @@ int main(void)
 		  ypcmem(packet.payload, c2_data, 16);
 		  M17_Framer(&packet, udp_frame, 0);
 		  MoIP_Send(udp_frame);
-		  packet.fn++;*/
+		  packet.fn++;
 		  data_rdy=0;
 	  }
 
