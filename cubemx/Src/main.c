@@ -58,6 +58,8 @@
 #include "TFT_ST7735.h"
 
 //macros
+#define ESP_RCV_SIZE			200
+
 #define MOIP_UDP_SIZE			54
 
 #define RX_MODE					0
@@ -131,7 +133,7 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 /* Private variables ---------------------------------------------------------*/
 //ESP commands and rcv buffer
 volatile uint8_t esp_cmd[100];
-volatile uint8_t esp_rcv[100];
+volatile uint8_t esp_rcv[ESP_RCV_SIZE];
 volatile uint8_t esp_cnt=0;
 
 //FatFS file
@@ -749,7 +751,9 @@ void ESP_Enable(uint8_t ena)
 
 void ESP_GetResp(void)
 {
-	memset(esp_rcv, 0, sizeof(esp_rcv));
+	//memset(esp_rcv, 0, sizeof(esp_rcv));
+	for(uint16_t i=0; i<ESP_RCV_SIZE; i++)
+		esp_rcv[i]=0;
 	esp_cnt=0;
 	HAL_UART_Receive_IT(&huart2, esp_rcv, 1);
 }
@@ -1206,29 +1210,51 @@ int main(void)
   //MoIP test
   //MoIP_Connect("192.168.1.193", 17000);
   //MoIP_Connect("77.55.209.188", 17000);
-  MoIP_Connect("m17-usa.openquad.net", 17000);
+  //MoIP_Connect("m17-usa.openquad.net", 17000);
+  MoIP_Connect("51.81.119.111", 17000);
 
-  HAL_Delay(550);
+  HAL_Delay(50);
 
   uint8_t src_call[6];
-  uint64_t val=Encode_Callsign("SP5WWP");
+  uint64_t val=Encode_Callsign("SP5WWP/P");
   for(uint8_t i=0; i<6; i++)
 	  src_call[5-i]=val>>(i*8);
   sprintf(esp_cmd, "AT+CIPSEND=1,11\r\n");
   HAL_UART_Transmit(&huart2, esp_cmd, strlen(esp_cmd), 2);
-  HAL_Delay(5);
+  HAL_Delay(1);
   sprintf(esp_cmd, "CONN");
   memcpy(&esp_cmd[4], src_call, 6);
   esp_cmd[10]='A';	//module
   HAL_UART_Transmit(&huart2, esp_cmd, 11, 2);
+  HAL_Delay(8);
+  ESP_GetResp();
+  //while(1)	//TODO: fix this
+  {
+	  /*if(esp_rcv[9]=='5' && esp_rcv[10]=='4')
+	  {
+		  //HAL_Delay(20);
+		  ESP_GetResp();
+		  HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
+	  }
+	  else if(esp_rcv[2]=='+' && esp_rcv[3]=='I')
+	  {
+		  //HAL_Delay(20);
+		  ESP_GetResp();
+	  }*/
+	  //if(esp_cnt>=66)
+	  {
+		  //HAL_GPIO_TogglePin(LED_GRN_GPIO_Port, LED_GRN_Pin);
+		  //ESP_GetResp();
+	  }
+  }
 
   //Codec2
   cod = codec2_create(CODEC2_MODE_3200);
   HAL_TIM_Base_Start(&htim6);
   HAL_ADC_Start_DMA(&hadc1, audio_samples, 320);
 
-  sprintf(packet.src, "SP5WWP");
-  sprintf(packet.dst, "M17-USA A");
+  sprintf(packet.src, "SP5WWP/P");
+  sprintf(packet.dst, "M17-M17 A");
   packet.type=P_TYPE_VOICE;
   //generate random, non-zero SID
   uint32_t rndval;
