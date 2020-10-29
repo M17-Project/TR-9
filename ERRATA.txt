@@ -8,3 +8,4 @@ Important notes:
 #7: Pins 31 and 32 of STM32L011 (on the HMI board) should be soldered together. That's equivalent of forcing a low state on BOOT0.
 #8: R64 should be 12k.
 #9: Bypass C106 with a 10k resistor.
+#10: Mainboard:R20 should be 470R
