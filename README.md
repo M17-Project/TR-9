@@ -1,7 +1,12 @@
 # TR-9
+
 **Read ERRATA.txt before building the mainboard!**  
+
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
-This repo contains SW4STM32 project for the TR-9 board, TR-9 case design files, KiCAD schematics, gerber files and a sample codeplug. CubeMX version used: **4.27.0**.
+This repo contains KiCAD schematics and gerber files. 
+
+The source code has been moved to [M17-project/TR-9_firmware](https://github.com/m17-project/TR-9_firmware).
+The codeplug example has been moved to [TR-9_Codeplug](https://github.com/M17-Project/codeplug)
 
 # Capabilities
 The TR-9 Radio will be capable of the following:
@@ -33,4 +38,4 @@ M17 standard was designed having [Codec2](https://github.com/drowe67/codec2) voc
 
 ## Pinouts
 
-SWD/STLink: [GND, 3v3, CLK, DIO, RST], square pad is Pin 1 and therefore GND.
+Mainboard SWD/STLink: [GND, 3v3, CLK, DIO, RST], square pad is Pin 1 and therefore GND.
