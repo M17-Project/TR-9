@@ -81,7 +81,8 @@ P 3950 3900
 F 0 "J14" H 3900 4617 50  0000 C CNN
 F 1 "Micro_SD_Card" H 3900 4526 50  0000 C CNN
 F 2 "TR-9:microSD" H 5100 4200 50  0001 C CNN
-F 3 "http://katalog.we-online.de/em/datasheet/693072010801.pdf" H 3950 3900 50  0001 C CNN
+F 3 "https://www.tme.com/Document/8fd521553fd3d4780cc7bd112fec63d4/TME%20-%20MCSP-Q1-08-A-SG-TR%20%2820131216%29.pdf" H 3950 3900 50  0001 C CNN
+F 4 "AdamTech MCSP-Q1-08-A-SG" H 3950 3900 50  0001 C CNN "Partno"
 	1    3950 3900
 	1    0    0    -1  
 $EndComp
