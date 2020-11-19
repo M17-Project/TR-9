@@ -245,10 +245,10 @@
       (net 21 F1))
     (pad "" thru_hole circle (at -1.25 -2.5 90) (size 2.2 2.2) (drill 1.3) (layers *.Cu *.Mask))
     (pad "" thru_hole circle (at 5.75 -2.5 90) (size 2.2 2.2) (drill 1.3) (layers *.Cu *.Mask))
-    (model ${KISYS3DMOD}/Button_Switch_THT.3dshapes/SW_Tactile_SKHH_Angled.wrl
-      (at (xyz 0 0 0))
+    (model "${KIPRJMOD}/User Library-Alps TACT SKHH Horizontal Switch.step"
+      (offset (xyz 2 0 0))
       (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
+      (rotate (xyz -90 0 180))
     )
   )
 
@@ -309,10 +309,10 @@
       (net 22 F2))
     (pad "" thru_hole circle (at -1.25 -2.5 90) (size 2.2 2.2) (drill 1.3) (layers *.Cu *.Mask))
     (pad "" thru_hole circle (at 5.75 -2.5 90) (size 2.2 2.2) (drill 1.3) (layers *.Cu *.Mask))
-    (model ${KISYS3DMOD}/Button_Switch_THT.3dshapes/SW_Tactile_SKHH_Angled.wrl
-      (at (xyz 0 0 0))
+    (model "${KIPRJMOD}/User Library-Alps TACT SKHH Horizontal Switch.step"
+      (offset (xyz 2 0 0))
       (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
+      (rotate (xyz -90 0 -180))
     )
   )
 
@@ -1607,11 +1607,6 @@
       (offset (xyz 0 -1.25 1))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 90 -180))
-    )
-    (model "${KIPRJMOD}/DEM 128128A TMH-PW-N.step"
-      (offset (xyz 0 0 -1.6))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 180 0))
     )
   )
 
