@@ -513,7 +513,7 @@ L Connector_Generic:Conn_01x22 J3
 U 1 1 5E2A885D
 P 5900 4300
 F 0 "J3" H 5980 4292 50  0000 L CNN
-F 1 "DEM 128128A TMH-PW-N" H 5980 4201 50  0000 L CNN
+F 1 "FH12-22S-0.5SH" H 5980 4201 50  0000 L CNN
 F 2 "Connector_FFC-FPC:Hirose_FH12-22S-0.5SH_1x22-1MP_P0.50mm_Horizontal" H 5900 4300 50  0001 C CNN
 F 3 "~" H 5900 4300 50  0001 C CNN
 	1    5900 4300
@@ -1583,4 +1583,59 @@ Wire Wire Line
 Wire Wire Line
 	3800 3750 4050 3750
 Connection ~ 4050 3750
+$Comp
+L Mechanical:MountingHole U2
+U 1 1 5FB8FAE3
+P 6400 4550
+F 0 "U2" H 6500 4596 50  0000 L CNN
+F 1 "DEM 128128A TMH-PW-N" H 6500 4505 50  0000 L CNN
+F 2 "HMI:DEM_128128A_TMH-PW-N" H 6400 4550 50  0001 C CNN
+F 3 "~" H 6400 4550 50  0001 C CNN
+	1    6400 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H1
+U 1 1 5FB9CD26
+P 950 5400
+F 0 "H1" H 1050 5446 50  0000 L CNN
+F 1 "M2" H 1050 5355 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 950 5400 50  0001 C CNN
+F 3 "~" H 950 5400 50  0001 C CNN
+	1    950  5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H2
+U 1 1 5FB9F230
+P 1300 5400
+F 0 "H2" H 1400 5446 50  0000 L CNN
+F 1 "M2" H 1400 5355 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 1300 5400 50  0001 C CNN
+F 3 "~" H 1300 5400 50  0001 C CNN
+	1    1300 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H3
+U 1 1 5FB9F543
+P 950 5700
+F 0 "H3" H 1050 5746 50  0000 L CNN
+F 1 "M2" H 1050 5655 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 950 5700 50  0001 C CNN
+F 3 "~" H 950 5700 50  0001 C CNN
+	1    950  5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H4
+U 1 1 5FB9F863
+P 1300 5700
+F 0 "H4" H 1400 5746 50  0000 L CNN
+F 1 "M2" H 1400 5655 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.2mm_M2_ISO14580_Pad" H 1300 5700 50  0001 C CNN
+F 3 "~" H 1300 5700 50  0001 C CNN
+	1    1300 5700
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
