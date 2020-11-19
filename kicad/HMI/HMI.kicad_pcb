@@ -394,7 +394,7 @@
     (fp_line (start 12.5 17.25) (end 12.5 16) (layer Cmts.User) (width 0.12))
     (fp_line (start -12.5 17.25) (end 12.5 17.25) (layer Cmts.User) (width 0.12))
     (model "${KIPRJMOD}/libraries/HMI.3dshapes/DEM 128128A TMH-PW-N.step"
-      (offset (xyz -15.35 18 0))
+      (offset (xyz 0 18 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
