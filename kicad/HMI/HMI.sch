@@ -710,7 +710,6 @@ R5
 Text GLabel 2900 3750 2    50   BiDi ~ 10
 R6
 NoConn ~ 1750 4250
-NoConn ~ 1750 4350
 NoConn ~ 1750 3650
 NoConn ~ 1750 3750
 NoConn ~ 1750 3850
@@ -1211,28 +1210,6 @@ Wire Wire Line
 	7000 1550 7000 1650
 Connection ~ 6850 1550
 $Comp
-L Switch:SW_Push SW1
-U 1 1 5E314A54
-P 8650 1200
-F 0 "SW1" V 8604 1348 50  0000 L CNN
-F 1 "SW_Push" V 8695 1348 50  0000 L CNN
-F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 8650 1400 50  0001 C CNN
-F 3 "~" H 8650 1400 50  0001 C CNN
-	1    8650 1200
-	-1   0    0    -1  
-$EndComp
-$Comp
-L Switch:SW_Push SW14
-U 1 1 5E315963
-P 9700 1200
-F 0 "SW14" V 9654 1348 50  0000 L CNN
-F 1 "SW_Push" V 9745 1348 50  0000 L CNN
-F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 9700 1400 50  0001 C CNN
-F 3 "~" H 9700 1400 50  0001 C CNN
-	1    9700 1200
-	-1   0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR023
 U 1 1 5E315D15
 P 8900 1250
@@ -1638,4 +1615,31 @@ F 3 "~" H 1300 5700 50  0001 C CNN
 	1    1300 5700
 	1    0    0    -1  
 $EndComp
+$Comp
+L Switch:SW_Push SW14
+U 1 1 61181ECB
+P 9700 1200
+F 0 "SW14" V 9654 1348 50  0000 L CNN
+F 1 "SW_Push" V 9745 1348 50  0000 L CNN
+F 2 "Button_Switch_SMD:SW_Push_1P1T_NO_CK_KMR2" H 9700 1400 50  0001 C CNN
+F 3 "~" H 9700 1400 50  0001 C CNN
+	1    9700 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW1
+U 1 1 611AF5F3
+P 8650 1200
+F 0 "SW1" V 8604 1348 50  0000 L CNN
+F 1 "SW_Push" V 8695 1348 50  0000 L CNN
+F 2 "Button_Switch_SMD:SW_Push_1P1T_NO_CK_KMR2" H 8650 1400 50  0001 C CNN
+F 3 "~" H 8650 1400 50  0001 C CNN
+	1    8650 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1750 4350 1750 4650
+Wire Wire Line
+	1750 4650 2150 4650
+Connection ~ 2150 4650
 $EndSCHEMATC

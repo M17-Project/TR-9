@@ -1050,23 +1050,6 @@ X ~ 2 0 -100 30 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# Mainboard-rescue_SW_Push-switches
-#
-DEF Mainboard-rescue_SW_Push-switches SW 0 40 N N 1 F N
-F0 "SW" 50 100 50 H V L CNN
-F1 "Mainboard-rescue_SW_Push-switches" 0 -60 50 H V C CNN
-F2 "" 0 200 50 H I C CNN
-F3 "" 0 200 50 H I C CNN
-DRAW
-C -80 0 20 0 1 0 N
-C 80 0 20 0 1 0 N
-P 2 0 1 0 0 50 0 120 N
-P 2 0 1 0 100 50 -100 50 N
-X 1 1 -200 0 100 R 50 50 0 1 P
-X 2 2 200 0 100 L 50 50 0 1 P
-ENDDRAW
-ENDDEF
-#
 # Mainboard-rescue_TEST_1P-conn
 #
 DEF Mainboard-rescue_TEST_1P-conn J 0 30 N N 1 F N
@@ -1202,6 +1185,23 @@ X ~ 3 300 0 100 L 50 50 1 1 O
 X G 4 -100 -300 150 U 50 50 1 1 P N
 X G 5 -100 -300 150 U 50 50 1 1 P N
 X ~ 6 -300 0 100 R 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+# Switch_SW_Push
+#
+DEF Switch_SW_Push SW 0 40 N N 1 F N
+F0 "SW" 50 100 50 H V L CNN
+F1 "Switch_SW_Push" 0 -60 50 H V C CNN
+F2 "" 0 200 50 H I C CNN
+F3 "" 0 200 50 H I C CNN
+DRAW
+C -80 0 20 0 1 0 N
+C 80 0 20 0 1 0 N
+P 2 0 1 0 0 50 0 120 N
+P 2 0 1 0 100 50 -100 50 N
+X 1 1 -200 0 100 R 50 50 0 1 P
+X 2 2 200 0 100 L 50 50 0 1 P
 ENDDRAW
 ENDDEF
 #

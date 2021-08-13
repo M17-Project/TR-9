@@ -362,17 +362,6 @@ F 3 "" H 8200 3850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Mainboard-rescue:SW_Push-switches SW1
-U 1 1 5DFE1B21
-P 10500 1650
-F 0 "SW1" V 10450 1400 50  0000 L CNN
-F 1 "INT_PTT_SW" V 10550 1150 50  0000 L CNN
-F 2 "Button_Switch_THT:SW_Tactile_SKHH_Angled" H 10500 1850 50  0001 C CNN
-F 3 "" H 10500 1850 50  0001 C CNN
-	1    10500 1650
-	0    -1   1    0   
-$EndComp
-$Comp
 L Mainboard-rescue:R_Small-device R48
 U 1 1 5DFE1F5D
 P 10200 1200
@@ -1713,8 +1702,6 @@ Wire Wire Line
 Wire Wire Line
 	4550 1500 4650 1500
 Wire Wire Line
-	10500 1850 10500 1900
-Wire Wire Line
 	10500 1450 10500 1400
 Wire Wire Line
 	10200 1400 10500 1400
@@ -1999,4 +1986,17 @@ $EndComp
 Connection ~ 3500 6100
 Wire Wire Line
 	3500 6100 3650 6100
+$Comp
+L Switch:SW_Push SW1
+U 1 1 6121661D
+P 10500 1650
+F 0 "SW1" V 10546 1602 50  0000 R CNN
+F 1 "INT_PTT_SW" V 10455 1602 50  0000 R CNN
+F 2 "Button_Switch_SMD:SW_Push_1P1T_NO_CK_KMR2" H 10500 1850 50  0001 C CNN
+F 3 "~" H 10500 1850 50  0001 C CNN
+	1    10500 1650
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	10500 1850 10500 1900
 $EndSCHEMATC
