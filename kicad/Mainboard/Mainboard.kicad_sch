@@ -1049,6 +1049,9 @@
     (path "/00000000-0000-0000-0000-00005de274f4/00000000-0000-0000-0000-00005f26dd54"
       (reference "C105") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
+    (path "/00000000-0000-0000-0000-00005df0e505/b83b95a9-0b26-4252-8697-66302c4025e7"
+      (reference "C106") (unit 1) (value "10p") (footprint "")
+    )
     (path "/00000000-0000-0000-0000-00005df0e505/00000000-0000-0000-0000-00005eb6af5f"
       (reference "C107") (unit 1) (value "5p1") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
