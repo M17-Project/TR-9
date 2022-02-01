@@ -1,9 +1,9 @@
 # TR-9
 <p align='center'>
-[![GitHub issues](https://img.shields.io/github/issues/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/issues)
-[![GitHub forks](https://img.shields.io/github/forks/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/network)
-[![GitHub stars](https://img.shields.io/github/stars/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/stargazers)
-[![GitHub license](https://img.shields.io/github/license/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/blob/master/LICENSE)
+  <a href="https://github.com/M17-Project/TR-9/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/M17-Project/TR-9?style=flat-square"></a>
+  <a href="https://github.com/M17-Project/TR-9/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/M17-Project/TR-9?style=flat-square"></a>
+  <a href="https://github.com/M17-Project/TR-9/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/M17-Project/TR-9?style=flat-square"></a>
+  <a href="https://github.com/M17-Project/TR-9/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/M17-Project/TR-9?style=flat-square"></a>
 </p>
 
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
