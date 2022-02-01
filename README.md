@@ -1,5 +1,5 @@
 # TR-9
-<p align=center>
+<p align='center'>
 [![GitHub issues](https://img.shields.io/github/issues/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/issues)
 [![GitHub forks](https://img.shields.io/github/forks/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/network)
 [![GitHub stars](https://img.shields.io/github/stars/M17-Project/TR-9?style=flat-square)](https://github.com/M17-Project/TR-9/stargazers)
