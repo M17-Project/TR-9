@@ -6,6 +6,10 @@
   <a href="https://github.com/M17-Project/TR-9/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/M17-Project/TR-9?style=flat-square"></a>
 </p>
 
+<p align='center'
+   <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/M17-Project/TR-9?style=flat-square">
+</p>   
+
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
 This repo contains KiCAD schematics and gerber files. 
 
