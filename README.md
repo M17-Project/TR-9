@@ -1,10 +1,13 @@
 # TR-9
-
+https://img.shields.io/github/issues/M17-Project/TR-9?style=flat-square
+https://img.shields.io/github/forks/M17-Project/TR-9?style=flat-square
+https://img.shields.io/github/stars/M17-Project/TR-9?style=flat-square
+https://img.shields.io/github/license/M17-Project/TR-9?style=flat-square
 
 TR-9 is a handheld transceiver (HT) for the M17 standard. Its specification can be found [here](https://github.com/sp5wwp/M17_spec).
 This repo contains KiCAD schematics and gerber files. 
 
-The source code has been moved to [M17-project/TR-9_firmware](https://github.com/m17-project/TR-9_firmware).
+The firmware source code has been moved to [M17-project/TR-9_firmware](https://github.com/m17-project/TR-9_firmware).
 The codeplug example has been moved to [TR-9_Codeplug](https://github.com/M17-Project/codeplug)
 
 # Capabilities
@@ -23,7 +26,7 @@ The heart of TR-9 is STM32F777VI microcontroller. The handheld also contains:
 *  an **ADF7021** chip for the RF  
 *  an **LSM9DS1** 9DoF sensor  
 *  a USB-micro connector for firmware update (so-called *DFU mode*)  
-*  an SD-micro card slot for codeplug and storage  
+*  an microSD card slot for codeplug and storage  
 *  a connector for a GNSS module  
 *  a Kenwood connector for external MIC/SPK  
 
