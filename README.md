@@ -6,7 +6,7 @@
   <a href="https://github.com/M17-Project/TR-9/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/M17-Project/TR-9?style=flat-square"></a>
 </p>
 
-<p align='center'
+<p align='center'>
    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/M17-Project/TR-9?style=flat-square">
 </p>   
 
