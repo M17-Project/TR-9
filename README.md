@@ -28,7 +28,7 @@ The heart of TR-9 is STM32F777VI microcontroller. The handheld also contains:
 *  an **ADF7021** chip for the RF  
 *  an **LSM9DS1** 9DoF sensor  
 *  a USB-micro connector for firmware update (so-called *DFU mode*)  
-*  an microSD card slot for codeplug and storage  
+*  a microSD card slot for codeplug and storage  
 *  a connector for a GNSS module  
 *  a Kenwood connector for external MIC/SPK  
 
